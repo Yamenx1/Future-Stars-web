@@ -1,0 +1,425 @@
+/* Future Stars - student project styling (green/pitch theme) */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background: #0f1a0f;
+    color: #e0e8d8;
+    min-height: 100vh;
+}
+
+/* header with pitch stripe feel */
+header {
+    background: #1a3a1a;
+    border-bottom: 4px solid #4caf50;
+    padding: 28px 20px 22px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+/* faint football pitch lines in header */
+header::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100px;
+    height: 100px;
+    border: 2px solid rgba(255, 255, 255, 0.06);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+}
+
+header::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+header h1 {
+    font-size: 2rem;
+    color: #4caf50;
+    margin-bottom: 4px;
+    position: relative;
+}
+
+header p {
+    color: #8aac8a;
+    font-size: 0.85rem;
+    position: relative;
+}
+
+/* main content */
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 25px 15px;
+}
+
+/* summary boxes */
+.summary-row {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.summary-box {
+    flex: 1;
+    min-width: 110px;
+    background: #1a2e1a;
+    border: 1px solid #2d4a2d;
+    border-radius: 8px;
+    padding: 14px;
+    text-align: center;
+}
+
+.summary-box strong {
+    display: block;
+    font-size: 1.7rem;
+    color: #4caf50;
+}
+
+.summary-box span {
+    font-size: 0.7rem;
+    color: #6a8a6a;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* filters */
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 22px;
+    flex-wrap: wrap;
+}
+
+.filters select,
+.filters input {
+    padding: 8px 12px;
+    background: #162216;
+    border: 1px solid #3a5a3a;
+    border-radius: 5px;
+    color: #d0dcc0;
+    font-size: 0.85rem;
+    font-family: inherit;
+    flex: 1;
+    min-width: 150px;
+}
+
+.filters select:focus,
+.filters input:focus {
+    outline: none;
+    border-color: #4caf50;
+}
+
+/* section titles */
+.section-title {
+    font-size: 1.15rem;
+    margin: 24px 0 14px;
+    color: #c0d8b0;
+    border-left: 3px solid #4caf50;
+    padding-left: 10px;
+}
+
+/* top 3 podium cards */
+.top3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-bottom: 24px;
+}
+
+.top-card {
+    background: #1a2e1a;
+    border: 2px solid #4caf50;
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+    position: relative;
+}
+
+/* football net pattern on top cards */
+.top-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: repeating-linear-gradient(90deg, #4caf50 0px, #4caf50 8px, transparent 8px, transparent 16px);
+}
+
+.top-card .medal {
+    font-size: 1.8rem;
+    margin-bottom: 6px;
+}
+
+.top-card .top-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.top-card .top-club {
+    font-size: 0.78rem;
+    color: #7a9a7a;
+    margin-bottom: 8px;
+}
+
+.top-card .top-score {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #4caf50;
+}
+
+.top-card .top-score-label {
+    font-size: 0.6rem;
+    color: #5a7a5a;
+    text-transform: uppercase;
+}
+
+.top-card .top-stats {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    margin-top: 8px;
+    font-size: 0.78rem;
+    color: #a0bca0;
+}
+
+/* player cards grid */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+}
+
+.card {
+    background: #162216;
+    border: 1px solid #2a4a2a;
+    border-radius: 8px;
+    padding: 14px;
+    transition: border-color 0.2s;
+}
+
+.card:hover {
+    border-color: #4caf50;
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 6px;
+}
+
+.card-rank {
+    background: #2a3e2a;
+    color: #7a9a7a;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    font-size: 0.7rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-pos {
+    font-size: 0.65rem;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-weight: 600;
+}
+
+.card-pos.fw {
+    background: #3d2015;
+    color: #ff8a65;
+}
+
+.card-pos.mf {
+    background: #15293d;
+    color: #64b5f6;
+}
+
+.card-pos.df {
+    background: #1a3d1a;
+    color: #81c784;
+}
+
+.card-pos.gk {
+    background: #3d3415;
+    color: #ffd54f;
+}
+
+.card-name {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.card-meta {
+    font-size: 0.72rem;
+    color: #6a8a6a;
+    margin-bottom: 8px;
+}
+
+.card-score-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0f1a0f;
+    border-radius: 5px;
+    padding: 7px 10px;
+    margin-bottom: 8px;
+}
+
+.card-score-label {
+    font-size: 0.6rem;
+    color: #4a6a4a;
+    text-transform: uppercase;
+}
+
+.card-score-num {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: #4caf50;
+}
+
+.card-stats {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+    font-size: 0.72rem;
+}
+
+.card-stats div strong {
+    display: block;
+    font-size: 0.88rem;
+    color: #c0d8b0;
+}
+
+.card-stats div span {
+    color: #4a6a4a;
+    font-size: 0.58rem;
+    text-transform: uppercase;
+}
+
+/* league badge */
+.league-badge {
+    display: inline-block;
+    font-size: 0.55rem;
+    padding: 1px 5px;
+    border-radius: 3px;
+    background: #2a3e2a;
+    color: #8aac8a;
+    margin-left: 4px;
+    vertical-align: middle;
+}
+
+/* table */
+.table-container {
+    overflow-x: auto;
+    margin-bottom: 28px;
+    border: 1px solid #2a4a2a;
+    border-radius: 8px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+}
+
+thead {
+    background: #1a2e1a;
+}
+
+th {
+    padding: 10px 12px;
+    text-align: left;
+    color: #4caf50;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid #4caf50;
+    user-select: none;
+}
+
+th:hover {
+    color: #81c784;
+}
+
+th.asc::after {
+    content: ' ▲';
+}
+
+th.desc::after {
+    content: ' ▼';
+}
+
+td {
+    padding: 8px 12px;
+    border-bottom: 1px solid #1a2e1a;
+    white-space: nowrap;
+}
+
+tbody tr:nth-child(even) {
+    background: rgba(76, 175, 80, 0.03);
+}
+
+tbody tr:hover {
+    background: rgba(76, 175, 80, 0.08);
+}
+
+/* footer */
+footer {
+    text-align: center;
+    padding: 18px;
+    color: #3a5a3a;
+    font-size: 0.78rem;
+    border-top: 1px solid #2a4a2a;
+    background: #0d160d;
+}
+
+/* no results */
+.no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 40px;
+    color: #4a6a4a;
+}
+
+/* responsive */
+@media (max-width: 700px) {
+    .top3 {
+        grid-template-columns: 1fr;
+    }
+
+    .cards {
+        grid-template-columns: 1fr;
+    }
+
+    .filters {
+        flex-direction: column;
+    }
+
+    .summary-row {
+        flex-direction: column;
+    }
+}

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+*** GENERATED FROM project.xml - DO NOT EDIT  ***
+***         EDIT ../build.xml INSTEAD         ***
+-->
+<project xmlns:j2seproject1="http://www.netbeans.org/ns/j2se-project/1" xmlns:j2seproject3="http://www.netbeans.org/ns/j2se-project/3" xmlns:jaxrpc="http://www.netbeans.org/ns/j2se-project/jax-rpc" basedir=".." default="default" name="BudgetStar-impl">
+    <fail message="Please build using Ant 1.8.0 or higher.">
+        <condition>
+            <not>
+                <antversion atleast="1.8.0"/>
+            </not>
+        </condition>
+    </fail>
+    <target depends="test,jar,javadoc" description="Build and test whole project." name="default"/>
+    <property file="nbproject/project.properties"/>
+    <target name="init">
+        <mkdir dir="${build.classes.dir}"/>
+    </target>
+    <target depends="init" name="compile">
+        <javac srcdir="${src.dir}" destdir="${build.classes.dir}" source="${javac.source}" target="${javac.target}" encoding="${source.encoding}" includeantruntime="false">
+            <classpath path="${javac.classpath}"/>
+        </javac>
+    </target>
+    <target depends="compile" name="jar">
+        <mkdir dir="${dist.dir}"/>
+        <jar destfile="${dist.jar}" basedir="${build.classes.dir}">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+            </manifest>
+        </jar>
+    </target>
+    <target depends="compile" name="run">
+        <java classname="${main.class}" fork="true" dir="${basedir}">
+            <classpath>
+                <pathelement location="${build.classes.dir}"/>
+                <pathelement path="${run.classpath}"/>
+            </classpath>
+        </java>
+    </target>
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+    <target name="javadoc"/>
+    <target name="test"/>
+</project>

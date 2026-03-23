@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Future Stars - Soccer Player Analysis</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="header-inner">
+            <h1>⚽ Future Stars</h1>
+            <p>Predicting the next big soccer players (U24) | 2025-26 Season</p>
+        </div>
+    </header>
+
+    <main>
+        <!-- stats summary -->
+        <div class="summary-row">
+            <div class="summary-box">
+                <strong id="totalPlayers">0</strong>
+                <span>Players</span>
+            </div>
+            <div class="summary-box">
+                <strong id="avgAge">0</strong>
+                <span>Avg Age</span>
+            </div>
+            <div class="summary-box">
+                <strong id="topScore">0</strong>
+                <span>Top Score</span>
+            </div>
+            <div class="summary-box">
+                <strong id="leagueCount">0</strong>
+                <span>Leagues</span>
+            </div>
+        </div>
+
+        <!-- filters -->
+        <div class="filters">
+            <select id="positionFilter" onchange="applyFilters()">
+                <option value="all">All Positions</option>
+                <option value="forward">Forwards</option>
+                <option value="midfielder">Midfielders</option>
+                <option value="defender">Defenders</option>
+            </select>
+            <select id="leagueFilter" onchange="applyFilters()">
+                <option value="all">All Leagues</option>
+            </select>
+            <input type="text" id="searchBox" placeholder="Search player or club..." oninput="applyFilters()">
+        </div>
+
+        <!-- top 3 -->
+        <h2 class="section-title">🏆 Top 3 Future Stars</h2>
+        <div class="top3" id="top3Area"></div>
+
+        <!-- player cards -->
+        <h2 class="section-title">📋 All Players (ranked by Future Star Score)</h2>
+        <div class="cards" id="cardsArea"></div>
+
+        <!-- table -->
+        <h2 class="section-title">📊 Data Table</h2>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr id="tHead"></tr>
+                </thead>
+                <tbody id="tBody"></tbody>
+            </table>
+        </div>
+    </main>
+
+    <footer>
+        <p>Future Stars Project &mdash; Java (preprocessing) + R (analysis) + JavaScript (web) | CS Assignment 2025-26
+        </p>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
