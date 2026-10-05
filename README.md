@@ -66,4 +66,10 @@ Open `webapp/index.html` in any modern web browser to view the interactive playe
 preprocessor recomputes scores and `scripts/embed-csv.mjs` re-embeds the data into the site.
 Runs weekly via `.github/workflows/sync-stats.yml`, or manually from the Actions tab.
 Needs an `APISPORTS_KEY` repo secret (Settings → Secrets → Actions). Syntax check and
-offline tests: `node scripts/sync-player-stats.mjs --self-test` (spends zero quota). 
+offline tests: `node scripts/sync-player-stats.mjs --self-test` (spends zero quota).
+
+### 5. Player Photos (Wikipedia, optional)
+`scripts/fetch-wiki-photos.mjs` matches the squad against Wikipedia page images
+(strict full-name matching, monogram fallback for the rest) into
+`scripts/wiki-photos.json`, merged into the site by `scripts/embed-csv.mjs`.
+Free, keyless, re-runnable: `node scripts/fetch-wiki-photos.mjs`. 
