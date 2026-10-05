@@ -1,6 +1,6 @@
 # Future Stars (Budget Star) - Soccer Player Analysis
 
-A data processing, analysis, and visualization project designed to scout undervalued and high-potential young football players (24 years old and under). This project demonstrates skills across Java for data preprocessing, R for exploratory analysis and modeling, and a web-based presentation layer (HTML/CSS/JS).
+A data processing, analysis, and visualization project designed to scout undervalued and high-potential young football players (22 years old and under). This project demonstrates skills across Java for data preprocessing, R for exploratory analysis and modeling, and a web-based presentation layer (HTML/CSS/JS).
 
 ## Project Overview
 

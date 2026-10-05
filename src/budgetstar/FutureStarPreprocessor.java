@@ -18,13 +18,14 @@ import java.util.List;
  * Future Star Score formula:
  *   GoalsPer90  = (Goals / MinutesPlayed) * 90
  *   AssistsPer90 = (Assists / MinutesPlayed) * 90
- *   AgeFactor    = (24 - Age) * 0.5   (younger = higher bonus)
+ *   AgeFactor    = (22 - Age) * 0.5   (younger = higher bonus)
  *   Score = (GoalsPer90 * 3) + (AssistsPer90 * 2) + (DribblesCompleted / 10)
  *           + (PassAccuracy / 20) + AgeFactor
  */
 public class FutureStarPreprocessor {
 
     private static final int MIN_MINUTES = 500;
+    private static final int MAX_AGE = 22;
 
     public static void main(String[] args) {
         String inputFile = "data/raw_young_players.csv";
@@ -56,6 +57,12 @@ public class FutureStarPreprocessor {
 
                 int minutesPlayed = Integer.parseInt(fields[6].trim());
                 if (minutesPlayed < MIN_MINUTES) {
+                    filteredOut++;
+                    continue;
+                }
+
+                int rowAge = Integer.parseInt(fields[1].trim());
+                if (rowAge > MAX_AGE) {
                     filteredOut++;
                     continue;
                 }
@@ -95,7 +102,7 @@ public class FutureStarPreprocessor {
 
                 double goalsPer90 = (goals / (double) minutesPlayed) * 90.0;
                 double assistsPer90 = (assists / (double) minutesPlayed) * 90.0;
-                double ageFactor = (24 - age) * 0.5;
+                double ageFactor = (22 - age) * 0.5;
 
                 double futureStarScore = (goalsPer90 * 3.0)
                         + (assistsPer90 * 2.0)
