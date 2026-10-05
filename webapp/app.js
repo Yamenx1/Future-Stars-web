@@ -108,7 +108,61 @@ Oscar Mingueza,24,Spain,Celta Vigo,La Liga,RB,2200,3,6,10,14,84,40,30,0.12,0.25,
 Cher Ndour,20,Italy,Besiktas,Super Lig,CM,1800,3,4,12,14,84,36,24,0.15,0.2,8.45
 Ben Doak,19,Scotland,Middlesbrough,Championship,RW,1600,5,6,18,34,79,10,8,0.28,0.34,11.37
 Mohamed Simakan,24,France,RB Leipzig,Bundesliga,CB,2200,1,1,6,6,87,52,38,0.04,0.04,5.15
-Waheeb,22,Saudi Arabia,Al-Hilal,Saudi Pro League,RW,2100,8,6,30,28,83,20,14,0.34,0.26,9.49`;
+Waheeb,22,Saudi Arabia,Al-Hilal,Saudi Pro League,RW,2100,8,6,30,28,83,20,14,0.34,0.26,9.49
+Ethan Nwaneri,18,England,Arsenal,Premier League,AM,1400,6,4,22,30,82,10,6,0.39,0.26,11.77
+Myles Lewis-Skelly,19,England,Arsenal,Premier League,LB,1900,2,4,8,26,87,40,28,0.09,0.19,10.11
+Vitor Reis,19,Brazil,Man City,Premier League,CB,1200,1,0,4,6,89,30,24,0.08,0.0,7.78
+Jack Hinshelwood,20,England,Brighton,Premier League,CM,1800,3,3,12,16,86,38,26,0.15,0.15,8.65
+Harry Amass,18,England,Man United,Premier League,LB,1100,0,2,2,14,84,28,20,0.0,0.16,8.93
+Lewis Hall,21,England,Newcastle,Premier League,LB,2200,2,5,8,24,83,44,30,0.08,0.2,8.7
+James Trafford,23,England,Man City,Premier League,GK,2500,0,0,0,1,78,1,1,0.0,0.0,4.5
+Nico OReilly,20,England,Man City,Premier League,CM,1300,2,3,10,16,85,28,20,0.14,0.21,8.68
+Franco Mastantuono,18,Argentina,Real Madrid,La Liga,AM,1500,5,4,20,32,81,10,6,0.3,0.24,11.63
+Marc Bernal,18,Spain,Barcelona,La Liga,DM,900,1,1,4,8,88,30,24,0.1,0.1,8.7
+Marc Casado,22,Spain,Barcelona,La Liga,CM,2100,1,4,6,12,89,48,36,0.04,0.17,7.12
+Raul Asencio,22,Spain,Real Madrid,La Liga,CB,2000,0,1,2,6,90,42,34,0.0,0.05,6.19
+Pablo Barrios,22,Spain,Atletico Madrid,La Liga,CM,2300,2,5,10,18,87,46,32,0.08,0.2,7.78
+Jesus Rodriguez,19,Spain,Real Betis,La Liga,LW,1400,4,3,16,30,78,10,6,0.26,0.19,10.56
+Tom Bischof,20,Germany,Bayern Munich,Bundesliga,CM,1700,4,5,16,22,86,30,22,0.21,0.26,9.66
+Assan Ouedraogo,19,Germany,RB Leipzig,Bundesliga,CM,1200,3,2,10,18,82,24,16,0.23,0.15,9.38
+Can Uzun,19,Turkey,Frankfurt,Bundesliga,CF,1600,8,3,30,22,77,10,6,0.45,0.17,10.24
+Bence Dardai,19,Hungary,Wolfsburg,Bundesliga,AM,1300,4,4,14,24,80,12,8,0.28,0.28,10.28
+Nathaniel Brown,22,Germany,Frankfurt,Bundesliga,LB,2100,3,5,10,30,82,40,28,0.13,0.21,8.91
+Valentin Carboni,20,Argentina,Genoa,Serie A,AM,1500,4,5,18,30,81,12,8,0.24,0.3,10.37
+Aaron Anselmino,20,Argentina,Bologna,Serie A,CB,1400,1,0,4,8,87,36,28,0.06,0.0,7.34
+Santiago Castro,21,Argentina,Bologna,Serie A,CF,2000,9,3,36,18,78,12,8,0.41,0.14,8.69
+Niccolo Pisilli,20,Italy,Roma,Serie A,CM,1600,3,2,12,16,86,34,24,0.17,0.11,8.63
+Cesare Casadei,23,Italy,Torino,Serie A,CM,1900,4,2,16,14,84,40,28,0.19,0.09,6.86
+Eliesse Ben Seghir,20,Morocco,Monaco,Ligue 1,LW,2000,8,6,30,52,80,14,10,0.36,0.27,12.82
+Maghnes Akliouche,23,France,Monaco,Ligue 1,RW,2200,7,8,28,48,82,16,12,0.29,0.33,10.91
+Lamine Camara,21,Senegal,Monaco,Ligue 1,CM,1900,3,4,12,20,85,42,30,0.14,0.19,8.56
+Ayyoub Bouaddi,18,France,Lille,Ligue 1,CM,1500,1,3,6,16,88,36,26,0.06,0.18,9.54
+Guillaume Restes,20,France,Toulouse,Ligue 1,GK,2700,0,1,0,2,76,1,2,0.0,0.03,6.07
+Jorthy Mokio,17,Belgium,Ajax,Eredivisie,CB,1300,2,1,6,14,87,34,26,0.14,0.07,9.8
+Rayane Bounida,19,Belgium,Ajax,Eredivisie,AM,1100,4,5,16,28,81,8,6,0.33,0.41,11.15
+Mika Godts,20,Belgium,Ajax,Eredivisie,LW,1500,5,6,20,38,79,10,8,0.3,0.36,11.37
+Rodrigo Mora,18,Portugal,Porto,Liga Portugal,AM,1600,6,5,22,36,82,12,8,0.34,0.28,12.27
+Martim Fernandes,19,Portugal,Porto,Liga Portugal,RB,1700,1,5,6,20,84,38,26,0.05,0.26,9.39
+Joao Simoes,18,Portugal,Sporting CP,Liga Portugal,CM,1200,2,3,8,16,87,30,22,0.15,0.23,9.85
+Anatoliy Trubin,24,Ukraine,Benfica,Liga Portugal,GK,2600,0,0,0,0,80,2,1,0.0,0.0,4.0
+Chris Rigg,18,England,Sunderland,Championship,CM,2000,4,4,16,24,83,36,26,0.18,0.18,10.45
+Tommy Watson,19,England,Sunderland,Championship,LW,1700,6,4,22,34,78,12,8,0.32,0.21,11.18
+Semih Kilicsoy,20,Turkey,Besiktas,Super Lig,CF,1700,8,3,30,26,76,10,6,0.42,0.16,9.99
+Yusuf Akcicek,19,Turkey,Fenerbahce,Super Lig,CB,1500,1,1,4,8,86,38,30,0.06,0.06,7.9
+Talal Haji,18,Saudi Arabia,Al-Riyadh,Saudi Pro League,CF,1200,5,2,18,16,74,8,6,0.38,0.15,9.73
+Abbas Al-Hassan,21,Saudi Arabia,Al-Nassr,Saudi Pro League,CM,1400,2,3,8,12,84,32,24,0.13,0.19,7.67
+Julian Hall,17,USA,NY Red Bulls,MLS,CF,900,4,2,14,18,75,6,4,0.4,0.2,10.65
+Peyton Miller,17,USA,New England,MLS,LB,1300,1,4,6,22,81,30,22,0.07,0.28,10.51
+Noah Allen,21,USA,Inter Miami,MLS,LB,1800,1,3,6,18,82,34,24,0.05,0.15,7.85
+Mads Hansen,19,Denmark,Nordsjaelland,Danish SL,RW,1800,7,6,26,40,79,12,8,0.35,0.3,12.1
+Lucas Hey,22,Denmark,Nordsjaelland,Danish SL,CB,2000,2,1,8,10,87,44,34,0.09,0.05,6.71
+Konstantinos Karetsas,17,Greece,Genk,Belgian Pro League,AM,1500,5,6,20,34,81,10,8,0.3,0.36,12.57
+Joel Ordonez,21,Ecuador,Club Brugge,Belgian Pro League,CB,2200,2,1,8,10,88,48,36,0.08,0.04,7.23
+Chemsdine Talbi,20,Morocco,Club Brugge,Belgian Pro League,RW,1900,8,5,30,44,79,12,8,0.38,0.24,11.96
+Lennon Miller,19,Scotland,Celtic,Scottish Premiership,CM,2100,4,6,18,22,84,40,28,0.17,0.26,9.93
+James Wilson,18,Scotland,Hearts,Scottish Premiership,CF,1400,7,2,24,14,75,8,6,0.45,0.13,9.76
+Karim Konate,21,Ivory Coast,Salzburg,Austrian Bundesliga,CF,1800,11,3,38,20,77,10,6,0.55,0.15,9.3
+Samson Baidoo,21,Austria,Salzburg,Austrian Bundesliga,CB,1900,2,1,8,10,86,42,32,0.09,0.05,7.18`;
 
 // parse csv
 function parseData() {
@@ -159,9 +213,25 @@ function getLeagueFlag(league) {
         "MLS": "🇺🇸",
         "Championship": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
         "Danish SL": "🇩🇰",
-        "Saudi Pro League": "🇸🇦"
+        "Saudi Pro League": "🇸🇦",
+        "Belgian Pro League": "🇧🇪",
+        "Scottish Premiership": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
+        "Austrian Bundesliga": "🇦🇹"
     };
     return flags[league] || "🌍";
+}
+
+function esc(s) {
+    return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function initials(name) {
+    var parts = String(name).split(" ");
+    var out = "";
+    for (var i = 0; i < parts.length && out.length < 2; i++) {
+        if (parts[i].length) out += parts[i][0].toUpperCase();
+    }
+    return out || "•";
 }
 
 function fillLeagues() {
@@ -223,25 +293,28 @@ function updateSummary() {
         if (leagues.indexOf(players[i].League) === -1) leagues.push(players[i].League);
     }
     document.getElementById("leagueCount").textContent = leagues.length;
+    var nav = document.getElementById("navCount");
+    if (nav) nav.textContent = players.length + " prospects";
 }
 
 function renderTop3() {
-    var medals = ["🥇", "🥈", "🥉"];
+    var ribbons = ["No. 1", "No. 2", "No. 3"];
     var html = "";
     var top = playersByScore.length ? playersByScore : players;
     for (var i = 0; i < 3 && i < top.length; i++) {
         var p = top[i];
         var flag = getLeagueFlag(p.League);
-        html += '<div class="top-card">';
-        html += '<div class="medal">' + medals[i] + '</div>';
-        html += '<div class="top-name">' + p.Name + '</div>';
-        html += '<div class="top-club">' + flag + ' ' + p.Club + ' | ' + p.Position + ' | Age ' + p.Age + '</div>';
+        html += '<div class="top-card rank-' + (i + 1) + '">';
+        html += '<span class="rank-ribbon">' + ribbons[i] + '</span>';
+        html += '<div class="avatar">' + esc(initials(p.Name)) + '</div>';
+        html += '<div class="top-name">' + esc(p.Name) + '</div>';
+        html += '<div class="top-club">' + flag + ' ' + esc(p.Club) + ' &middot; ' + esc(p.Position) + ' &middot; Age ' + p.Age + '</div>';
         html += '<div class="top-score">' + p.FutureStarScore + '</div>';
         html += '<div class="top-score-label">Future Star Score</div>';
         html += '<div class="top-stats">';
-        html += '<span>⚽ ' + p.Goals + '</span>';
-        html += '<span>🎯 ' + p.Assists + '</span>';
-        html += '<span>📊 ' + p.GoalsPer90 + '/90</span>';
+        html += '<span>' + p.Goals + '<small>Goals</small></span>';
+        html += '<span>' + p.Assists + '<small>Assists</small></span>';
+        html += '<span>' + p.GoalsPer90 + '<small>G/90</small></span>';
         html += '</div></div>';
     }
     document.getElementById("top3Area").innerHTML = html;
@@ -260,12 +333,13 @@ function renderCards(list) {
         for (var j = 0; j < playersByScore.length; j++) {
             if (playersByScore[j].Name === p.Name && playersByScore[j].Club === p.Club) { rank = j + 1; break; }
         }
-        html += '<div class="card">';
-        html += '<div class="card-top"><span class="card-rank">' + rank + '</span>';
-        html += '<span class="card-pos ' + cat + '">' + p.Position + '</span></div>';
-        html += '<div class="card-name">' + p.Name + '</div>';
-        html += '<div class="card-meta">' + flag + ' ' + p.Club + ' · ' + p.League + ' · Age ' + p.Age + '</div>';
-        html += '<div class="card-score-row"><span class="card-score-label">⭐ Star Score</span>';
+        html += '<div class="card pos-' + cat + '">';
+        html += '<div class="card-top"><span class="card-rank">#' + rank + '</span>';
+        html += '<span class="card-pos ' + cat + '">' + esc(p.Position) + '</span></div>';
+        html += '<div class="card-id"><div class="avatar">' + esc(initials(p.Name)) + '</div>';
+        html += '<div><div class="card-name">' + esc(p.Name) + '</div>';
+        html += '<div class="card-meta">' + flag + ' ' + esc(p.Club) + ' &middot; Age ' + p.Age + '<br>' + esc(p.League) + '</div></div></div>';
+        html += '<div class="card-score-row"><span class="card-score-label">Star Score</span>';
         html += '<span class="card-score-num">' + p.FutureStarScore + '</span></div>';
         html += '<div class="card-stats">';
         html += '<div><strong>' + p.Goals + '</strong><span>Goals</span></div>';
@@ -295,9 +369,11 @@ function renderTable(list) {
         for (var j = 0; j < cols.length; j++) {
             var val = list[i][cols[j]];
             if (cols[j] === "FutureStarScore") {
-                bodyHtml += '<td style="font-weight:700;color:#4caf50">' + val + '</td>';
+                bodyHtml += '<td class="score">' + val + '</td>';
             } else if (cols[j] === "League") {
-                bodyHtml += '<td>' + getLeagueFlag(val) + ' ' + val + '</td>';
+                bodyHtml += '<td>' + getLeagueFlag(val) + ' ' + esc(val) + '</td>';
+            } else if (cols[j] === "Name" || cols[j] === "Club" || cols[j] === "Nationality") {
+                bodyHtml += "<td>" + esc(val) + "</td>";
             } else {
                 bodyHtml += "<td>" + val + "</td>";
             }

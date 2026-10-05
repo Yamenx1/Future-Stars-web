@@ -4,106 +4,144 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Future Stars: discover under-24 soccer talents ranked by Future Star Score across 12 leagues.">
-    <meta name="theme-color" content="#0f1a0f">
+    <meta name="description" content="Future Stars: discover under-24 soccer talents ranked by Future Star Score across 15 leagues.">
+    <meta name="theme-color" content="#070b16">
     <title>Future Stars - Soccer Player Analysis</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%BD%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
+    <div class="bg-orbs" aria-hidden="true"><span class="orb orb-a"></span><span class="orb orb-b"></span><span class="orb orb-c"></span></div>
 
-    <header>
-        <div class="header-inner">
-            <h1>⚽ Future Stars</h1>
-            <p>Predicting the next big soccer players (U24) | 2025-26 Season</p>
-            <p class="header-badge">96 players &middot; 12 leagues &middot; ranked by Future Star Score</p>
+    <nav class="nav">
+        <div class="nav-inner">
+            <a class="brand" href="#top">
+                <span class="brand-mark">FS</span>
+                <span class="brand-text">Future Stars</span>
+            </a>
+            <div class="nav-links">
+                <a href="#top3">Top 3</a>
+                <a href="#players">Players</a>
+                <a href="#data">Data</a>
+            </div>
+            <span class="live-pill"><span class="live-dot"></span><span id="navCount">150 prospects</span></span>
+        </div>
+    </nav>
+
+    <header class="hero" id="top">
+        <div class="hero-inner">
+            <p class="eyebrow">U24 scouting &middot; 2025-26 season &middot; Java + R + JS</p>
+            <h1>Find football's <span class="grad">next superstars</span> before everyone else.</h1>
+            <p class="lede">150 young players across 15 leagues, scored by goals, assists, dribbles and pass accuracy &mdash; with an age bonus for the youngest talents.</p>
+            <div class="hero-cta">
+                <a class="btn btn-primary" href="#top3">View top 3</a>
+                <a class="btn btn-ghost" href="#players">Browse players</a>
+            </div>
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <strong id="totalPlayers">&ndash;</strong>
+                    <span>Players tracked</span>
+                </div>
+                <div class="stat-card">
+                    <strong id="avgAge">&ndash;</strong>
+                    <span>Average age</span>
+                </div>
+                <div class="stat-card">
+                    <strong id="topScore">&ndash;</strong>
+                    <span>Top star score</span>
+                </div>
+                <div class="stat-card">
+                    <strong id="leagueCount">&ndash;</strong>
+                    <span>Leagues covered</span>
+                </div>
+            </div>
         </div>
     </header>
 
     <main id="main">
-        <!-- stats summary -->
-        <div class="summary-row">
-            <div class="summary-box">
-                <strong id="totalPlayers">–</strong>
-                <span>Players</span>
-            </div>
-            <div class="summary-box">
-                <strong id="avgAge">–</strong>
-                <span>Avg Age</span>
-            </div>
-            <div class="summary-box">
-                <strong id="topScore">–</strong>
-                <span>Top Score</span>
-            </div>
-            <div class="summary-box">
-                <strong id="leagueCount">–</strong>
-                <span>Leagues</span>
-            </div>
-        </div>
-
-        <!-- filters -->
-        <form class="filters" id="filterForm" onsubmit="return false;">
-            <div class="filter-field">
-                <label for="positionFilter">Position</label>
-                <select id="positionFilter" onchange="applyFilters()">
-                    <option value="all">All Positions</option>
-                    <option value="forward">Forwards</option>
-                    <option value="midfielder">Midfielders</option>
-                    <option value="defender">Defenders</option>
-                </select>
-            </div>
-            <div class="filter-field">
-                <label for="leagueFilter">League</label>
-                <select id="leagueFilter" onchange="applyFilters()">
-                    <option value="all">All Leagues</option>
-                </select>
-            </div>
-            <div class="filter-field filter-search">
-                <label for="searchBox">Search</label>
-                <input type="search" id="searchBox" placeholder="Search player, club, or league..." oninput="applyFilters()" autocomplete="off">
-            </div>
-            <div class="filter-actions">
-                <button type="button" class="btn-clear" onclick="clearFilters()">Clear</button>
-            </div>
-        </form>
-        <p class="result-count" id="resultCount" aria-live="polite"></p>
+        <!-- controls -->
+        <section class="panel controls" aria-label="Player filters">
+            <form id="filterForm" onsubmit="return false;">
+                <div class="filter-field">
+                    <label for="positionFilter">Position</label>
+                    <select id="positionFilter" onchange="applyFilters()">
+                        <option value="all">All positions</option>
+                        <option value="forward">Forwards</option>
+                        <option value="midfielder">Midfielders</option>
+                        <option value="defender">Defenders</option>
+                    </select>
+                </div>
+                <div class="filter-field">
+                    <label for="leagueFilter">League</label>
+                    <select id="leagueFilter" onchange="applyFilters()">
+                        <option value="all">All leagues</option>
+                    </select>
+                </div>
+                <div class="filter-field filter-search">
+                    <label for="searchBox">Search</label>
+                    <input type="search" id="searchBox" placeholder="Search player, club, or league..." oninput="applyFilters()" autocomplete="off">
+                </div>
+                <div class="filter-actions">
+                    <button type="button" class="btn btn-ghost btn-sm" onclick="clearFilters()">Clear</button>
+                </div>
+            </form>
+            <p class="result-count" id="resultCount" aria-live="polite"></p>
+        </section>
 
         <!-- top 3 -->
-        <h2 class="section-title">🏆 Top 3 Future Stars</h2>
-        <div class="top3" id="top3Area">
-            <div class="top-card loading">Loading...</div>
-            <div class="top-card loading">Loading...</div>
-            <div class="top-card loading">Loading...</div>
-        </div>
+        <section id="top3" aria-label="Top 3 future stars">
+            <div class="section-head">
+                <h2>Top 3 future stars</h2>
+                <p>Highest Future Star Scores in the database right now.</p>
+            </div>
+            <div class="top3" id="top3Area">
+                <div class="top-card loading">Loading...</div>
+                <div class="top-card loading">Loading...</div>
+                <div class="top-card loading">Loading...</div>
+            </div>
+        </section>
 
         <!-- player cards -->
-        <h2 class="section-title">📋 All Players (ranked by Future Star Score)</h2>
-        <div class="cards" id="cardsArea">
-            <div class="no-results">Loading players...</div>
-        </div>
+        <section id="players" aria-label="All players">
+            <div class="section-head">
+                <h2>All players</h2>
+                <p>Ranked by Future Star Score. Filter or search to scout.</p>
+            </div>
+            <div class="cards" id="cardsArea">
+                <div class="no-results">Loading players...</div>
+            </div>
+        </section>
 
         <!-- table -->
-        <h2 class="section-title">📊 Data Table</h2>
-        <p class="table-hint">Tip: click a column header (or press Enter on it) to sort.</p>
-        <div class="table-container">
-            <table>
-                <caption class="visually-hidden">Young soccer players ranked by Future Star Score</caption>
-                <thead>
-                    <tr id="tHead"></tr>
-                </thead>
-                <tbody id="tBody"></tbody>
-            </table>
-        </div>
+        <section id="data" aria-label="Data table">
+            <div class="section-head">
+                <h2>Data table</h2>
+                <p>Tip: click a column header (or press Enter on it) to sort.</p>
+            </div>
+            <div class="panel table-panel">
+                <div class="table-container">
+                    <table>
+                        <caption class="visually-hidden">Young soccer players ranked by Future Star Score</caption>
+                        <thead>
+                            <tr id="tHead"></tr>
+                        </thead>
+                        <tbody id="tBody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
     </main>
 
     <footer>
-        <p>Future Stars Project &mdash; Java (preprocessing) + R (analysis) + JavaScript (web) | <span id="year">2025-26</span>
-        </p>
+        <div class="foot-inner">
+            <p><strong>Future Stars</strong> &mdash; Java preprocessing &middot; R analysis &middot; JS dashboard</p>
+            <p class="foot-muted">150 prospects &middot; 15 leagues &middot; <span id="year">2026 Season</span></p>
+        </div>
     </footer>
 
     <noscript>
