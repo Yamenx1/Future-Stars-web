@@ -2,15 +2,17 @@
  * Future Stars - app.js
  * loads player data and renders cards + table
  * data is from the 2025-26 season, processed by our Java program
- * 96 players from 13+ leagues
+ * 96 players from 12 leagues
  */
 
 var players = [];
+var playersByScore = [];
 var sortCol = null;
 var sortDir = "desc";
 
 // player data (output from FutureStarPreprocessor.java - 96 players, all under 24)
-var csvData = `Name,Age,Nationality,Club,League,Position,MinutesPlayed,Goals,Assists,ShotsOnTarget,DribblesCompleted,PassAccuracy,Tackles,Interceptions,GoalsPer90,AssistsPer90,FutureStarScore
+var csvData = `
+Name,Age,Nationality,Club,League,Position,MinutesPlayed,Goals,Assists,ShotsOnTarget,DribblesCompleted,PassAccuracy,Tackles,Interceptions,GoalsPer90,AssistsPer90,FutureStarScore
 Lamine Yamal,18,Spain,Barcelona,La Liga,RW,2900,20,24,82,92,84,20,12,0.62,0.74,19.75
 Jude Bellingham,22,England,Real Madrid,La Liga,AM,2800,18,9,66,50,86,32,18,0.58,0.29,12.61
 Florian Wirtz,22,Germany,Liverpool,Premier League,AM,2600,14,12,54,58,88,26,16,0.48,0.42,13.48
@@ -94,7 +96,6 @@ Francisco Conceicao,22,Portugal,Juventus,Serie A,RW,1900,6,8,24,46,81,12,10,0.28
 Gabri Veiga,23,Spain,Al-Ahli,Saudi Pro League,CM,2400,10,7,38,26,85,40,28,0.38,0.26,9.0
 Amine Gouiri,24,France,Rennes,Ligue 1,AM,2200,9,7,34,28,83,18,14,0.37,0.29,8.63
 Youssef En-Nesyri,24,Morocco,Fenerbahce,Super Lig,CF,2200,14,4,48,16,77,14,10,0.57,0.16,7.5
-Cher Ndour,20,Spain,Besiktas,Super Lig,CM,1800,3,5,12,16,84,38,26,0.15,0.25,8.75
 Brenden Aaronson,24,USA,Union Berlin,Bundesliga,AM,2000,6,7,22,24,82,20,14,0.27,0.32,7.94
 Caden Clark,22,USA,New York Red Bulls,MLS,CM,1600,4,6,14,18,83,28,20,0.23,0.34,8.3
 Thiago Almada,24,Argentina,Lyon,Ligue 1,AM,2100,7,9,28,38,84,16,12,0.3,0.39,9.67
@@ -107,7 +108,7 @@ Oscar Mingueza,24,Spain,Celta Vigo,La Liga,RB,2200,3,6,10,14,84,40,30,0.12,0.25,
 Cher Ndour,20,Italy,Besiktas,Super Lig,CM,1800,3,4,12,14,84,36,24,0.15,0.2,8.45
 Ben Doak,19,Scotland,Middlesbrough,Championship,RW,1600,5,6,18,34,79,10,8,0.28,0.34,11.37
 Mohamed Simakan,24,France,RB Leipzig,Bundesliga,CB,2200,1,1,6,6,87,52,38,0.04,0.04,5.15
-Waheeb,22,Saudi Arabia,Al-Hilal,Saudi Pro League,RW,2100,8,6,30,28,83,20,14,0.34,0.26,9.45`;
+Waheeb,22,Saudi Arabia,Al-Hilal,Saudi Pro League,RW,2100,8,6,30,28,83,20,14,0.34,0.26,9.49`;
 
 // parse csv
 function parseData() {
@@ -115,15 +116,18 @@ function parseData() {
     var headers = lines[0].split(",");
     players = [];
     for (var i = 1; i < lines.length; i++) {
+        if (!lines[i].trim()) continue;
         var vals = lines[i].split(",");
         var obj = {};
         for (var j = 0; j < headers.length; j++) {
-            var v = vals[j].trim();
-            obj[headers[j].trim()] = isNaN(v) ? v : parseFloat(v);
+            var raw = (vals[j] || "").trim();
+            var num = Number(raw);
+            obj[headers[j].trim()] = (raw !== "" && !isNaN(num)) ? num : raw;
         }
         players.push(obj);
     }
     players.sort(function (a, b) { return b.FutureStarScore - a.FutureStarScore; });
+    playersByScore = players.slice();
 }
 
 function getPosCat(pos) {
@@ -178,14 +182,17 @@ function fillLeagues() {
 function applyFilters() {
     var pos = document.getElementById("positionFilter").value;
     var league = document.getElementById("leagueFilter").value;
-    var search = document.getElementById("searchBox").value.toLowerCase();
+    var search = document.getElementById("searchBox").value.toLowerCase().trim();
 
     var filtered = [];
     for (var i = 0; i < players.length; i++) {
         var p = players[i];
         if (pos !== "all" && getPosName(getPosCat(p.Position)) !== pos) continue;
         if (league !== "all" && p.League !== league) continue;
-        if (search && p.Name.toLowerCase().indexOf(search) === -1 && p.Club.toLowerCase().indexOf(search) === -1) continue;
+        if (search) {
+            var hay = (p.Name + " " + p.Club + " " + p.League).toLowerCase();
+            if (hay.indexOf(search) === -1) continue;
+        }
         filtered.push(p);
     }
     renderCards(filtered);
@@ -197,7 +204,7 @@ function updateSummary() {
     var totalAge = 0;
     for (var i = 0; i < players.length; i++) totalAge += players[i].Age;
     document.getElementById("avgAge").textContent = (totalAge / players.length).toFixed(1);
-    document.getElementById("topScore").textContent = players[0].FutureStarScore;
+    document.getElementById("topScore").textContent = playersByScore.length ? playersByScore[0].FutureStarScore : 0;
     var leagues = [];
     for (var i = 0; i < players.length; i++) {
         if (leagues.indexOf(players[i].League) === -1) leagues.push(players[i].League);
@@ -208,8 +215,9 @@ function updateSummary() {
 function renderTop3() {
     var medals = ["🥇", "🥈", "🥉"];
     var html = "";
-    for (var i = 0; i < 3 && i < players.length; i++) {
-        var p = players[i];
+    var top = playersByScore.length ? playersByScore : players;
+    for (var i = 0; i < 3 && i < top.length; i++) {
+        var p = top[i];
         var flag = getLeagueFlag(p.League);
         html += '<div class="top-card">';
         html += '<div class="medal">' + medals[i] + '</div>';
@@ -236,8 +244,8 @@ function renderCards(list) {
         var cat = getPosCat(p.Position);
         var flag = getLeagueFlag(p.League);
         var rank = 0;
-        for (var j = 0; j < players.length; j++) {
-            if (players[j].Name === p.Name) { rank = j + 1; break; }
+        for (var j = 0; j < playersByScore.length; j++) {
+            if (playersByScore[j].Name === p.Name && playersByScore[j].Club === p.Club) { rank = j + 1; break; }
         }
         html += '<div class="card">';
         html += '<div class="card-top"><span class="card-rank">' + rank + '</span>';
