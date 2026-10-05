@@ -22,8 +22,25 @@ const RAW_PATH = new URL("../data/raw_young_players.csv", import.meta.url);
 
 let requestCount = 0;
 
-// Our League label -> { names seen in API, country } for matching the right
-// competition inside a squad's statistics array.
+// Our League label -> API-Football league id (used to scope squad calls so big
+// squads fit inside the free plan's page cap).
+const LEAGUE_IDS = {
+  "Premier League": 39,
+  "La Liga": 140,
+  "Bundesliga": 78,
+  "Serie A": 135,
+  "Ligue 1": 61,
+  "Eredivisie": 88,
+  "Liga Portugal": 94,
+  "Championship": 40,
+  "Super Lig": 203,
+  "Saudi Pro League": 307,
+  "MLS": 253,
+  "Danish SL": 119,
+  "Belgian Pro League": 144,
+  "Scottish Premiership": 179,
+  "Austrian Bundesliga": 218,
+};
 const LEAGUE_MATCH = {
   "Premier League": { names: ["premier league"], country: "england" },
   "La Liga": { names: ["la liga", "primera division"], country: "spain" },
@@ -65,16 +82,36 @@ function pickStatsEntry(statsArr, ourLeague) {
   return statsArr.find((s) => s && s.league && leagueMatches(ourLeague, s.league.name, s.league.country)) || null;
 }
 
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+function namesMatch(apiName, ourName) {
+  const a = norm(apiName);
+  const b = norm(ourName);
+  return a === b || a.startsWith(b + " ") || b.startsWith(a + " ");
+}
+
 async function api(path) {
   if (requestCount >= MAX_REQUESTS) throw new Error("request budget exhausted (" + MAX_REQUESTS + ")");
-  requestCount++;
-  const res = await fetch(API + path, { headers: { "x-apisports-key": KEY } });
-  if (res.status === 429) throw new Error("rate limited (429) after " + requestCount + " requests");
-  const json = await res.json();
-  if (json.errors && Object.keys(json.errors).length) {
-    throw new Error("API error: " + JSON.stringify(json.errors).slice(0, 200));
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    if (requestCount > 0) await sleep(6500); // free plan: 10 req/min
+    requestCount++;
+    const res = await fetch(API + path, { headers: { "x-apisports-key": KEY } });
+    if (res.status === 429) {
+      console.log("  rate limited, waiting 65s (attempt " + attempt + ")...");
+      await sleep(65000);
+      continue;
+    }
+    const json = await res.json();
+    if (json.errors && Object.keys(json.errors).length) {
+      throw new Error("API error: " + JSON.stringify(json.errors).slice(0, 200));
+    }
+    return json;
   }
-  return json;
+  throw new Error("rate limited (429) after " + requestCount + " requests");
+}
+
+function isQuotaError(e) {
+  return /budget|rate limited|429/i.test(String((e && e.message) || e));
 }
 
 function loadMap() {
@@ -134,25 +171,47 @@ async function main() {
     try {
       teamId = await resolveTeamId(map, club);
     } catch (e) {
-      console.log("STOP [" + club + "]: " + e.message);
-      break;
+      console.log((isQuotaError(e) ? "STOP" : "SKIP") + " [" + club + "]: " + e.message);
+      if (isQuotaError(e)) break;
+      continue;
     }
     if (!teamId) {
       console.log("SKIP club (no team id): " + club);
       continue;
     }
+    console.log("CLUB " + club + " -> " + (map.teams[club] && map.teams[club].name) + " (id " + teamId + ")");
     let squad;
     try {
-      const json = await api("/players/statistics?team=" + teamId + "&season=" + SEASON);
-      squad = json.response || [];
+      // NOTE: the squad-stats route is /players?team=&season=[&league=] (paginated).
+      // There is no /players/statistics endpoint. League scoping keeps big squads
+      // inside the free plan's page cap (max page = 3).
+      squad = [];
+      const leaguesHere = [...new Set(rows.filter((r) => r[3] === club).map((r) => r[4]))];
+      for (const lg of leaguesHere) {
+        const lid = LEAGUE_IDS[lg];
+        const base = "/players?team=" + teamId + "&season=" + SEASON + (lid ? "&league=" + lid : "");
+        for (let page = 1; page <= 3; page++) {
+          let json;
+          try {
+            json = await api(base + "&page=" + page);
+          } catch (e) {
+            console.log("  [" + club + "/" + lg + " p" + page + " skipped]: " + e.message);
+            break;
+          }
+          squad = squad.concat(json.response || []);
+          const paging = json.paging || { current: 1, total: 1 };
+          if (paging.current >= paging.total) break;
+        }
+      }
     } catch (e) {
       console.log("STOP [" + club + " squad]: " + e.message);
       break;
     }
-    const byName = new Map(squad.map((e) => [norm(e.player && e.player.name), e]));
+    const byName = squad.map((e) => e);
+    const findEntry = (name) => byName.find((e) => namesMatch(e.player && e.player.name, name)) || null;
     for (const fields of rows) {
       if (fields[3] !== club) continue;
-      const entry = byName.get(norm(fields[0]));
+      const entry = findEntry(fields[0]);
       if (!entry) {
         unmatched.push(fields[0] + " (" + club + ")");
         continue;
@@ -169,6 +228,8 @@ async function main() {
       refreshed++;
     }
     writeFileSync(MAP_PATH, JSON.stringify(map, null, 2) + "\n", "utf8");
+    // Save progress after every club so kills/quotas never lose work.
+    writeFileSync(RAW_PATH, header + "\n" + rows.map((r) => r.join(",")).join("\n") + "\n", "utf8");
   }
 
   writeFileSync(RAW_PATH, header + "\n" + rows.map((r) => r.join(",")).join("\n") + "\n", "utf8");
@@ -196,6 +257,9 @@ function selfTest() {
   };
   assert(norm("Myles Lewis-Skelly") === "myles lewisskelly", "hyphen/apostrophe normalization");
   assert(norm("Nico OReilly") === norm("Nico O'Reilly"), "alias-insensitive names");
+  assert(namesMatch("Pau Cubarsi Paredes", "Pau Cubarsi"), "middle-name suffix match");
+  assert(namesMatch("Jude Bellingham", "Jude Bellingham"), "exact match");
+  assert(!namesMatch("Marc Bernal", "Marc Casado"), "different players do not match");
   assert(leagueMatches("Liga Portugal", "Primeira Liga", "Portugal"), "Primeira Liga alias");
   assert(leagueMatches("MLS", "Major League Soccer", "USA"), "MLS alias");
   assert(leagueMatches("Saudi Pro League", "Pro League", "Saudi-Arabia"), "Saudi Pro League alias");

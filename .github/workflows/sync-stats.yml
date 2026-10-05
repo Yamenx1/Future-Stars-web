@@ -31,7 +31,8 @@ jobs:
       - name: Pull live stats (needs APISPORTS_KEY repo secret)
         env:
           APISPORTS_KEY: ${{ secrets.APISPORTS_KEY }}
-          SEASON: "2025"
+          # Free plan can only see seasons 2022-2024. Paid plans: use current season.
+          SEASON: "2024"
           MAX_REQUESTS: ${{ inputs.max_requests || '90' }}
           CLUBS: ${{ inputs.clubs || '' }}
         run: node scripts/sync-player-stats.mjs

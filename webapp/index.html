@@ -5,18 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Future Stars: discover under-22 soccer talents ranked by Future Star Score across 15 leagues.">
-    <meta name="theme-color" content="#070b16">
+    <meta name="theme-color" content="#0a130d">
     <title>Future Stars - Soccer Player Analysis</title>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%E2%9A%BD%3C/text%3E%3C/svg%3E">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <div class="bg-orbs" aria-hidden="true"><span class="orb orb-a"></span><span class="orb orb-b"></span><span class="orb orb-c"></span></div>
 
     <nav class="nav">
         <div class="nav-inner">
@@ -36,12 +35,12 @@
 
     <header class="hero" id="top">
         <div class="hero-inner">
-            <p class="eyebrow">U22 scouting &middot; 2025-26 season &middot; Java + R + JS</p>
-            <h1>Find football's <span class="grad">next superstars</span> before everyone else.</h1>
-            <p class="lede">150 young players (22 and under) across 15 leagues, scored by goals, assists, dribbles and pass accuracy &mdash; with an age bonus for the youngest talents.</p>
+            <p class="eyebrow">Scouting department &middot; U22 &middot; 2025-26 season</p>
+            <h1>Future <span class="stroke">Stars</span></h1>
+            <p class="lede">Every prospect 22 and under, ranked by the Future Star Score: goals, assists, dribbles and passing, with extra credit for youth. Built from Java data prep, R analysis and live API-Sports data.</p>
             <div class="hero-cta">
-                <a class="btn btn-primary" href="#top3">View top 3</a>
-                <a class="btn btn-ghost" href="#players">Browse players</a>
+                <a class="btn btn-primary" href="#top3">Top of the table</a>
+                <a class="btn btn-ghost" href="#players">Full squad list</a>
             </div>
             <div class="stat-grid">
                 <div class="stat-card">
@@ -92,6 +91,7 @@
                 </div>
             </form>
             <p class="result-count" id="resultCount" aria-live="polite"></p>
+            <p class="data-note">Compiled from API-Sports 2024 season data, blended with curated 2025-26 squad values where the API has no record.</p>
         </section>
 
         <!-- top 3 -->

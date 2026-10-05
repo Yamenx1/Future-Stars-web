@@ -1,0 +1,101 @@
+{
+  "teams": {
+    "Barcelona": {
+      "id": 529,
+      "name": "Barcelona"
+    },
+    "Real Madrid": {
+      "id": 541,
+      "name": "Real Madrid"
+    },
+    "Liverpool": {
+      "id": 40,
+      "name": "Liverpool"
+    },
+    "Bayern Munich": {
+      "id": 1860,
+      "name": "Bayern Munich W"
+    },
+    "PSG": {
+      "id": 4234,
+      "name": "PSGC Ciamis"
+    },
+    "Man United": {
+      "id": 2189,
+      "name": "Cwmamman United FC"
+    },
+    "Napoli": {
+      "id": 492,
+      "name": "Napoli"
+    },
+    "Man City": {
+      "id": 13880,
+      "name": "Techiman City"
+    },
+    "Arsenal": {
+      "id": 42,
+      "name": "Arsenal"
+    },
+    "Roma": {
+      "id": 22590,
+      "name": "Roma"
+    },
+    "PSV": {
+      "id": 197,
+      "name": "PSV Eindhoven"
+    },
+    "RB Leipzig": {
+      "id": 173,
+      "name": "RB Leipzig"
+    },
+    "Juventus": {
+      "id": 496,
+      "name": "Juventus"
+    },
+    "Ajax": {
+      "id": 194,
+      "name": "Ajax"
+    },
+    "Sporting CP": {
+      "id": 228,
+      "name": "Sporting CP"
+    },
+    "Bologna": {
+      "id": 500,
+      "name": "Bologna"
+    },
+    "Dortmund": {
+      "id": 165,
+      "name": "Borussia Dortmund"
+    },
+    "Sevilla": {
+      "id": 536,
+      "name": "Sevilla"
+    },
+    "Nice": {
+      "id": 84,
+      "name": "Nice"
+    },
+    "Crystal Palace": {
+      "id": 52,
+      "name": "Crystal Palace"
+    },
+    "Chelsea": {
+      "id": 49,
+      "name": "Chelsea"
+    }
+  },
+  "players": {
+    "Lamine Yamal|Barcelona": 386828,
+    "Gavi|Barcelona": 296667,
+    "Marc Bernal|Barcelona": 433396,
+    "Marc Casado|Barcelona": 329728,
+    "Dani Rodriguez|Barcelona": 371912,
+    "Endrick|Real Madrid": 377122,
+    "Raul Asencio|Real Madrid": 341640,
+    "Pau Cubarsi|Barcelona": 396623,
+    "Rayane Bounida|Ajax": 396202,
+    "Joao Simoes|Sporting CP": 400509,
+    "Afonso Moreira|Sporting CP": 345388
+  }
+}
