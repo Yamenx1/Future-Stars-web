@@ -58,4 +58,12 @@ Rscript r-analysis/future_star_analysis.R
 Visualizations will be written to the `output/` folder.
 
 ### 3. Web Dashboard
-Open `webapp/index.html` in any modern web browser to view the interactive player dashboard. 
+Open `webapp/index.html` in any modern web browser to view the interactive player dashboard.
+
+### 4. Live Stats Sync (API-Sports, optional)
+`scripts/sync-player-stats.mjs` refreshes `data/raw_young_players.csv` from API-Football v3
+(one request per club, ID mappings cached in `scripts/api-map.json`), then the Java
+preprocessor recomputes scores and `scripts/embed-csv.mjs` re-embeds the data into the site.
+Runs weekly via `.github/workflows/sync-stats.yml`, or manually from the Actions tab.
+Needs an `APISPORTS_KEY` repo secret (Settings → Secrets → Actions). Syntax check and
+offline tests: `node scripts/sync-player-stats.mjs --self-test` (spends zero quota). 

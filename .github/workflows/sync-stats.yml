@@ -1,0 +1,55 @@
+name: Sync player stats (API-Sports)
+
+on:
+  schedule:
+    # Weekly on Wednesdays 03:00 UTC — keeps quota use low.
+    - cron: "0 3 * * 3"
+  workflow_dispatch:
+    inputs:
+      clubs:
+        description: 'Only sync these clubs (comma-separated, blank = all)'
+        required: false
+        default: ''
+      max_requests:
+        description: 'API request budget for this run'
+        required: false
+        default: '90'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Pull live stats (needs APISPORTS_KEY repo secret)
+        env:
+          APISPORTS_KEY: ${{ secrets.APISPORTS_KEY }}
+          SEASON: "2025"
+          MAX_REQUESTS: ${{ inputs.max_requests || '90' }}
+          CLUBS: ${{ inputs.clubs || '' }}
+        run: node scripts/sync-player-stats.mjs
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Recompute scores
+        run: |
+          javac -d build/classes -sourcepath src src/budgetstar/FutureStarPreprocessor.java
+          java -cp build/classes budgetstar.FutureStarPreprocessor
+      - name: Re-embed data into webapp
+        run: node scripts/embed-csv.mjs && node --check webapp/app.js
+      - name: Commit updates
+        run: |
+          git config user.name "stats-bot"
+          git config user.email "stats-bot@users.noreply.github.com"
+          git add data/raw_young_players.csv output/cleaned_future_stars.csv scripts/api-map.json webapp/app.js
+          git diff --cached --quiet || git commit -m "Weekly player stats sync (API-Sports)"
+          git push
