@@ -7,6 +7,7 @@
 
 var players = [];
 var playersByScore = [];
+var playerPhotos = {"Lamine Yamal|Barcelona":386828,"Gavi|Barcelona":296667,"Marc Bernal|Barcelona":433396,"Marc Casado|Barcelona":329728,"Dani Rodriguez|Barcelona":371912,"Endrick|Real Madrid":377122,"Raul Asencio|Real Madrid":341640,"Pau Cubarsi|Barcelona":396623,"Rayane Bounida|Ajax":396202,"Joao Simoes|Sporting CP":400509,"Afonso Moreira|Sporting CP":345388};
 var sortCol = null;
 var sortDir = "desc";
 
@@ -121,6 +122,38 @@ Lennon Miller,19,Scotland,Celtic,Scottish Premiership,CM,2100,4,6,18,22,84,40,28
 James Wilson,18,Scotland,Hearts,Scottish Premiership,CF,1400,7,2,24,14,75,8,6,0.45,0.13,8.76
 Karim Konate,21,Ivory Coast,Salzburg,Austrian Bundesliga,CF,1800,11,3,38,20,77,10,6,0.55,0.15,8.3
 Samson Baidoo,21,Austria,Salzburg,Austrian Bundesliga,CB,1900,2,1,8,10,86,42,32,0.09,0.05,6.18
+Ethan Wheatley,19,England,Man United,Premier League,CF,700,2,1,8,10,74,6,4,0.26,0.13,7.23
+Godwill Kukonki,17,England,Man United,Premier League,CB,600,0,0,2,4,85,18,14,0.0,0.0,7.15
+Trey Nyoni,18,England,Liverpool,Premier League,CM,700,0,1,2,8,86,18,14,0.0,0.13,7.36
+Amara Nallo,18,England,Liverpool,Premier League,CB,600,0,0,2,4,87,20,16,0.0,0.0,6.75
+Stephen Mfuni,17,England,Man City,Premier League,LB,500,0,1,2,8,82,16,12,0.0,0.18,7.76
+Jan Virgili,19,Spain,Barcelona,La Liga,LW,600,1,1,4,12,78,6,4,0.15,0.15,7.35
+Quim Junyent,18,Spain,Barcelona,La Liga,CM,500,0,1,2,8,85,14,10,0.0,0.18,7.41
+Joan Martinez,18,Spain,Real Madrid,La Liga,CB,500,0,0,2,4,86,16,12,0.0,0.0,6.7
+Chema Andres,20,Spain,Real Madrid,La Liga,CM,600,0,1,2,10,87,20,14,0.0,0.15,6.65
+Hugo Alba,18,Spain,Real Betis,La Liga,AM,500,1,1,4,10,79,6,4,0.18,0.18,7.85
+Wisdom Mike,17,Germany,Bayern Munich,Bundesliga,RW,500,1,1,4,12,77,4,2,0.18,0.18,8.45
+Cassiano Kiala,17,Germany,Leverkusen,Bundesliga,CB,500,0,0,2,4,85,16,12,0.0,0.0,7.15
+Montrell Culbreath,18,Germany,Leverkusen,Bundesliga,LW,500,1,0,4,10,76,4,2,0.18,0.0,7.34
+Diego Sia,18,Italy,AC Milan,Serie A,RW,500,1,0,4,10,76,4,2,0.18,0.0,7.34
+Emanuele Sala,18,Italy,AC Milan,Serie A,CM,500,0,1,2,8,84,14,10,0.0,0.18,7.36
+Lorenzo Venturino,19,Italy,Genoa,Serie A,RW,600,1,1,4,12,77,6,4,0.15,0.15,7.3
+Lucas Michal,20,France,Monaco,Ligue 1,CF,700,2,1,8,12,75,6,4,0.26,0.13,6.98
+Bradel Kiwa,18,France,Monaco,Ligue 1,CB,500,0,0,2,4,85,18,14,0.0,0.0,6.65
+Ayman Aiki,20,France,Lille,Ligue 1,RW,600,1,1,4,14,78,6,4,0.15,0.15,7.05
+Kayden Wolff,18,Netherlands,Ajax,Eredivisie,RW,600,1,1,4,14,78,6,4,0.15,0.15,8.05
+Dies Janse,19,Netherlands,Ajax,Eredivisie,CB,600,0,0,2,6,86,20,16,0.0,0.0,6.4
+Rafael Luis,20,Portugal,Benfica,Liga Portugal,CM,600,0,1,2,8,84,18,14,0.0,0.15,6.3
+Goncalo Oliveira,19,Portugal,Porto,Liga Portugal,CF,600,2,0,8,10,74,6,4,0.3,0.0,7.1
+Oliver Arblaster,21,England,Sheffield United,Championship,CM,1400,2,2,8,14,83,32,24,0.13,0.13,6.69
+Daniel Jebbison,22,England,Sheffield United,Championship,CF,900,3,1,12,12,75,8,6,0.3,0.1,6.05
+Efe Akman,19,Turkey,Galatasaray,Super Lig,CM,700,1,1,4,10,83,20,14,0.13,0.13,7.29
+Musab Al-Juwayr,22,Saudi Arabia,Al-Hilal,Saudi Pro League,CM,1200,2,4,10,14,84,28,20,0.15,0.3,6.65
+Kristian Fletcher,20,USA,DC United,MLS,RW,1100,3,2,12,20,77,8,6,0.25,0.16,7.91
+Villads Nielsen,20,Denmark,Nordsjaelland,Danish SL,CB,1200,1,0,4,8,86,30,22,0.08,0.0,6.33
+Kaye Furo,18,Belgium,Club Brugge,Belgian Pro League,CF,600,2,0,8,10,74,6,4,0.3,0.0,7.6
+Daniel Cummings,20,Scotland,Celtic,Scottish Premiership,CF,700,2,1,8,8,74,6,4,0.26,0.13,6.53
+Oghenetejiri Adejenughure,18,Austria,Salzburg,Austrian Bundesliga,CF,600,2,0,8,10,73,6,4,0.3,0.0,7.55
 Lewis Miley,19,England,Newcastle,Premier League,CM,1500,2,3,8,14,86,32,24,0.12,0.18,7.92
 Mikey Moore,18,England,Tottenham,Premier League,LW,900,2,2,8,20,79,6,4,0.2,0.2,8.95
 Shea Lacey,18,England,Man United,Premier League,RW,700,1,2,6,18,80,6,4,0.13,0.26,8.7
@@ -228,6 +261,18 @@ function initials(name) {
     return out || "•";
 }
 
+function photoUrl(name, club) {
+    var id = playerPhotos[name + "|" + club];
+    if (!id) return null;
+    return "https://media.api-sports.io/football/players/" + id + ".png";
+}
+
+function avatarHtml(name, club) {
+    var url = photoUrl(name, club);
+    var img = url ? '<img src="' + url + '" alt="" loading="lazy" onerror="this.remove()">' : "";
+    return '<div class="avatar">' + esc(initials(name)) + img + '</div>';
+}
+
 function fillLeagues() {
     var leagues = [];
     for (var i = 0; i < players.length; i++) {
@@ -300,7 +345,7 @@ function renderTop3() {
         var flag = getLeagueFlag(p.League);
         html += '<div class="top-card rank-' + (i + 1) + '">';
         html += '<span class="rank-ribbon">' + ribbons[i] + '</span>';
-        html += '<div class="avatar">' + esc(initials(p.Name)) + '</div>';
+        html += avatarHtml(p.Name, p.Club);
         html += '<div class="top-name">' + esc(p.Name) + '</div>';
         html += '<div class="top-club">' + flag + ' ' + esc(p.Club) + ' &middot; ' + esc(p.Position) + ' &middot; Age ' + p.Age + '</div>';
         html += '<div class="top-score">' + p.FutureStarScore + '</div>';
@@ -330,7 +375,7 @@ function renderCards(list) {
         html += '<div class="card pos-' + cat + '">';
         html += '<div class="card-top"><span class="card-rank">#' + rank + '</span>';
         html += '<span class="card-pos ' + cat + '">' + esc(p.Position) + '</span></div>';
-        html += '<div class="card-id"><div class="avatar">' + esc(initials(p.Name)) + '</div>';
+        html += '<div class="card-id">' + avatarHtml(p.Name, p.Club);
         html += '<div><div class="card-name">' + esc(p.Name) + '</div>';
         html += '<div class="card-meta">' + flag + ' ' + esc(p.Club) + ' &middot; Age ' + p.Age + '<br>' + esc(p.League) + '</div></div></div>';
         html += '<div class="card-score-row"><span class="card-score-label">Star Score</span>';

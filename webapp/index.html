@@ -27,7 +27,6 @@
                 <a href="#top3">Top 3</a>
                 <a href="#players">Players</a>
                 <a href="#data">Data</a>
-                <a href="#live">Live</a>
             </div>
             <span class="live-pill"><span class="live-dot"></span><span id="navCount">150 prospects</span></span>
         </div>
@@ -107,28 +106,6 @@
             </div>
         </section>
 
-        <!-- live match center -->
-        <section id="live" aria-label="Live match center">
-            <div class="section-head">
-                <h2>Live match center</h2>
-                <p>Real-time scores and competitions, powered by API-Sports. Browse a league to follow its games.</p>
-            </div>
-            <div class="panel live-panel">
-                <!-- Live data config: key is domain-restricted in the API-Sports dashboard -->
-                <api-sports-widget data-type="config" data-key="c5ffc5664b7d9334484bc540790b5d32" data-sport="football" data-lang="en" data-theme="dark" data-timezone="Europe/Dublin" data-show-logos="true" data-show-errors="true" data-refresh="60"></api-sports-widget>
-                <div class="live-grid">
-                    <div class="live-block">
-                        <h3>Today's games</h3>
-                        <api-sports-widget data-type="games"></api-sports-widget>
-                    </div>
-                    <div class="live-block">
-                        <h3>Competitions</h3>
-                        <api-sports-widget data-type="leagues"></api-sports-widget>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- player cards -->
         <section id="players" aria-label="All players">
             <div class="section-head">
@@ -172,7 +149,6 @@
     </noscript>
 
     <script src="app.js"></script>
-    <script type="module" src="https://widgets.api-sports.io/3.1.0/widgets.js"></script>
 </body>
 
 </html>
