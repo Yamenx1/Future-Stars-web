@@ -35,6 +35,7 @@ jobs:
           SEASON: "2024"
           MAX_REQUESTS: ${{ inputs.max_requests || '90' }}
           CLUBS: ${{ inputs.clubs || '' }}
+          ROTATE_WEEKLY: "1"
         run: node scripts/sync-player-stats.mjs
       - name: Setup Java
         uses: actions/setup-java@v4

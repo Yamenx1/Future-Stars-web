@@ -17,6 +17,18 @@ const KEY = process.env.APISPORTS_KEY || "";
 const SEASON = process.env.SEASON || "2025";
 const MAX_REQUESTS = parseInt(process.env.MAX_REQUESTS || "90", 10);
 const ONLY_CLUBS = (process.env.CLUBS || "").split(",").map((s) => s.trim().toLowerCase()).filter(Boolean);
+// ROTATE_WEEKLY=1 starts each run at a different club (ISO-week based), so a tight
+// request budget sweeps the whole squad fairly across weeks instead of always
+// covering the same first clubs.
+const ROTATE_WEEKLY = process.env.ROTATE_WEEKLY === "1";
+
+function isoWeek(d = new Date()) {
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+  const day = (t.getUTCDay() + 6) % 7;
+  t.setUTCDate(t.getUTCDate() - day + 3);
+  const first = new Date(Date.UTC(t.getUTCFullYear(), 0, 4));
+  return 1 + Math.round(((t - first) / 864e5 - 3 + ((first.getUTCDay() + 6) % 7)) / 7);
+}
 const MAP_PATH = new URL("./api-map.json", import.meta.url);
 const RAW_PATH = new URL("../data/raw_young_players.csv", import.meta.url);
 
@@ -160,9 +172,14 @@ async function main() {
   const header = lines[0];
   const rows = lines.slice(1).map((l) => l.split(","));
   const map = loadMap();
-  const clubs = [...new Set(rows.map((r) => r[3]))].filter(
+  let clubs = [...new Set(rows.map((r) => r[3]))].filter(
     (c) => !ONLY_CLUBS.length || ONLY_CLUBS.includes(c.toLowerCase())
   );
+  if (ROTATE_WEEKLY && !ONLY_CLUBS.length && clubs.length > 1) {
+    const off = (isoWeek() * 17) % clubs.length;
+    clubs = clubs.slice(off).concat(clubs.slice(0, off));
+    console.log("rotation offset: " + off + "/" + clubs.length + " (iso week " + isoWeek() + ")");
+  }
 
   let refreshed = 0;
   let unmatched = [];
@@ -216,6 +233,8 @@ async function main() {
         unmatched.push(fields[0] + " (" + club + ")");
         continue;
       }
+      // Bank the API id even when the league split is missing: it still
+      // unlocks the player's photo.
       if (map.players[fields[0] + "|" + club] !== (entry.player && entry.player.id)) {
         map.players[fields[0] + "|" + club] = entry.player && entry.player.id;
       }
@@ -279,6 +298,9 @@ function selfTest() {
   const g = ["", "", "", "", "", "", "2100", "8", "6", "30", "28", "83", "20", "14"];
   applyStatsToRow(g, { games: {}, goals: {}, shots: {}, passes: {}, dribbles: {}, tackles: {} });
   assert(g[6] === "2100" && g[7] === "8", "missing API fields keep old values");
+  const w = isoWeek(new Date(Date.UTC(2026, 9, 5)));
+  assert(Number.isInteger(w) && w >= 1 && w <= 53, "iso week in range");
+  assert(isoWeek(new Date(Date.UTC(2026, 9, 5))) === w, "rotation offset deterministic");
   console.log("self-test passed, no quota spent.");
 }
 
