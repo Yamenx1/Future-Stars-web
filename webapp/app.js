@@ -197,6 +197,19 @@ function applyFilters() {
     }
     renderCards(filtered);
     renderTable(filtered);
+    var rc = document.getElementById("resultCount");
+    if (rc) {
+        rc.textContent = "Showing " + filtered.length + " of " + players.length + " players";
+    }
+}
+
+function clearFilters() {
+    document.getElementById("positionFilter").value = "all";
+    document.getElementById("leagueFilter").value = "all";
+    document.getElementById("searchBox").value = "";
+    sortCol = null;
+    sortDir = "desc";
+    applyFilters();
 }
 
 function updateSummary() {
@@ -271,7 +284,8 @@ function renderTable(list) {
     var headHtml = "";
     for (var i = 0; i < cols.length; i++) {
         var cls = sortCol === cols[i] ? sortDir : "";
-        headHtml += '<th class="' + cls + '" onclick="doSort(\'' + cols[i] + '\')">' + labels[i] + '</th>';
+        var aria = sortCol === cols[i] ? (sortDir === "asc" ? "ascending" : "descending") : "none";
+        headHtml += '<th class="' + cls + '" tabindex="0" role="columnheader" aria-sort="' + aria + '" data-col="' + cols[i] + '" onclick="doSort(\'' + cols[i] + '\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();doSort(\'' + cols[i] + '\')}">' + labels[i] + '</th>';
     }
     document.getElementById("tHead").innerHTML = headHtml;
 
@@ -314,4 +328,8 @@ window.onload = function () {
     renderTop3();
     renderCards(players);
     renderTable(players);
+    var rc = document.getElementById("resultCount");
+    if (rc) rc.textContent = "Showing " + players.length + " of " + players.length + " players";
+    var yr = document.getElementById("year");
+    if (yr) yr.textContent = new Date().getFullYear() + " Season";
 };
