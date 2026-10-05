@@ -265,6 +265,16 @@ tbody tr { transition: background 0.12s; }
 tbody tr:hover { background: rgba(34, 211, 238, 0.07); }
 td.score { font-weight: 700; color: var(--neon); }
 
+/* live match center */
+.live-panel { padding: 20px; }
+.live-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 18px; }
+.live-block h3 {
+    font-family: var(--font-display); font-size: 0.95rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted);
+    margin-bottom: 10px;
+}
+.live-block api-sports-widget { display: block; height: 560px; overflow: auto; border-radius: 12px; }
+
 /* footer */
 footer { border-top: 1px solid var(--border); background: rgba(7, 11, 22, 0.7); }
 .foot-inner { max-width: 1180px; margin: 0 auto; padding: 24px 20px; display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; font-size: 0.85rem; }
@@ -275,6 +285,8 @@ footer { border-top: 1px solid var(--border); background: rgba(7, 11, 22, 0.7); 
 /* responsive */
 @media (max-width: 920px) {
     .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .live-grid { grid-template-columns: 1fr; }
+    .live-block api-sports-widget { height: 480px; }
     .controls form { grid-template-columns: 1fr 1fr; }
     .filter-search { grid-column: 1 / -1; }
     .filter-actions { grid-column: 1 / -1; }
