@@ -185,6 +185,9 @@ Clement Bischoff,19,Denmark,Brondby,Danish SL,LW,900,2,2,10,16,78,8,6,0.2,0.2,8.
 Jorne Spileers,20,Belgium,Club Brugge,Belgian Pro League,CB,800,0,0,2,6,87,24,18,0.0,0.0,5.95
 Bailey Dall,19,Scotland,Hearts,Scottish Premiership,CM,600,0,1,2,8,82,16,12,0.0,0.15,6.7
 Valentin Sulzbacher,20,Austria,Salzburg,Austrian Bundesliga,CM,700,1,1,4,10,83,20,14,0.13,0.13,6.79
+Dennis Seimen,19,Germany,Stuttgart,Bundesliga,GK,1800,0,0,0,1,82,2,1,0.0,0.0,5.7
+Aron Yaakobishvili,19,Hungary,Barcelona,La Liga,GK,500,0,0,0,0,80,0,0,0.0,0.0,5.5
+Tommy Simkin,20,England,Stoke,Championship,GK,1200,0,0,0,0,75,1,1,0.0,0.0,4.75
 Lewis Miley,19,England,Newcastle,Premier League,CM,1500,2,3,8,14,86,32,24,0.12,0.18,7.92
 Mikey Moore,18,England,Tottenham,Premier League,LW,900,2,2,8,20,79,6,4,0.2,0.2,8.95
 Shea Lacey,18,England,Man United,Premier League,RW,700,1,2,6,18,80,6,4,0.13,0.26,8.7
@@ -254,6 +257,7 @@ function getPosName(cat) {
     if (cat === "fw") return "forward";
     if (cat === "mf") return "midfielder";
     if (cat === "df") return "defender";
+    if (cat === "gk") return "goalkeeper";
     return "";
 }
 
@@ -334,6 +338,7 @@ function applyFilters() {
         }
         filtered.push(p);
     }
+    visibleCount = 48;
     renderCards(filtered);
     renderTable(filtered);
     var rc = document.getElementById("resultCount");
@@ -390,12 +395,14 @@ function renderTop3() {
 }
 
 function renderCards(list) {
+    lastFiltered = list;
+    var shown = list.slice(0, visibleCount);
     var html = "";
     if (list.length === 0) {
         html = '<div class="no-results">No players found ⚽</div>';
     }
-    for (var i = 0; i < list.length; i++) {
-        var p = list[i];
+    for (var i = 0; i < shown.length; i++) {
+        var p = shown[i];
         var cat = getPosCat(p.Position);
         var flag = getLeagueFlag(p.League);
         var rank = 0;
@@ -418,6 +425,21 @@ function renderCards(list) {
         html += '</div></div>';
     }
     document.getElementById("cardsArea").innerHTML = html;
+    var remaining = list.length - shown.length;
+    var wrap = document.getElementById("loadMoreWrap");
+    if (wrap) {
+        wrap.style.display = remaining > 0 ? "" : "none";
+        var rc2 = document.getElementById("remainingCount");
+        if (rc2) rc2.textContent = remaining;
+    }
+}
+
+var visibleCount = 48;
+var lastFiltered = [];
+
+function loadMore() {
+    visibleCount += 48;
+    renderCards(lastFiltered);
 }
 
 function renderTable(list) {

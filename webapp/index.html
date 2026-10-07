@@ -73,10 +73,11 @@
                 <div class="filter-field">
                     <label for="positionFilter">Position</label>
                     <select id="positionFilter" onchange="applyFilters()">
-                        <option value="all">All positions</option>
-                        <option value="forward">Forwards</option>
-                        <option value="midfielder">Midfielders</option>
-                        <option value="defender">Defenders</option>
+                    <option value="all">All positions</option>
+                    <option value="forward">Forwards</option>
+                    <option value="midfielder">Midfielders</option>
+                    <option value="defender">Defenders</option>
+                    <option value="goalkeeper">Goalkeepers</option>
                     </select>
                 </div>
                 <div class="filter-field">
@@ -118,6 +119,9 @@
             </div>
             <div class="cards" id="cardsArea">
                 <div class="no-results">Loading players...</div>
+            </div>
+            <div class="load-more-wrap" id="loadMoreWrap" style="display:none">
+                <button type="button" class="btn btn-ghost" onclick="loadMore()">Show more (<span id="remainingCount">0</span> left)</button>
             </div>
         </section>
 

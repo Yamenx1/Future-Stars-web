@@ -257,6 +257,11 @@ section { margin-bottom: 36px; scroll-margin-top: 76px; }
     letter-spacing: 1.5px; padding: 2px 10px; border-radius: 4px;
     background: rgba(255, 255, 255, 0.07); color: var(--chalk);
 }
+.card-pos.gk {
+    background: rgba(232, 193, 90, 0.14); color: var(--gold);
+    border: 1px solid rgba(232, 193, 90, 0.4);
+}
+.load-more-wrap { text-align: center; margin: 6px 0 28px; }
 .card-id { display: flex; gap: 12px; align-items: center; margin-bottom: 12px; }
 .card-id .avatar { width: 52px; height: 64px; font-size: 1.3rem; margin: 0; flex-shrink: 0; }
 .card-name { font-family: var(--font-display); font-size: 1.35rem; font-weight: 700; text-transform: uppercase; line-height: 1; }
@@ -326,7 +331,10 @@ footer { border-top: 2px solid var(--line); background: #080f0b; }
     .top3 { grid-template-columns: 1fr; }
 }
 @media (max-width: 560px) {
-    .nav-links { display: none; }
+    .nav-inner { gap: 10px; overflow-x: auto; }
+    .nav-links { margin-left: 0; }
+    .nav-links a { padding: 8px 8px; white-space: nowrap; }
+    .live-pill { margin-left: 0; }
     .hero { padding-top: 40px; }
     .cards { grid-template-columns: 1fr; }
     .section-head { flex-direction: column; gap: 2px; }
