@@ -293,6 +293,9 @@ td:first-child { font-weight: 600; }
 tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.015); }
 tbody tr:hover { background: rgba(215, 245, 66, 0.05); }
 td.score { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--volt); }
+th.rank-col { cursor: default; }
+td.rank, td.empty-cell { color: var(--dim); font-variant-numeric: tabular-nums; }
+td.empty-cell { text-align: center; padding: 26px 14px; }
 
 ::selection { background: var(--volt); color: var(--volt-ink); }
 
