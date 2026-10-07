@@ -30,6 +30,7 @@
             <div class="nav-links">
                 <a href="#top3">Top 3</a>
                 <a href="#players">Players</a>
+                <a href="#leagues">Leagues</a>
                 <a href="#data">Data</a>
             </div>
             <span class="live-pill"><span class="live-dot"></span><span id="navCount">&ndash; prospects</span></span>
@@ -129,13 +130,32 @@
         <section id="players" aria-label="All players">
             <div class="section-head">
                 <h2>All players</h2>
-                <p>Ranked by Future Star Score. Filter or search to scout.</p>
+                <p>Ranked by Future Star Score. Filter, search — or click any card for the full file.</p>
             </div>
             <div class="cards" id="cardsArea">
                 <div class="no-results">Loading players...</div>
             </div>
             <div class="load-more-wrap" id="loadMoreWrap" style="display:none">
                 <button type="button" class="btn btn-ghost" onclick="loadMore()">Show more (<span id="remainingCount">0</span> left)</button>
+            </div>
+        </section>
+
+        <!-- league power ranking -->
+        <section id="leagues" aria-label="League power ranking">
+            <div class="section-head">
+                <h2>League power ranking</h2>
+                <p>Average Future Star Score per league. Which competition grows the best talent?</p>
+            </div>
+            <div class="panel table-panel">
+                <div class="table-container">
+                    <table>
+                        <caption class="visually-hidden">Leagues ranked by average Future Star Score</caption>
+                        <thead>
+                            <tr><th title="Rank">#</th><th>League</th><th>Players</th><th>Avg age</th><th>Avg score</th><th>Top prospect</th></tr>
+                        </thead>
+                        <tbody id="leagueBody"></tbody>
+                    </table>
+                </div>
             </div>
         </section>
 
@@ -165,6 +185,13 @@
             <p class="foot-muted">U22 prospects &middot; 17 leagues &middot; <span id="year">2026 Season</span></p>
         </div>
     </footer>
+
+    <div class="modal-backdrop" id="playerModal" hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalName">
+            <button type="button" class="modal-close" onclick="closeModal()" aria-label="Close player profile">&times;</button>
+            <div id="modalBody"></div>
+        </div>
+    </div>
 
     <noscript>
         <p style="text-align:center;padding:20px">This dashboard needs JavaScript to display player data.</p>

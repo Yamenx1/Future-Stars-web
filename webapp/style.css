@@ -368,6 +368,54 @@ footer { border-top: 2px solid var(--line); background: #080f0b; }
     .foot-inner { flex-direction: column; }
 }
 
+/* ---------- player modal ---------- */
+.card { cursor: pointer; }
+.card:focus-visible { outline: 2px solid var(--volt); outline-offset: 2px; }
+.modal-backdrop {
+    position: fixed; inset: 0; z-index: 300;
+    background: rgba(4, 8, 5, 0.72);
+    backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+    display: flex; align-items: flex-start; justify-content: center;
+    padding: 40px 16px; overflow-y: auto;
+}
+.modal-backdrop[hidden] { display: none; }
+.modal {
+    width: 100%; max-width: 560px;
+    background: var(--card); border: 1px solid var(--border-strong);
+    border-top: 4px solid var(--volt); border-radius: 14px;
+    padding: 22px; position: relative;
+    box-shadow: var(--shadow);
+    animation: modal-in 0.18s ease-out;
+}
+@keyframes modal-in { from { transform: translateY(12px); opacity: 0; } }
+.modal-close {
+    position: absolute; top: 10px; right: 10px;
+    width: 34px; height: 34px; border-radius: 8px;
+    border: 1px solid var(--border-strong); background: transparent;
+    color: var(--chalk); font-size: 1.3rem; line-height: 1; cursor: pointer;
+}
+.modal-close:hover { border-color: var(--volt); color: var(--volt); }
+.modal-id { display: flex; gap: 14px; align-items: center; margin-bottom: 6px; padding-right: 36px; }
+.modal-id .avatar { width: 72px; height: 88px; font-size: 1.6rem; margin: 0; flex-shrink: 0; }
+.modal-kicker { font-size: 0.7rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--dim); }
+.modal-id h3 { font-family: var(--font-display); font-size: 2rem; font-weight: 700; text-transform: uppercase; line-height: 1; margin: 2px 0; }
+.modal-club { font-size: 0.82rem; color: var(--sage); }
+.modal-score { display: flex; align-items: baseline; gap: 10px; margin: 12px 0 4px; }
+.modal-score span { font-family: var(--font-display); font-size: 2.6rem; font-weight: 700; color: var(--volt); line-height: 1; font-variant-numeric: tabular-nums; }
+.modal-score small { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted); }
+.bd { margin: 10px 0 4px; display: flex; flex-direction: column; gap: 7px; }
+.bd-row { display: grid; grid-template-columns: 130px 1fr 52px; gap: 10px; align-items: center; font-size: 0.78rem; }
+.bd-label { color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bd-track { height: 8px; border-radius: 4px; background: rgba(255, 255, 255, 0.08); overflow: hidden; }
+.bd-fill { display: block; height: 100%; background: var(--volt); border-radius: 4px; }
+.bd-val { text-align: right; font-variant-numeric: tabular-nums; color: var(--text); }
+.bd-note { font-size: 0.72rem; color: var(--dim); margin: 6px 0 12px; }
+.modal-facts { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; margin-bottom: 14px; }
+.modal-facts div { background: rgba(7, 11, 22, 0.4); border-radius: 8px; padding: 8px 4px; text-align: center; }
+.modal-facts strong { display: block; font-size: 0.95rem; font-variant-numeric: tabular-nums; }
+.modal-facts span { font-size: 0.58rem; text-transform: uppercase; letter-spacing: 0.8px; color: var(--muted); }
+.share-note { font-size: 0.78rem; color: var(--lime); margin-left: 8px; }
+
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
 }

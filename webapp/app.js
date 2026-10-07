@@ -410,6 +410,120 @@ function renderLeaders() {
     document.getElementById("leadersArea").innerHTML = html;
 }
 
+function scoreBreakdown(p) {
+    var parts = [
+        { label: "Goals", value: p.GoalsPer90 * 3 },
+        { label: "Assists", value: p.AssistsPer90 * 2 },
+        { label: "Dribbles", value: p.DribblesCompleted / 10 },
+        { label: "Passing", value: p.PassAccuracy / 20 },
+        { label: "Youth bonus (age " + p.Age + ")", value: (22 - p.Age) * 0.5 }
+    ];
+    var max = 0;
+    for (var i = 0; i < parts.length; i++) {
+        parts[i].value = Math.round(parts[i].value * 100) / 100;
+        if (parts[i].value > max) max = parts[i].value;
+    }
+    return { parts: parts, max: max };
+}
+
+var lastFocus = null;
+
+function openModal(key) {
+    var p = null;
+    for (var i = 0; i < players.length; i++) {
+        if (players[i].Name + "|" + players[i].Club === key) { p = players[i]; break; }
+    }
+    if (!p) return;
+    lastFocus = (typeof document !== "undefined" && document.activeElement) ? document.activeElement : null;
+    var bd = scoreBreakdown(p);
+    var flag = getLeagueFlag(p.League);
+    var html = '<div class="modal-id">' + avatarHtml(p.Name, p.Club);
+    html += '<div><div class="modal-kicker">' + esc(p.Position) + ' &middot; Age ' + p.Age + ' &middot; ' + esc(p.Nationality) + '</div>';
+    html += '<h3 id="modalName">' + esc(p.Name) + '</h3>';
+    html += '<div class="modal-club">' + flag + ' ' + esc(p.Club) + ' &middot; ' + esc(p.League) + '</div></div></div>';
+    html += '<div class="modal-score"><span>' + p.FutureStarScore + '</span><small>Future Star Score</small></div>';
+    html += '<div class="bd">';
+    for (var j = 0; j < bd.parts.length; j++) {
+        var pct = bd.max > 0 ? Math.round((bd.parts[j].value / bd.max) * 100) : 0;
+        html += '<div class="bd-row"><span class="bd-label">' + bd.parts[j].label + '</span>';
+        html += '<span class="bd-track"><span class="bd-fill" style="width:' + pct + '%"></span></span>';
+        html += '<span class="bd-val">+' + bd.parts[j].value.toFixed(2) + '</span></div>';
+    }
+    html += '</div><p class="bd-note">Score = goals/90&times;3 + assists/90&times;2 + dribbles/10 + pass%/20 + youth bonus.</p>';
+    html += '<div class="modal-facts">';
+    html += '<div><strong>' + p.MinutesPlayed + '</strong><span>Minutes</span></div>';
+    html += '<div><strong>' + p.Goals + '</strong><span>Goals</span></div>';
+    html += '<div><strong>' + p.Assists + '</strong><span>Assists</span></div>';
+    html += '<div><strong>' + p.ShotsOnTarget + '</strong><span>On target</span></div>';
+    html += '<div><strong>' + p.Tackles + '</strong><span>Tackles</span></div>';
+    html += '<div><strong>' + p.Interceptions + '</strong><span>Interc.</span></div>';
+    html += '</div>';
+    html += '<button type="button" class="btn btn-ghost btn-sm" onclick="sharePlayer(\'' + esc(p.Name).replace(/'/g, "\\'") + '\')">Copy link to player</button> ';
+    html += '<span class="share-note" id="shareNote" aria-live="polite"></span>';
+    document.getElementById("modalBody").innerHTML = html;
+    var modal = document.getElementById("playerModal");
+    modal.hidden = false;
+    if (document.body && document.body.style) document.body.style.overflow = "hidden";
+    var close = modal.querySelector ? modal.querySelector(".modal-close") : null;
+    if (close && close.focus) close.focus();
+}
+
+function closeModal() {
+    var modal = document.getElementById("playerModal");
+    if (modal) modal.hidden = true;
+    if (document.body && document.body.style) document.body.style.overflow = "";
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+}
+
+function sharePlayer(name) {
+    var url = location.protocol + "//" + location.host + location.pathname + "?player=" + encodeURIComponent(name);
+    var done = function () {
+        var n = document.getElementById("shareNote");
+        if (n) n.textContent = "Link copied!";
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, done);
+    else done();
+    try {
+        if (history.replaceState) history.replaceState(null, "", "?player=" + encodeURIComponent(name));
+    } catch (e) { /* file:// or old browser */ }
+}
+
+if (typeof document !== "undefined" && document.addEventListener) {
+    document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closeModal();
+    });
+}
+
+function renderLeagueTable() {
+    var groups = {};
+    for (var i = 0; i < players.length; i++) {
+        var p = players[i];
+        if (!groups[p.League]) groups[p.League] = { total: 0, age: 0, n: 0, top: null };
+        var g = groups[p.League];
+        g.total += p.FutureStarScore;
+        g.age += p.Age;
+        g.n++;
+        if (!g.top || p.FutureStarScore > g.top.FutureStarScore) g.top = p;
+    }
+    var rows = [];
+    for (var lg in groups) {
+        if (Object.prototype.hasOwnProperty.call(groups, lg)) rows.push({ league: lg, g: groups[lg] });
+    }
+    rows.sort(function (a, b) { return (b.g.total / b.g.n) - (a.g.total / a.g.n); });
+    var html = "";
+    for (var k = 0; k < rows.length; k++) {
+        var avg = Math.round((rows[k].g.total / rows[k].g.n) * 100) / 100;
+        var avgAge = Math.round((rows[k].g.age / rows[k].g.n) * 10) / 10;
+        html += "<tr><td>" + (k + 1) + "</td>";
+        html += "<td>" + getLeagueFlag(rows[k].league) + " " + esc(rows[k].league) + "</td>";
+        html += "<td>" + rows[k].g.n + "</td>";
+        html += "<td>" + avgAge + "</td>";
+        html += '<td class="score">' + avg + "</td>";
+        html += "<td>" + esc(rows[k].g.top.Name) + " (" + rows[k].g.top.FutureStarScore + ")</td></tr>";
+    }
+    document.getElementById("leagueBody").innerHTML = html;
+}
+
 function renderTop3() {
     var ribbons = ["1st", "2nd", "3rd"];
     var html = "";
@@ -448,7 +562,7 @@ function renderCards(list) {
         for (var j = 0; j < playersByScore.length; j++) {
             if (playersByScore[j].Name === p.Name && playersByScore[j].Club === p.Club) { rank = j + 1; break; }
         }
-        html += '<div class="card pos-' + cat + '">';
+        html += '<div class="card pos-' + cat + '" data-key="' + esc(p.Name + "|" + p.Club) + '" tabindex="0" role="button" aria-label="Open profile for ' + esc(p.Name) + '">';
         html += '<div class="card-top"><span class="card-rank">#' + rank + '</span>';
         html += '<span class="card-pos ' + cat + '">' + esc(p.Position) + '</span></div>';
         html += '<div class="card-id">' + avatarHtml(p.Name, p.Club);
@@ -541,10 +655,42 @@ window.onload = function () {
     updateSummary();
     renderTop3();
     renderLeaders();
+    renderLeagueTable();
     renderCards(players);
     renderTable(players);
+    var cards = document.getElementById("cardsArea");
+    if (cards && cards.addEventListener) {
+        cards.addEventListener("click", function (e) {
+            var t = e.target;
+            while (t && t !== cards && !(t.getAttribute && t.getAttribute("data-key"))) t = t.parentNode;
+            if (t && t !== cards) openModal(t.getAttribute("data-key"));
+        });
+        cards.addEventListener("keydown", function (e) {
+            if ((e.key === "Enter" || e.key === " ") && e.target && e.target.getAttribute && e.target.getAttribute("data-key")) {
+                e.preventDefault();
+                openModal(e.target.getAttribute("data-key"));
+            }
+        });
+    }
+    var modal = document.getElementById("playerModal");
+    if (modal && modal.addEventListener) {
+        modal.addEventListener("click", function (e) {
+            if (e.target === modal) closeModal();
+        });
+    }
     var rc = document.getElementById("resultCount");
     if (rc) rc.textContent = "Showing " + players.length + " of " + players.length + " players";
     var yr = document.getElementById("year");
     if (yr) yr.textContent = new Date().getFullYear() + " Season";
+    try {
+        if (typeof location !== "undefined" && location.search) {
+            var m = /[?&]player=([^&]+)/.exec(location.search);
+            if (m) {
+                document.getElementById("searchBox").value = decodeURIComponent(m[1].replace(/\+/g, " "));
+                applyFilters();
+                var sec = document.getElementById("players");
+                if (sec && sec.scrollIntoView) sec.scrollIntoView();
+            }
+        }
+    } catch (e) { /* ignore bad deep links */ }
 };
