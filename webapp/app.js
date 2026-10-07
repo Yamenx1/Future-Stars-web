@@ -371,6 +371,47 @@ function updateSummary() {
     if (nav) nav.textContent = players.length + " prospects";
 }
 
+function bestBy(stat, tiebreak) {
+    var best = null;
+    for (var i = 0; i < players.length; i++) {
+        var p = players[i];
+        if (!best || p[stat] > best[stat] || (p[stat] === best[stat] && p[tiebreak] > best[tiebreak])) best = p;
+    }
+    return best;
+}
+
+function youngestStar() {
+    var best = null;
+    for (var i = 0; i < players.length; i++) {
+        var p = players[i];
+        if (!best || p.Age < best.Age || (p.Age === best.Age && p.FutureStarScore > best.FutureStarScore)) best = p;
+    }
+    return best;
+}
+
+function renderLeaders() {
+    var defs = [
+        { label: "Top scorer", stat: "Goals", suffix: " goals", pick: function () { return bestBy("Goals", "FutureStarScore"); } },
+        { label: "Top assister", stat: "Assists", suffix: " assists", pick: function () { return bestBy("Assists", "FutureStarScore"); } },
+        { label: "Top dribbler", stat: "DribblesCompleted", suffix: " dribbles", pick: function () { return bestBy("DribblesCompleted", "FutureStarScore"); } },
+        { label: "Youngest star", stat: "Age", suffix: " yrs old", pick: youngestStar }
+    ];
+    var html = "";
+    for (var i = 0; i < defs.length; i++) {
+        var p = defs[i].pick();
+        if (!p) continue;
+        var flag = getLeagueFlag(p.League);
+        html += '<div class="leader-card">';
+        html += '<span class="leader-label">' + defs[i].label + '</span>';
+        html += '<div class="leader-id">' + avatarHtml(p.Name, p.Club);
+        html += '<div><div class="leader-name">' + esc(p.Name) + '</div>';
+        html += '<div class="leader-meta">' + flag + ' ' + esc(p.Club) + '</div></div></div>';
+        html += '<div class="leader-value">' + p[defs[i].stat] + '<small>' + defs[i].suffix + '</small></div>';
+        html += '</div>';
+    }
+    document.getElementById("leadersArea").innerHTML = html;
+}
+
 function renderTop3() {
     var ribbons = ["1st", "2nd", "3rd"];
     var html = "";
@@ -501,6 +542,7 @@ window.onload = function () {
     fillLeagues();
     updateSummary();
     renderTop3();
+    renderLeaders();
     renderCards(players);
     renderTable(players);
     var rc = document.getElementById("resultCount");

@@ -277,6 +277,25 @@ section { margin-bottom: 36px; scroll-margin-top: 76px; }
 .card-stats strong { display: block; font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; font-variant-numeric: tabular-nums; }
 .card-stats span { font-size: 0.6rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; color: var(--dim); }
 
+/* ---------- stat leaders ---------- */
+.leaders { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.leader-card {
+    background: var(--card); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 16px;
+    border-top: 3px solid var(--volt);
+}
+.leader-card.loading { color: var(--dim); border-style: dashed; }
+.leader-label {
+    font-family: var(--font-display); font-size: 0.9rem; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--dim);
+}
+.leader-id { display: flex; gap: 10px; align-items: center; margin: 10px 0; }
+.leader-id .avatar { width: 44px; height: 56px; font-size: 1rem; margin: 0; flex-shrink: 0; }
+.leader-name { font-family: var(--font-display); font-size: 1.15rem; font-weight: 700; text-transform: uppercase; line-height: 1.05; }
+.leader-meta { font-size: 0.72rem; color: var(--sage); }
+.leader-value { font-family: var(--font-display); font-size: 1.9rem; font-weight: 700; color: var(--volt); font-variant-numeric: tabular-nums; line-height: 1; }
+.leader-value small { font-family: var(--font-body); font-size: 0.65rem; font-weight: 600; color: var(--dim); margin-left: 6px; letter-spacing: 0.5px; }
+
 /* ---------- table: league table ---------- */
 .table-panel { padding: 0; overflow: hidden; }
 .table-container { overflow: auto; max-height: 540px; }
@@ -298,7 +317,14 @@ td:first-child { font-weight: 600; }
 tbody tr:nth-child(even) { background: rgba(255, 255, 255, 0.015); }
 tbody tr:hover { background: rgba(215, 245, 66, 0.05); }
 td.score { font-family: var(--font-display); font-size: 1.05rem; font-weight: 700; color: var(--volt); }
-th.rank-col { cursor: default; }
+table th:nth-child(-n+2), table td:nth-child(-n+2) {
+    position: sticky; z-index: 1;
+    background: #0d1811;
+}
+table th:nth-child(2), table td:nth-child(2) { left: 46px; }
+table td:nth-child(2) { background: #0c1610; }
+thead th:nth-child(-n+2) { z-index: 3; }
+th.rank-col { cursor: default; width: 46px; min-width: 46px; }
 td.rank, td.empty-cell { color: var(--dim); font-variant-numeric: tabular-nums; }
 td.empty-cell { text-align: center; padding: 26px 14px; }
 
@@ -329,6 +355,7 @@ footer { border-top: 2px solid var(--line); background: #080f0b; }
     .filter-actions { grid-column: 1 / -1; }
     .filter-actions .btn { width: 100%; }
     .top3 { grid-template-columns: 1fr; }
+    .leaders { grid-template-columns: repeat(2, 1fr); }
 }
 @media (max-width: 560px) {
     .nav-inner { gap: 10px; overflow-x: auto; }
