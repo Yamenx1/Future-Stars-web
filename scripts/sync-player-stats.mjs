@@ -52,6 +52,8 @@ const LEAGUE_IDS = {
   "Belgian Pro League": 144,
   "Scottish Premiership": 179,
   "Austrian Bundesliga": 218,
+  "Ligue 2": 62,
+  "Serie B": 136,
 };
 const LEAGUE_MATCH = {
   "Premier League": { names: ["premier league"], country: "england" },
@@ -69,6 +71,8 @@ const LEAGUE_MATCH = {
   "Belgian Pro League": { names: ["jupiler pro league", "pro league"], country: "belgium" },
   "Scottish Premiership": { names: ["premiership"], country: "scotland" },
   "Austrian Bundesliga": { names: ["bundesliga"], country: "austria" },
+  "Ligue 2": { names: ["ligue 2"], country: "france" },
+  "Serie B": { names: ["serie b"], country: "italy" },
 };
 
 function norm(s) {
@@ -162,12 +166,16 @@ function applyStatsToRow(fields, stats) {
   const dribbles = stats.dribbles || {};
   const tackles = stats.tackles || {};
   const num = (v, fb) => (v === null || v === undefined || v === "" ? fb : v);
+  const sanePass = (v, fb) => {
+    const n = Number(v);
+    return Number.isFinite(n) && n >= 60 && n <= 99 ? String(v) : fb;
+  };
   fields[6] = String(num(g.minutes, fields[6])); // MinutesPlayed
   fields[7] = String(num(goals.total, fields[7])); // Goals
   fields[8] = String(num(goals.assists, fields[8])); // Assists
   fields[9] = String(num(shots.on, fields[9])); // ShotsOnTarget
   fields[10] = String(num(dribbles.success, fields[10])); // DribblesCompleted
-  fields[11] = String(num(passes.accuracy, fields[11])); // PassAccuracy
+  fields[11] = sanePass(passes.accuracy, fields[11]); // PassAccuracy (60-99 only)
   fields[12] = String(num(tackles.total, fields[12])); // Tackles
   fields[13] = String(num(tackles.interceptions, fields[13])); // Interceptions
 }
