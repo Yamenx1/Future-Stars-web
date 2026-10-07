@@ -83,6 +83,86 @@
     "Chelsea": {
       "id": 49,
       "name": "Chelsea"
+    },
+    "Como": {
+      "id": 895,
+      "name": "Como"
+    },
+    "Tottenham": {
+      "id": 47,
+      "name": "Tottenham"
+    },
+    "Bournemouth": {
+      "id": 35,
+      "name": "Bournemouth"
+    },
+    "Southampton": {
+      "id": 41,
+      "name": "Southampton"
+    },
+    "Midtjylland": {
+      "id": 397,
+      "name": "FC Midtjylland"
+    },
+    "Sunderland": {
+      "id": 746,
+      "name": "Sunderland"
+    },
+    "Aston Villa": {
+      "id": 66,
+      "name": "Aston Villa"
+    },
+    "Real Sociedad": {
+      "id": 548,
+      "name": "Real Sociedad"
+    },
+    "Villarreal": {
+      "id": 533,
+      "name": "Villarreal"
+    },
+    "Brighton": {
+      "id": 51,
+      "name": "Brighton"
+    },
+    "New York Red Bulls": {
+      "id": 1602,
+      "name": "New York Red Bulls"
+    },
+    "Leicester City": {
+      "id": 7195,
+      "name": "Leicester City U21"
+    },
+    "Venezia": {
+      "id": 517,
+      "name": "Venezia"
+    },
+    "Strasbourg": {
+      "id": 95,
+      "name": "Strasbourg"
+    },
+    "Besiktas": {
+      "id": 549,
+      "name": "Beşiktaş"
+    },
+    "Middlesbrough": {
+      "id": 70,
+      "name": "Middlesbrough"
+    },
+    "Newcastle": {
+      "id": 34,
+      "name": "Newcastle"
+    },
+    "Atletico Madrid": {
+      "id": 530,
+      "name": "Atletico Madrid"
+    },
+    "Real Betis": {
+      "id": 543,
+      "name": "Real Betis"
+    },
+    "Frankfurt": {
+      "id": 169,
+      "name": "Eintracht Frankfurt"
     }
   },
   "players": {
@@ -96,6 +176,13 @@
     "Pau Cubarsi|Barcelona": 396623,
     "Rayane Bounida|Ajax": 396202,
     "Joao Simoes|Sporting CP": 400509,
-    "Afonso Moreira|Sporting CP": 345388
+    "Afonso Moreira|Sporting CP": 345388,
+    "Tyrique George|Chelsea": 334037,
+    "Yeremy Pino|Villarreal": 184226,
+    "Andrey Santos|Strasbourg": 305834,
+    "Ajay Matthews|Middlesbrough": 360202,
+    "Pablo Barrios|Atletico Madrid": 336594,
+    "Jesus Rodriguez|Real Betis": 443162,
+    "Pablo Garcia|Real Betis": 443163
   }
 }
