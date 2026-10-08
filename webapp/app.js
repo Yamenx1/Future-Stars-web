@@ -257,28 +257,31 @@ function getPosName(cat) {
     return "";
 }
 
-// league flag emojis to make it feel more football-y
-function getLeagueFlag(league) {
-    var flags = {
-        "Premier League": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-        "La Liga": "🇪🇸",
-        "Bundesliga": "🇩🇪",
-        "Serie A": "🇮🇹",
-        "Ligue 1": "🇫🇷",
-        "Eredivisie": "🇳🇱",
-        "Liga Portugal": "🇵🇹",
-        "Super Lig": "🇹🇷",
-        "MLS": "🇺🇸",
-        "Championship": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
-        "Danish SL": "🇩🇰",
-        "Saudi Pro League": "🇸🇦",
-        "Belgian Pro League": "🇧🇪",
-        "Scottish Premiership": "🏴󠁧󠁢󠁳󠁣󠁴󠁿",
-        "Austrian Bundesliga": "🇦🇹",
-        "Ligue 2": "🇫🇷",
-        "Serie B": "🇮🇹"
+// short league codes shown as badges (no emojis)
+function getLeagueCode(league) {
+    var codes = {
+        "Premier League": "ENG",
+        "La Liga": "ESP",
+        "Bundesliga": "GER",
+        "Serie A": "ITA",
+        "Ligue 1": "FRA",
+        "Eredivisie": "NED",
+        "Liga Portugal": "POR",
+        "Super Lig": "TUR",
+        "MLS": "USA",
+        "Championship": "ENG2",
+        "Danish SL": "DEN",
+        "Saudi Pro League": "KSA",
+        "Belgian Pro League": "BEL",
+        "Scottish Premiership": "SCO",
+        "Austrian Bundesliga": "AUT",
+        "Ligue 2": "FRA2",
+        "Serie B": "ITA2"
     };
-    return flags[league] || "🌍";
+    return codes[league] || "U22";
+}
+function getLeagueBadge(league) {
+    return '<span class="lg-code">' + getLeagueCode(league) + '</span>';
 }
 
 function esc(s) {
@@ -315,7 +318,7 @@ function fillLeagues() {
     for (var i = 0; i < leagues.length; i++) {
         var opt = document.createElement("option");
         opt.value = leagues[i];
-        opt.textContent = getLeagueFlag(leagues[i]) + " " + leagues[i];
+        opt.textContent = getLeagueCode(leagues[i]) + " · " + leagues[i];
         sel.appendChild(opt);
     }
 }
@@ -398,7 +401,7 @@ function renderLeaders() {
     for (var i = 0; i < defs.length; i++) {
         var p = defs[i].pick();
         if (!p) continue;
-        var flag = getLeagueFlag(p.League);
+        var flag = getLeagueBadge(p.League);
         html += '<div class="leader-card">';
         html += '<span class="leader-label">' + defs[i].label + '</span>';
         html += '<div class="leader-id">' + avatarHtml(p.Name, p.Club);
@@ -436,7 +439,7 @@ function openModal(key) {
     if (!p) return;
     lastFocus = (typeof document !== "undefined" && document.activeElement) ? document.activeElement : null;
     var bd = scoreBreakdown(p);
-    var flag = getLeagueFlag(p.League);
+    var flag = getLeagueBadge(p.League);
     var html = '<div class="modal-id">' + avatarHtml(p.Name, p.Club);
     html += '<div><div class="modal-kicker">' + esc(p.Position) + ' &middot; Age ' + p.Age + ' &middot; ' + esc(p.Nationality) + '</div>';
     html += '<h3 id="modalName">' + esc(p.Name) + '</h3>';
@@ -446,7 +449,7 @@ function openModal(key) {
     for (var j = 0; j < bd.parts.length; j++) {
         var pct = bd.max > 0 ? Math.round((bd.parts[j].value / bd.max) * 100) : 0;
         html += '<div class="bd-row"><span class="bd-label">' + bd.parts[j].label + '</span>';
-        html += '<span class="bd-track"><span class="bd-fill" style="width:' + pct + '%"></span></span>';
+        html += '<span class="bd-track"><span class="bd-fill" data-w="' + pct + '"></span></span>';
         html += '<span class="bd-val">+' + bd.parts[j].value.toFixed(2) + '</span></div>';
     }
     html += '</div><p class="bd-note">Score = goals/90&times;3 + assists/90&times;2 + dribbles/10 + pass%/20 + youth bonus.</p>';
@@ -461,6 +464,14 @@ function openModal(key) {
     html += '<button type="button" class="btn btn-ghost btn-sm" onclick="sharePlayer(\'' + esc(p.Name).replace(/'/g, "\\'") + '\')">Copy link to player</button> ';
     html += '<span class="share-note" id="shareNote" aria-live="polite"></span>';
     document.getElementById("modalBody").innerHTML = html;
+    // animate score bars after paint
+    var fills = document.querySelectorAll("#modalBody .bd-fill");
+    var paint = window.requestAnimationFrame || function (fn) { setTimeout(fn, 30); };
+    paint(function () {
+        paint(function () {
+            for (var f = 0; f < fills.length; f++) fills[f].style.width = fills[f].getAttribute("data-w") + "%";
+        });
+    });
     var modal = document.getElementById("playerModal");
     modal.hidden = false;
     if (document.body && document.body.style) document.body.style.overflow = "hidden";
@@ -490,8 +501,82 @@ function sharePlayer(name) {
 
 if (typeof document !== "undefined" && document.addEventListener) {
     document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape") closeModal();
+        if (e.key === "Escape") { closeModal(); closeNav(); }
     });
+    document.addEventListener("click", function (e) {
+        var nav = document.querySelector(".nav");
+        if (nav && nav.classList.contains("open") && !nav.contains(e.target)) closeNav();
+    });
+}
+
+function closeNav() {
+    var nav = document.querySelector(".nav");
+    var toggle = document.getElementById("navToggle");
+    if (nav) nav.classList.remove("open");
+    if (toggle) { toggle.setAttribute("aria-expanded", "false"); toggle.setAttribute("aria-label", "Open menu"); }
+}
+
+function initNav() {
+    var toggle = document.getElementById("navToggle");
+    var nav = document.querySelector(".nav");
+    if (toggle && nav) {
+        toggle.addEventListener("click", function () {
+            var open = nav.classList.toggle("open");
+            toggle.setAttribute("aria-expanded", open ? "true" : "false");
+            toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+        });
+        var links = nav.querySelectorAll(".nav-links a");
+        for (var i = 0; i < links.length; i++) {
+            links[i].addEventListener("click", closeNav);
+        }
+    }
+    // shadow once scrolled (rAF-throttled)
+    var ticking = false;
+    function onScroll() {
+        if (ticking) return;
+        ticking = true;
+        var raf = window.requestAnimationFrame || function (fn) { setTimeout(fn, 50); };
+        raf(function () {
+            var n = document.querySelector(".nav");
+            if (n) n.classList.toggle("scrolled", window.scrollY > 8);
+            ticking = false;
+        });
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    // active section highlight
+    var map = {};
+    var navLinks = document.querySelectorAll(".nav-links a");
+    for (var j = 0; j < navLinks.length; j++) {
+        var href = navLinks[j].getAttribute("href");
+        if (href && href.charAt(0) === "#") map[href.slice(1)] = navLinks[j];
+    }
+    if ("IntersectionObserver" in window) {
+        var active = null;
+        var io = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+                if (en.isIntersecting) active = en.target.id;
+            });
+            Object.keys(map).forEach(function (id) {
+                map[id].classList.toggle("active", id === active);
+            });
+        }, { rootMargin: "-40% 0px -55% 0px" });
+        ["top3", "players", "leagues", "data"].forEach(function (id) {
+            var sec = document.getElementById(id);
+            if (sec) io.observe(sec);
+        });
+        // reveal-on-scroll (class added by JS so no-JS still shows content)
+        var rio = new IntersectionObserver(function (entries) {
+            entries.forEach(function (en) {
+                if (en.isIntersecting) { en.target.classList.add("in"); rio.unobserve(en.target); }
+            });
+        }, { threshold: 0.08 });
+        var blocks = document.querySelectorAll("main section, .hero-cta, .stat-grid");
+        for (var k = 0; k < blocks.length; k++) {
+            blocks[k].classList.add("reveal");
+            rio.observe(blocks[k]);
+        }
+    }
 }
 
 function renderLeagueTable() {
@@ -515,7 +600,7 @@ function renderLeagueTable() {
         var avg = Math.round((rows[k].g.total / rows[k].g.n) * 100) / 100;
         var avgAge = Math.round((rows[k].g.age / rows[k].g.n) * 10) / 10;
         html += "<tr><td>" + (k + 1) + "</td>";
-        html += "<td>" + getLeagueFlag(rows[k].league) + " " + esc(rows[k].league) + "</td>";
+        html += "<td>" + getLeagueBadge(rows[k].league) + " " + esc(rows[k].league) + "</td>";
         html += "<td>" + rows[k].g.n + "</td>";
         html += "<td>" + avgAge + "</td>";
         html += '<td class="score">' + avg + "</td>";
@@ -530,7 +615,7 @@ function renderTop3() {
     var top = playersByScore.length ? playersByScore : players;
     for (var i = 0; i < 3 && i < top.length; i++) {
         var p = top[i];
-        var flag = getLeagueFlag(p.League);
+        var flag = getLeagueBadge(p.League);
         html += '<div class="top-card rank-' + (i + 1) + '">';
         html += '<span class="rank-ribbon">' + ribbons[i] + '</span>';
         html += avatarHtml(p.Name, p.Club);
@@ -552,17 +637,17 @@ function renderCards(list) {
     var shown = list.slice(0, visibleCount);
     var html = "";
     if (list.length === 0) {
-        html = '<div class="no-results">No players found ⚽</div>';
+        html = '<div class="no-results">No players found</div>';
     }
     for (var i = 0; i < shown.length; i++) {
         var p = shown[i];
         var cat = getPosCat(p.Position);
-        var flag = getLeagueFlag(p.League);
+        var flag = getLeagueBadge(p.League);
         var rank = 0;
         for (var j = 0; j < playersByScore.length; j++) {
             if (playersByScore[j].Name === p.Name && playersByScore[j].Club === p.Club) { rank = j + 1; break; }
         }
-        html += '<div class="card pos-' + cat + '" data-key="' + esc(p.Name + "|" + p.Club) + '" tabindex="0" role="button" aria-label="Open profile for ' + esc(p.Name) + '">';
+        html += '<div class="card pos-' + cat + '" style="--d:' + Math.min(i, 24) * 22 + 'ms" data-key="' + esc(p.Name + "|" + p.Club) + '" tabindex="0" role="button" aria-label="Open profile for ' + esc(p.Name) + '">';
         html += '<div class="card-top"><span class="card-rank">#' + rank + '</span>';
         html += '<span class="card-pos ' + cat + '">' + esc(p.Position) + '</span></div>';
         html += '<div class="card-id">' + avatarHtml(p.Name, p.Club);
@@ -597,7 +682,7 @@ function loadMore() {
 
 function renderTable(list) {
     var cols = ["Name", "Age", "Nationality", "Club", "League", "Position", "Goals", "Assists", "GoalsPer90", "PassAccuracy", "FutureStarScore"];
-    var labels = ["Name", "Age", "Nat.", "Club", "League", "Pos", "⚽", "🎯", "G/90", "Pass%", "Score"];
+    var labels = ["Name", "Age", "Nat.", "Club", "League", "Pos", "Goals", "Assists", "G/90", "Pass%", "Score"];
 
     var headHtml = '<th class="rank-col" title="Overall rank by Future Star Score">#</th>';
     for (var i = 0; i < cols.length; i++) {
@@ -623,7 +708,7 @@ function renderTable(list) {
             if (cols[j] === "FutureStarScore") {
                 bodyHtml += '<td class="score">' + val + '</td>';
             } else if (cols[j] === "League") {
-                bodyHtml += '<td>' + getLeagueFlag(val) + ' ' + esc(val) + '</td>';
+                bodyHtml += '<td>' + getLeagueBadge(val) + ' ' + esc(val) + '</td>';
             } else if (cols[j] === "Name" || cols[j] === "Club" || cols[j] === "Nationality") {
                 bodyHtml += "<td>" + esc(val) + "</td>";
             } else {
@@ -652,6 +737,7 @@ function doSort(col) {
 window.onload = function () {
     parseData();
     fillLeagues();
+    initNav();
     updateSummary();
     renderTop3();
     renderLeaders();
