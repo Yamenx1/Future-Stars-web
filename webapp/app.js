@@ -2,7 +2,7 @@
  * Future Stars - app.js
  * loads player data and renders cards + table
  * data is from the 2026-27 season, processed by our Java program
- * U22 prospects across 19 leagues, ranked by Future Star Score
+ * U22 prospects across 18 leagues, ranked by Future Star Score
  */
 
 var players = [];
