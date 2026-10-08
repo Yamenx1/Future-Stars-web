@@ -304,8 +304,156 @@ function photoUrl(name, club) {
 
 function avatarHtml(name, club) {
     var url = photoUrl(name, club);
-    var img = url ? '<img src="' + url + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">' : "";
-    return '<div class="avatar">' + esc(initials(name)) + img + '</div>';
+    var sil = '<svg class="sil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-6.5 8-6.5s8 2.5 8 6.5"/></svg>';
+    if (url) {
+        return '<div class="avatar">' + esc(initials(name)) + '<img src="' + url + '" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()"></div>';
+    }
+    return '<div class="avatar">' + sil + '<span style="position:relative">' + esc(initials(name)) + '</span></div>';
+}
+
+// ---------- watchlist (localStorage) ----------
+var watchOnly = false;
+function getWatch() {
+    try { return JSON.parse(localStorage.getItem("fs_watch") || "[]"); } catch (e) { return []; }
+}
+function inWatch(key) { return getWatch().indexOf(key) !== -1; }
+function toggleFav(key) {
+    var w = getWatch();
+    var i = w.indexOf(key);
+    if (i === -1) w.push(key); else w.splice(i, 1);
+    try { localStorage.setItem("fs_watch", JSON.stringify(w)); } catch (e) {}
+    renderCards(lastFiltered);
+}
+function toggleWatch() {
+    watchOnly = !watchOnly;
+    var b = document.getElementById("watchBtn");
+    if (b) b.setAttribute("aria-pressed", watchOnly ? "true" : "false");
+    applyFilters();
+}
+
+// ---------- compare (pick 2) ----------
+var compareSel = [];
+function toggleCompare(key) {
+    var i = compareSel.indexOf(key);
+    if (i !== -1) compareSel.splice(i, 1);
+    else {
+        compareSel.push(key);
+        if (compareSel.length > 2) compareSel.shift();
+    }
+    updateTray();
+    renderCards(lastFiltered);
+}
+function clearCompare() { compareSel = []; updateTray(); renderCards(lastFiltered); }
+function findByKey(key) {
+    for (var i = 0; i < players.length; i++) {
+        if (players[i].Name + "|" + players[i].Club === key) return players[i];
+    }
+    return null;
+}
+function updateTray() {
+    var tray = document.getElementById("compareTray");
+    var label = document.getElementById("compareLabel");
+    if (!tray) return;
+    if (!compareSel.length) { tray.hidden = true; return; }
+    tray.hidden = false;
+    var names = compareSel.map(function (k) { var p = findByKey(k); return p ? p.Name : k; });
+    if (label) label.textContent = names.join("  vs  ") + (names.length === 1 ? "  (+ pick one more)" : "");
+}
+function openCompare() {
+    if (compareSel.length !== 2) return;
+    var a = findByKey(compareSel[0]), b = findByKey(compareSel[1]);
+    if (!a || !b) return;
+    var rows = [
+        ["Club", a.Club, b.Club, false], ["League", a.League, b.League, false],
+        ["Position", a.Position, b.Position, false], ["Age", a.Age, b.Age, true],
+        ["Minutes", a.MinutesPlayed, b.MinutesPlayed, true], ["Goals", a.Goals, b.Goals, true],
+        ["Assists", a.Assists, b.Assists, true], ["G/90", a.GoalsPer90, b.GoalsPer90, true],
+        ["A/90", a.AssistsPer90, b.AssistsPer90, true], ["Dribbles", a.DribblesCompleted, b.DribblesCompleted, true],
+        ["Pass %", a.PassAccuracy, b.PassAccuracy, true], ["Star Score", a.FutureStarScore, b.FutureStarScore, true]
+    ];
+    function numOf(p, i) { return parseFloat([p.Club, p.League, p.Position, p.Age, p.MinutesPlayed, p.Goals, p.Assists, p.GoalsPer90, p.AssistsPer90, p.DribblesCompleted, p.PassAccuracy, p.FutureStarScore][i]) || 0; }
+    var html = '<div class="cmp-head">' + avatarHtml(a.Name, a.Club) + avatarHtml(b.Name, b.Club) + "</div>";
+    html += '<div class="modal-kicker">Head to head</div><h3 id="modalName" style="font-family:var(--font-display);font-size:1.6rem;text-transform:uppercase">' + esc(a.Name) + " vs " + esc(b.Name) + "</h3>";
+    html += '<table class="cmp-table"><tbody>';
+    for (var i = 0; i < rows.length; i++) {
+        var wa = rows[i][3] && numOf(a, i) > numOf(b, i);
+        var wb = rows[i][3] && numOf(b, i) > numOf(a, i);
+        html += "<tr><td>" + rows[i][0] + "</td><td class=\"" + (wa ? "win" : "") + "\">" + esc(String(rows[i][1])) + "</td><td class=\"" + (wb ? "win" : "") + "\">" + esc(String(rows[i][2])) + "</td></tr>";
+    }
+    html += "</tbody></table>";
+    document.getElementById("modalBody").innerHTML = html;
+    var modal = document.getElementById("playerModal");
+    modal.hidden = false;
+    if (document.body && document.body.style) document.body.style.overflow = "hidden";
+}
+
+// ---------- spotlight: player of the week ----------
+function renderSpotlight() {
+    var el = document.getElementById("spotlight");
+    if (!el || !playersByScore.length) return;
+    var pool = playersByScore.slice(0, 10);
+    var week = Math.floor(Date.now() / (7 * 86400000));
+    var p = pool[week % pool.length];
+    var key = p.Name + "|" + p.Club;
+    el.innerHTML = '<button type="button" class="spot-card" data-key="' + esc(key) + '">'
+        + avatarHtml(p.Name, p.Club)
+        + '<span><span class="spot-kicker">Spotlight prospect</span>'
+        + '<span class="spot-name" style="display:block">' + esc(p.Name) + "</span>"
+        + '<span class="spot-meta" style="display:block">' + getLeagueBadge(p.League) + " " + esc(p.Club) + " &middot; " + esc(p.Position) + " &middot; Age " + p.Age + "</span>"
+        + '<span class="spot-score">Star Score ' + p.FutureStarScore + " — open full file</span></span></button>";
+    el.querySelector(".spot-card").addEventListener("click", function () { openModal(key); });
+}
+
+// ---------- transfer watch ----------
+function renderMovers() {
+    var area = document.getElementById("moversArea");
+    if (!area) return;
+    if (typeof scoreMovers === "undefined") { area.innerHTML = '<div class="leader-card">No transfer data yet.</div>'; return; }
+    function row(m, badge, deltaTxt, deltaCls) {
+        var key = m.key || (m.name + "|" + m.club);
+        return '<div class="mover-row" data-key="' + esc(key) + '" tabindex="0" role="button">'
+            + avatarHtml(m.name, m.club)
+            + '<div><div class="mover-name">' + esc(m.name) + '</div><div class="mover-sub">' + esc(m.club) + " &middot; " + esc(m.pos) + " &middot; Age " + esc(String(m.age)) + "</div></div>"
+            + '<span class="mover-delta ' + deltaCls + '">' + badge + (deltaTxt ? " " + deltaTxt : "") + "</span></div>";
+    }
+    var html = "";
+    if (scoreMovers.fresh && scoreMovers.fresh.length) {
+        html += '<div class="mover-group"><h3>Summer arrivals</h3>' + scoreMovers.fresh.map(function (m) {
+            return row(m, "NEW", m.now, "new");
+        }).join("") + "</div>";
+    }
+    if (scoreMovers.climbers && scoreMovers.climbers.length) {
+        html += '<div class="mover-group"><h3>Biggest score revisions</h3>' + scoreMovers.climbers.map(function (m) {
+            return row(m, "+" + m.delta, "#" + m.rankTo, "up");
+        }).join("") + "</div>";
+    }
+    area.innerHTML = html || '<div class="leader-card">No transfer data yet.</div>';
+    function open(e) {
+        var t = e.target;
+        while (t && t !== area && !(t.getAttribute && t.getAttribute("data-key"))) t = t.parentNode;
+        if (t && t !== area) openModal(t.getAttribute("data-key"));
+    }
+    area.addEventListener("click", open);
+    area.addEventListener("keydown", function (e) {
+        if ((e.key === "Enter" || e.key === " ") && e.target && e.target.getAttribute && e.target.getAttribute("data-key")) {
+            e.preventDefault(); openModal(e.target.getAttribute("data-key"));
+        }
+    });
+}
+
+// ---------- export current view as CSV ----------
+function exportCsv() {
+    var cols = ["Name", "Age", "Nationality", "Club", "League", "Position", "MinutesPlayed", "Goals", "Assists", "FutureStarScore"];
+    function q(v) { v = String(v == null ? "" : v); return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+    var out = cols.join(",") + "\n" + lastFiltered.map(function (p) {
+        return cols.map(function (c) { return q(p[c]); }).join(",");
+    }).join("\n");
+    var blob = new Blob([out], { type: "text/csv" });
+    var a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "future-stars.csv";
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
 }
 
 function fillLeagues() {
@@ -337,6 +485,7 @@ function applyFilters() {
             var hay = (p.Name + " " + p.Club + " " + p.League + " " + p.Nationality).toLowerCase();
             if (hay.indexOf(search) === -1) continue;
         }
+        if (watchOnly && !inWatch(p.Name + "|" + p.Club)) continue;
         filtered.push(p);
     }
     visibleCount = 48;
@@ -354,6 +503,7 @@ function clearFilters() {
     document.getElementById("searchBox").value = "";
     sortCol = "FutureStarScore";
     sortDir = "desc";
+    if (watchOnly) toggleWatch();
     applyFilters();
 }
 
@@ -648,8 +798,14 @@ function renderCards(list) {
             if (playersByScore[j].Name === p.Name && playersByScore[j].Club === p.Club) { rank = j + 1; break; }
         }
         html += '<div class="card pos-' + cat + '" style="--d:' + Math.min(i, 24) * 22 + 'ms" data-key="' + esc(p.Name + "|" + p.Club) + '" tabindex="0" role="button" aria-label="Open profile for ' + esc(p.Name) + '">';
+        var key = p.Name + "|" + p.Club;
+        var favOn = inWatch(key) ? " on" : "";
+        var vsOn = compareSel.indexOf(key) !== -1 ? " on" : "";
+        var heart = '<svg viewBox="0 0 24 24" fill="' + (inWatch(key) ? "currentColor" : "none") + '" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
         html += '<div class="card-top"><span class="card-rank">#' + rank + '</span>';
-        html += '<span class="card-pos ' + cat + '">' + esc(p.Position) + '</span></div>';
+        html += '<span class="card-pos ' + cat + '">' + esc(p.Position) + '</span>';
+        html += '<span class="card-actions"><button type="button" class="icon-btn fav' + favOn + '" data-fav="' + esc(key) + '" aria-pressed="' + (inWatch(key) ? "true" : "false") + '" aria-label="Save ' + esc(p.Name) + ' to watchlist" title="Watchlist">' + heart + '</button>';
+        html += '<button type="button" class="icon-btn vsbtn' + vsOn + '" data-vs="' + esc(key) + '" aria-pressed="' + (compareSel.indexOf(key) !== -1 ? "true" : "false") + '" aria-label="Select ' + esc(p.Name) + ' to compare" title="Compare"><span style="font-family:var(--font-display);font-weight:700;font-size:0.7rem;letter-spacing:1px">VS</span></button></span></div>';
         html += '<div class="card-id">' + avatarHtml(p.Name, p.Club);
         html += '<div><div class="card-name">' + esc(p.Name) + '</div>';
         html += '<div class="card-meta">' + flag + ' ' + esc(p.Club) + ' &middot; Age ' + p.Age + '<br>' + esc(p.League) + '</div></div></div>';
@@ -744,10 +900,17 @@ window.onload = function () {
     renderLeagueTable();
     renderCards(players);
     renderTable(players);
+    renderSpotlight();
+    renderMovers();
+    updateTray();
     var cards = document.getElementById("cardsArea");
     if (cards && cards.addEventListener) {
         cards.addEventListener("click", function (e) {
             var t = e.target;
+            var fav = t.closest ? t.closest("[data-fav]") : null;
+            if (fav && cards.contains(fav)) { toggleFav(fav.getAttribute("data-fav")); return; }
+            var vs = t.closest ? t.closest("[data-vs]") : null;
+            if (vs && cards.contains(vs)) { toggleCompare(vs.getAttribute("data-vs")); return; }
             while (t && t !== cards && !(t.getAttribute && t.getAttribute("data-key"))) t = t.parentNode;
             if (t && t !== cards) openModal(t.getAttribute("data-key"));
         });

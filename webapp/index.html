@@ -9,7 +9,15 @@
     <meta property="og:title" content="Future Stars - U22 Soccer Scouting">
     <meta property="og:description" content="U22 prospects across 17 leagues, ranked by Future Star Score.">
     <meta property="og:type" content="website">
+    <meta property="og:url" content="https://futurestarsweb.vercel.app/webapp/">
+    <meta property="og:image" content="https://futurestarsweb.vercel.app/webapp/logo.svg">
     <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Future Stars - U22 Soccer Scouting">
+    <meta name="twitter:description" content="U22 prospects across 17 leagues, ranked by Future Star Score.">
+    <link rel="canonical" href="https://futurestarsweb.vercel.app/webapp/">
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"WebSite","name":"Future Stars","url":"https://futurestarsweb.vercel.app/webapp/","description":"U22 soccer prospects across 17 leagues, ranked by Future Star Score."}
+    </script>
     <title>Future Stars - Soccer Player Analysis</title>
     <link rel="icon" href="logo.svg" type="image/svg+xml">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -39,6 +47,7 @@
     </nav>
 
     <header class="hero" id="top">
+        <div class="hero-art" aria-hidden="true"></div>
         <div class="hero-inner">
             <p class="eyebrow">Scouting department &middot; U22 &middot; 2025-26 season</p>
             <h1>Future <span class="stroke">Stars</span></h1>
@@ -47,6 +56,7 @@
                 <a class="btn btn-primary" href="#top3">Top of the table</a>
                 <a class="btn btn-ghost" href="#players">Full squad list</a>
             </div>
+            <div class="spotlight" id="spotlight"></div>
             <div class="stat-grid">
                 <div class="stat-card">
                     <strong id="totalPlayers">&ndash;</strong>
@@ -93,6 +103,8 @@
                     <input type="search" id="searchBox" placeholder="Search player, club, or league..." oninput="applyFilters()" autocomplete="off">
                 </div>
                 <div class="filter-actions">
+                    <button type="button" class="btn btn-ghost btn-sm" id="watchBtn" aria-pressed="false" onclick="toggleWatch()">Watchlist</button>
+                    <button type="button" class="btn btn-ghost btn-sm" onclick="exportCsv()">Export CSV</button>
                     <button type="button" class="btn btn-ghost btn-sm" onclick="clearFilters()">Clear</button>
                 </div>
             </form>
@@ -122,6 +134,18 @@
             <div class="leaders" id="leadersArea">
                 <div class="leader-card loading">Loading...</div>
                 <div class="leader-card loading">Loading...</div>
+                <div class="leader-card loading">Loading...</div>
+                <div class="leader-card loading">Loading...</div>
+            </div>
+        </section>
+
+        <!-- transfer watch -->
+        <section id="movers" aria-label="Transfer watch">
+            <div class="section-head">
+                <h2>Transfer watch</h2>
+                <p>New arrivals in the database and the biggest score revisions.</p>
+            </div>
+            <div class="movers" id="moversArea">
                 <div class="leader-card loading">Loading...</div>
                 <div class="leader-card loading">Loading...</div>
             </div>
@@ -178,6 +202,23 @@
                 </div>
             </div>
         </section>
+        <!-- how the score works -->
+        <section id="formula" aria-label="How the score works">
+            <div class="section-head">
+                <h2>How the score works</h2>
+                <p>Five parts, one number. Example: Lamine Yamal, score 22.32.</p>
+            </div>
+            <div class="panel formula">
+                <div class="bd">
+                    <div class="bd-row"><span class="bd-label">Goals (G/90 x 3)</span><span class="bd-track"><span class="bd-fill static" style="width:6%"></span></span><span class="bd-val">+0.87</span></div>
+                    <div class="bd-row"><span class="bd-label">Assists (A/90 x 2)</span><span class="bd-track"><span class="bd-fill static" style="width:6%"></span></span><span class="bd-val">+0.84</span></div>
+                    <div class="bd-row"><span class="bd-label">Dribbles (/10)</span><span class="bd-track"><span class="bd-fill static" style="width:100%"></span></span><span class="bd-val">+14.40</span></div>
+                    <div class="bd-row"><span class="bd-label">Passing (%/20)</span><span class="bd-track"><span class="bd-fill static" style="width:29%"></span></span><span class="bd-val">+4.20</span></div>
+                    <div class="bd-row"><span class="bd-label">Youth bonus (age 18)</span><span class="bd-track"><span class="bd-fill static" style="width:14%"></span></span><span class="bd-val">+2.00</span></div>
+                </div>
+                <p class="bd-note">Score = goals/90 x 3 + assists/90 x 2 + dribbles/10 + pass%/20 + (22 - age) x 0.5. Dribbles dominate by design: beating a man at 18 matters.</p>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -198,6 +239,13 @@
         <p style="text-align:center;padding:20px">This dashboard needs JavaScript to display player data.</p>
     </noscript>
 
+    <div class="compare-tray" id="compareTray" hidden>
+        <span id="compareLabel"></span>
+        <button type="button" class="btn btn-primary btn-sm" onclick="openCompare()">Compare</button>
+        <button type="button" class="btn btn-ghost btn-sm" onclick="clearCompare()">Clear</button>
+    </div>
+
+    <script src="movers.js"></script>
     <script src="app.js"></script>
     <!-- Star Scout chatbot (Future Stars trained) -->
     <script src="https://jobs-strips-quantity-likes.trycloudflare.com/widget.js" data-key="SITE_DEMO" data-color="#16a34a" data-name="Star Scout" data-logo="/webapp/logo.svg" data-greeting="Hey! I'm Star Scout, your Future Stars guide. Ask me about any U22 prospect, club, or league!" data-chips="Top 5 prospects|Best midfielders|Top scorer|Barcelona prospects|Compare Yamal vs Bellingham"></script>

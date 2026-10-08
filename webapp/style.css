@@ -111,6 +111,69 @@ img.brand-mark {
 
 /* ---------- hero: centre-circle ---------- */
 .hero { max-width: 1180px; margin: 0 auto; padding: 56px 20px 8px; position: relative; overflow: hidden; }
+.hero-art {
+    position: absolute; right: -60px; top: 10px; width: 420px; height: 420px;
+    background: url("logo.svg") no-repeat center / contain;
+    opacity: 0.07; pointer-events: none;
+}
+/* spotlight: player of the week */
+.spotlight { margin-bottom: 30px; }
+.spot-card {
+    display: flex; gap: 18px; align-items: center;
+    background: linear-gradient(120deg, rgba(215, 245, 66, 0.1), rgba(215, 245, 66, 0.02) 60%), var(--card);
+    border: 1px solid var(--border-strong); border-radius: var(--radius);
+    padding: 18px 20px; cursor: pointer; text-align: left; width: 100%; color: var(--chalk); font-family: inherit;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+.spot-card:hover { border-color: var(--volt); transform: translateY(-2px); }
+.spot-card .avatar { width: 76px; height: 94px; font-size: 1.7rem; margin: 0; flex-shrink: 0; }
+.spot-kicker { font-family: var(--font-display); font-size: 0.9rem; font-weight: 600; letter-spacing: 3px; text-transform: uppercase; color: var(--volt); }
+.spot-name { font-family: var(--font-display); font-size: 2rem; font-weight: 700; text-transform: uppercase; line-height: 1; }
+.spot-meta { font-size: 0.82rem; color: var(--sage); margin: 2px 0 8px; }
+.spot-score { font-family: var(--font-display); font-size: 1.4rem; font-weight: 700; color: var(--volt); font-variant-numeric: tabular-nums; }
+/* movers + formula */
+.movers { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.mover-group h3 { font-family: var(--font-display); font-size: 1.2rem; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 10px; color: var(--sage); }
+.mover-row { display: flex; align-items: center; gap: 10px; padding: 9px 4px; border-top: 1px solid var(--line-soft); cursor: pointer; border-radius: 6px; }
+.mover-row:hover { background: rgba(215, 245, 66, 0.05); }
+.mover-row .avatar { width: 38px; height: 48px; font-size: 0.9rem; margin: 0; flex-shrink: 0; }
+.mover-name { font-weight: 700; font-size: 0.88rem; }
+.mover-sub { font-size: 0.72rem; color: var(--dim); }
+.mover-delta { margin-left: auto; font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.mover-delta.up { color: var(--volt); }
+.mover-delta.new { color: var(--chalk); }
+.formula { max-width: 640px; }
+/* card buttons: favourite + compare */
+.card-actions { display: flex; gap: 6px; }
+.icon-btn {
+    width: 30px; height: 30px; border-radius: 8px; cursor: pointer;
+    border: 1px solid var(--line); background: transparent; color: var(--dim);
+    display: inline-flex; align-items: center; justify-content: center;
+    transition: border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
+}
+.icon-btn:hover { border-color: var(--volt); color: var(--volt); transform: translateY(-1px); }
+.icon-btn.on { border-color: var(--volt); color: var(--volt); background: rgba(215, 245, 66, 0.1); }
+.icon-btn svg { width: 16px; height: 16px; }
+#watchBtn[aria-pressed="true"] { border-color: var(--volt); color: var(--volt); background: rgba(215, 245, 66, 0.08); }
+.filter-actions { display: flex; gap: 8px; }
+/* compare tray + table */
+.compare-tray {
+    position: fixed; left: 50%; bottom: 16px; transform: translateX(-50%); z-index: 250;
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(11, 20, 16, 0.97); border: 1px solid var(--border-strong);
+    border-radius: 12px; padding: 10px 14px; box-shadow: var(--shadow);
+    font-size: 0.85rem; animation: nav-drop 0.25s ease-out;
+}
+.compare-tray[hidden] { display: none; }
+.cmp-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; margin-top: 10px; }
+.cmp-table th, .cmp-table td { padding: 8px 10px; border-bottom: 1px solid var(--line-soft); text-align: center; }
+.cmp-table th:first-child, .cmp-table td:first-child { text-align: left; color: var(--dim); text-transform: uppercase; font-size: 0.72rem; letter-spacing: 1px; }
+.cmp-table .win { color: var(--volt); font-weight: 700; }
+.cmp-head { display: flex; gap: 12px; align-items: center; margin-bottom: 6px; padding-right: 36px; }
+.cmp-head .avatar { width: 56px; height: 70px; font-size: 1.2rem; margin: 0; flex-shrink: 0; }
+/* silhouette fallback for players without photos */
+.avatar .sil { position: absolute; inset: 0; margin: auto; width: 60%; height: 60%; opacity: 0.25; }
+@media (max-width: 920px) { .movers { grid-template-columns: 1fr; } }
 .hero::after {
     content: ''; position: absolute; right: -140px; top: -140px;
     width: 420px; height: 420px; border-radius: 50%;
