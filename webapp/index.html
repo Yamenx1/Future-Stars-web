@@ -211,7 +211,7 @@
         <section id="formula" aria-label="How the score works">
             <div class="section-head">
                 <h2>How the score works</h2>
-                <p>Five parts, one number. Example: Lamine Yamal, score 22.32.</p>
+                <p>One formula per unit. Example bars: Lamine Yamal (forward), score 21.82.</p>
             </div>
             <div class="panel formula">
                 <div class="bd">
@@ -219,9 +219,13 @@
                     <div class="bd-row"><span class="bd-label">Assists (A/90 x 2)</span><span class="bd-track"><span class="bd-fill static" style="width:6%"></span></span><span class="bd-val">+0.84</span></div>
                     <div class="bd-row"><span class="bd-label">Dribbles (/10)</span><span class="bd-track"><span class="bd-fill static" style="width:100%"></span></span><span class="bd-val">+14.40</span></div>
                     <div class="bd-row"><span class="bd-label">Passing (%/20)</span><span class="bd-track"><span class="bd-fill static" style="width:29%"></span></span><span class="bd-val">+4.20</span></div>
-                    <div class="bd-row"><span class="bd-label">Youth bonus (age 18)</span><span class="bd-track"><span class="bd-fill static" style="width:14%"></span></span><span class="bd-val">+2.00</span></div>
+                    <div class="bd-row"><span class="bd-label">Youth bonus (age 19)</span><span class="bd-track"><span class="bd-fill static" style="width:10%"></span></span><span class="bd-val">+1.50</span></div>
                 </div>
-                <p class="bd-note">Score = goals/90 x 3 + assists/90 x 2 + dribbles/10 + pass%/20 + (22 - age) x 0.5. Dribbles dominate by design: beating a man at 18 matters.</p>
+                <p class="bd-note">Forwards: goals/90 x 3 + assists/90 x 2 + dribbles/10 + pass%/20 + youth bonus.<br>
+                Midfielders: goals/90 x 2 + assists/90 x 2.5 + dribbles/12 + (tackles+interceptions)/40 + pass%/18 + youth bonus.<br>
+                Defenders: defending (tackles+interceptions)/16 capped at 7.5 + pass%/20 + attack (goals+assists)/90 x 2 + youth bonus.<br>
+                Goalkeepers: pass%/18 + (tackles+interceptions) x 0.3 + youth bonus.<br>
+                Youth bonus everywhere: (22 - age) x 0.5. Dribbles dominate the forward score by design: beating a man at 18 matters.</p>
             </div>
         </section>
     </main>
