@@ -11,7 +11,7 @@ var playerPhotos = {"Lamine Yamal|Barcelona":"https://media.api-sports.io/footba
 var sortCol = "FutureStarScore";
 var sortDir = "desc";
 
-// player data (output from FutureStarPreprocessor.java - 188 players, all under 22)
+// player data (output from FutureStarPreprocessor.java - 223 players, all under 22)
 var csvData = `
 Name,Age,Nationality,Club,League,Position,MinutesPlayed,Goals,Assists,ShotsOnTarget,DribblesCompleted,PassAccuracy,Tackles,Interceptions,GoalsPer90,AssistsPer90,FutureStarScore
 Lamine Yamal,19,Spain,Barcelona,La Liga,RW,2771,9,13,47,144,84,42,16,0.29,0.42,22.32
@@ -21,7 +21,7 @@ Pau Cubarsi,19,Spain,Barcelona,La Liga,CB,2620,2,3,8,5,69,33,17,0.07,0.1,6.36
 Gavi,22,Spain,Barcelona,La Liga,CM,1014,1,1,1,6,88,30,10,0.09,0.09,5.94
 Joao Neves,21,Portugal,PSG,Ligue 1,CM,2600,6,10,22,24,91,58,42,0.21,0.35,9.27
 Mathys Tel,20,France,Tottenham,Premier League,CF,1800,9,5,32,34,80,16,10,0.45,0.25,10.75
-Alejandro Garnacho,22,Argentina,Chelsea,Premier League,LW,2400,11,7,42,60,77,20,14,0.41,0.26,12.11
+Alejandro Garnacho,22,Argentina,Aston Villa,Premier League,LW,2400,11,7,42,60,77,20,14,0.41,0.26,12.11
 Savinho,22,Brazil,Man City,Premier League,RW,2000,6,8,24,54,82,16,10,0.27,0.36,11.53
 Arda Guler,21,Turkey,Real Madrid,La Liga,AM,1800,10,6,32,28,87,14,10,0.5,0.3,10.25
 Evan Ferguson,22,Ireland,Roma,Serie A,CF,1800,7,4,28,16,78,14,10,0.35,0.2,7.45
@@ -56,7 +56,7 @@ Andrey Santos,22,Brazil,Chelsea,Premier League,CM,2857,10,3,16,18,83,110,32,0.32
 Julio Enciso,21,Paraguay,Brighton,Premier League,AM,1400,5,4,18,26,79,10,6,0.32,0.26,9.03
 Cher Ndour,21,Italy,Besiktas,Super Lig,CM,1800,3,4,12,14,84,36,24,0.15,0.2,7.45
 Ben Doak,20,Scotland,Middlesbrough,Championship,RW,1600,5,6,18,34,79,10,8,0.28,0.34,10.37
-Ethan Nwaneri,19,England,Arsenal,Premier League,AM,1400,6,4,22,30,82,10,6,0.39,0.26,10.77
+Ethan Nwaneri,19,England,Dortmund,Bundesliga,AM,1400,6,4,22,30,82,10,6,0.39,0.26,10.77
 Myles Lewis-Skelly,20,England,Arsenal,Premier League,LB,1900,2,4,8,26,87,40,28,0.09,0.19,9.11
 Vitor Reis,20,Brazil,Girona,La Liga,CB,1200,1,0,4,6,89,30,24,0.08,0.0,6.78
 Jack Hinshelwood,21,England,Brighton,Premier League,CM,1800,3,3,12,16,86,38,26,0.15,0.15,7.65
@@ -91,7 +91,7 @@ Julian Hall,18,USA,NY Red Bulls,MLS,CF,900,4,2,14,18,75,6,4,0.4,0.2,9.65
 Peyton Miller,18,USA,New England,MLS,LB,1300,1,4,6,22,81,30,22,0.07,0.28,9.51
 Noah Allen,22,USA,Inter Miami,MLS,LB,1800,1,3,6,18,82,34,24,0.05,0.15,6.85
 Mads Hansen,20,Denmark,Nordsjaelland,Danish SL,RW,1800,7,6,26,40,79,12,8,0.35,0.3,11.1
-Konstantinos Karetsas,18,Greece,Genk,Belgian Pro League,AM,1500,5,6,20,34,81,10,8,0.3,0.36,11.57
+Konstantinos Karetsas,18,Greece,Dortmund,Bundesliga,AM,1500,5,6,20,34,81,10,8,0.3,0.36,11.57
 Joel Ordonez,22,Ecuador,Club Brugge,Belgian Pro League,CB,2200,2,1,8,10,88,48,36,0.08,0.04,6.23
 Chemsdine Talbi,21,Morocco,Club Brugge,Belgian Pro League,RW,1900,8,5,30,44,79,12,8,0.38,0.24,10.96
 Lennon Miller,20,Scotland,Celtic,Scottish Premiership,CM,2100,4,6,18,22,84,40,28,0.17,0.26,8.93
@@ -202,6 +202,41 @@ Jeremy Jacquet,21,France,Liverpool,Premier League,CB,1671,0,0,2,5,86,72,66,0.0,0
 Oscar Perea,20,Colombia,America,Liga MX,AM,1254,2,0,11,19,82,6,15,0.14,0.0,7.42
 Gilberto Mora,17,Mexico,Tijuana,Liga MX,AM,1131,4,1,11,17,82,7,5,0.32,0.08,9.42
 Allen Obando,20,Ecuador,Nacional,Primeira Liga,CF,157,1,0,1,1,75,1,0,0.57,0.0,6.56
+Rio Ngumoha,17,England,Liverpool,Premier League,LW,560,2,1,6,6,78,2,3,0.32,0.16,8.28
+Sverre Nypan,19,Norway,Lommel,Belgian Pro League,AM,624,0,0,1,7,81,10,3,0,0,6.25
+Jeremy Jacquet,21,France,Liverpool,Premier League,CB,1671,0,0,2,5,86,72,66,0,0,5.3
+Oscar Perea,20,Colombia,America,Liga MX,AM,1254,2,0,11,15,81,6,15,0.14,0,6.97
+Gilberto Mora,17,Mexico,Tijuana,Liga MX,AM,1131,4,1,8,14,81,6,3,0.32,0.08,9.07
+Allen Obando,20,Ecuador,Nacional,Primeira Liga,CF,157,1,0,1,1,75,1,0,0.57,0,6.56
+Samuel Amo-Ameyaw,20,England,Strasbourg,Ligue 1,RW,1043,2,2,6,10,78,4,3,0.17,0.17,6.75
+Mahamadou Nagida,21,Cameroon,Paris SG,Ligue 1,LB,815,0,0,2,7,83,12,9,0,0,5.35
+Divine Mukasa,19,England,West Ham,Championship,AM,851,2,3,6,10,81,4,3,0.21,0.32,7.82
+Ayden Heaven,19,England,Man United,Premier League,CB,924,0,1,1,3,86,12,8,0,0.1,6.3
+Jack Fletcher,19,England,Man United,Premier League,CM,108,0,0,0,1,84,1,1,0,0,5.8
+Gonzalo Garcia,22,Spain,Fulham,Premier League,CF,952,6,1,11,3,85,11,3,0.57,0.09,6.44
+Davide Bartesaghi,20,Italy,Milan,Serie A,LB,2441,2,0,7,22,83,37,27,0.07,0,7.56
+Jan Faberski,20,Poland,Zwolle,Eredivisie,RW,477,0,2,1,5,78,2,1,0,0.38,6.16
+Don-Angelo Konadu,19,Netherlands,Lommel,Belgian Pro League,CF,168,0,0,1,1,75,1,0,0,0,5.35
+Sean Steur,18,Netherlands,Newcastle,Premier League,AM,1125,1,0,8,14,81,6,3,0.08,0,7.69
+Oliver Scarles,20,England,West Ham,Championship,LB,845,0,0,3,8,83,13,9,0,0,5.95
+Damion Downs,22,USA,St. Louis City,MLS,CF,536,0,0,4,3,75,2,1,0,0,4.05
+Gessime Yassine,20,Morocco,Strasbourg,Ligue 1,RW,805,0,1,5,8,78,3,2,0,0.11,5.92
+Abdoul Ouattara,20,France,Strasbourg,Ligue 1,LB,1768,0,0,5,16,83,27,19,0,0,6.75
+Lucas Hogsberg,20,Denmark,Strasbourg,Ligue 1,CB,1792,0,0,2,5,86,23,16,0,0,5.8
+Mathis Amougou,20,France,Strasbourg,Ligue 1,CM,797,0,0,3,6,84,12,9,0,0,5.8
+Lennart Karl,18,Germany,Bayern,Bundesliga,AM,1281,5,5,9,15,81,6,4,0.35,0.35,9.3
+Max Dowman,16,England,Arsenal,Premier League,AM,300,1,0,2,4,81,2,1,0.3,0,8.35
+Will Lankshear,21,England,Middlesbrough,Championship,CF,2800,11,4,11,17,75,8,6,0.35,0.13,7.26
+Pietro Comuzzo,21,Italy,Torino,Serie A,CB,1696,1,0,2,5,86,22,15,0.05,0,5.45
+Conrad Harder,21,Denmark,Strasbourg,Ligue 1,CF,919,3,3,4,6,75,3,2,0.29,0.29,6.3
+Victor Froholdt,20,Denmark,Porto,Liga Portugal,CM,2875,6,6,11,30,85,49,33,0.19,0.19,9.2
+Yael Padilla,20,Mexico,Tijuana,Liga MX,LW,150,1,0,1,2,78,1,0,0.6,0,6.9
+Dean Huijsen,21,Spain,Real Madrid,La Liga,CB,2034,2,2,5,6,86,32,18,0.09,0.09,5.85
+Ethan Mbappe,19,France,Lille,Ligue 1,AM,567,3,1,7,6,83,14,3,0.48,0.16,8.01
+Darryl Bakola,18,France,Sassuolo,Serie A,CM,318,0,2,1,2,84,5,3,0,0.57,7.54
+Lucas Bergvall,20,Sweden,Tottenham,Premier League,CM,1175,1,3,5,8,84,18,13,0.08,0.23,6.7
+Isaac Babadi,21,Netherlands,Antwerp,Belgian Pro League,AM,479,0,0,3,6,81,2,1,0,0,5.15
+Heriberto Jurado,21,Mexico,Cercle Brugge,Belgian Pro League,AM,161,0,0,1,2,81,1,0,0,0,4.75
 `;
 
 // parse csv
@@ -366,13 +401,126 @@ function openCompare() {
         html += "<tr><td>" + rows[i][0] + "</td><td class=\"" + (wa ? "win" : "") + "\">" + esc(String(rows[i][1])) + "</td><td class=\"" + (wb ? "win" : "") + "\">" + esc(String(rows[i][2])) + "</td></tr>";
     }
     html += "</tbody></table>";
+    html += '<div style="margin-top:12px;display:flex;gap:8px;align-items:center"><button type="button" class="btn btn-ghost btn-sm" id="cmpShare">Copy compare link</button><span class="share-note" id="cmpNote" aria-live="polite"></span></div>';
     document.getElementById("modalBody").innerHTML = html;
+    var shareBtn = document.getElementById("cmpShare");
+    if (shareBtn) shareBtn.addEventListener("click", function () {
+        var link = location.protocol + "//" + location.host + location.pathname + "?compare=" + compareSel.map(function (k) { return encodeURIComponent(k); }).join("~");
+        var ok = function () { var n = document.getElementById("cmpNote"); if (n) n.textContent = "Link copied!"; };
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(link).then(ok, ok); else ok();
+        try { if (history.replaceState) history.replaceState(null, "", "?compare=" + compareSel.map(function (k) { return encodeURIComponent(k); }).join("~")); } catch (e) {}
+    });
     var modal = document.getElementById("playerModal");
     modal.hidden = false;
     if (document.body && document.body.style) document.body.style.overflow = "hidden";
 }
 
-// ---------- spotlight: player of the week ----------
+// ---------- score chart (top 20 of current view) ----------
+function drawChart(list) {
+    var cv = document.getElementById("scoreChart");
+    if (!cv || !cv.getContext) return;
+    var top = list.slice(0, 20);
+    var dpr = window.devicePixelRatio || 1;
+    var W = cv.clientWidth || 600, rowH = 24, padL = 150, padR = 44, padT = 8;
+    var H = top.length * rowH + padT + 8;
+    cv.style.height = H + "px";
+    cv.width = W * dpr; cv.height = H * dpr;
+    var c = cv.getContext("2d");
+    c.scale(dpr, dpr);
+    c.clearRect(0, 0, W, H);
+    if (!top.length) return;
+    var max = 0, i;
+    for (i = 0; i < top.length; i++) max = Math.max(max, parseFloat(top[i].FutureStarScore) || 0);
+    c.font = "12px Inter, system-ui, sans-serif";
+    for (i = 0; i < top.length; i++) {
+        var p = top[i], y = padT + i * rowH;
+        var v = parseFloat(p.FutureStarScore) || 0;
+        var bw = max > 0 ? ((W - padL - padR) * v / max) : 0;
+        c.fillStyle = "#9fb09a";
+        var label = (i + 1) + ". " + p.Name;
+        if (label.length > 24) label = label.slice(0, 23) + "…";
+        c.fillText(label, 0, y + 15);
+        var g = c.createLinearGradient(padL, 0, padL + bw, 0);
+        g.addColorStop(0, "#d7f542"); g.addColorStop(1, "#9dc22e");
+        c.fillStyle = g;
+        c.beginPath();
+        if (c.roundRect) c.roundRect(padL, y + 4, Math.max(bw, 2), 14, 4); else c.rect(padL, y + 4, Math.max(bw, 2), 14);
+        c.fill();
+        c.fillStyle = "#f2f5ec";
+        c.fillText(String(p.FutureStarScore), padL + bw + 6, y + 15);
+    }
+}
+
+// ---------- deep links: ?player= ?compare= ?league= ?pos= ?q= ?club= ----------
+function readParam(name) {
+    try {
+        var m = new RegExp("[?&]" + name + "=([^&]*)").exec(location.search);
+        return m ? decodeURIComponent(m[1].replace(/\+/g, " ")) : "";
+    } catch (e) { return ""; }
+}
+function syncFilterUrl() {
+    try {
+        if (!history.replaceState) return;
+        var pos = document.getElementById("positionFilter").value;
+        var league = document.getElementById("leagueFilter").value;
+        var q = document.getElementById("searchBox").value.trim();
+        var parts = [];
+        if (pos && pos !== "all") parts.push("pos=" + encodeURIComponent(pos));
+        if (league && league !== "all") parts.push("league=" + encodeURIComponent(league));
+        if (q) parts.push("q=" + encodeURIComponent(q));
+        var base = location.protocol + "//" + location.host + location.pathname;
+        history.replaceState(null, "", parts.length ? base + "?" + parts.join("&") : base);
+    } catch (e) {}
+}
+function applyDeepLinks() {
+    var cmp = readParam("compare");
+    if (cmp) {
+        var keys = cmp.split("~").map(function (k) { try { return decodeURIComponent(k); } catch (e) { return k; } });
+        compareSel = keys.filter(function (k) { return findByKey(k); }).slice(0, 2);
+        if (compareSel.length === 2) { updateTray(); openCompare(); return true; }
+    }
+    var player = readParam("player");
+    var club = readParam("club");
+    var q = club || readParam("q");
+    var pos = readParam("pos"), league = readParam("league");
+    var touched = false;
+    if (pos && document.getElementById("positionFilter")) { document.getElementById("positionFilter").value = pos; touched = true; }
+    if (league && document.getElementById("leagueFilter")) { document.getElementById("leagueFilter").value = league; touched = true; }
+    if (player || q) { document.getElementById("searchBox").value = player || q; touched = true; }
+    if (touched) {
+        applyFilters();
+        var sec = document.getElementById("players");
+        if (sec && sec.scrollIntoView) sec.scrollIntoView();
+    }
+    return touched;
+}
+
+// ---------- search autocomplete ----------
+function initAutocomplete() {
+    var box = document.getElementById("searchBox");
+    var list = document.getElementById("acList");
+    if (!box || !list) return;
+    box.addEventListener("input", function () {
+        var s = box.value.toLowerCase().trim();
+        if (s.length < 2) { list.hidden = true; list.innerHTML = ""; return; }
+        var hits = [];
+        for (var i = 0; i < players.length && hits.length < 6; i++) {
+            var p = players[i];
+            if (p.Name.toLowerCase().indexOf(s) !== -1 || p.Club.toLowerCase().indexOf(s) !== -1) hits.push(p);
+        }
+        if (!hits.length) { list.hidden = true; list.innerHTML = ""; return; }
+        list.innerHTML = hits.map(function (p) {
+            return '<button type="button" class="ac-item" data-name="' + esc(p.Name) + '"><span>' + esc(p.Name) + "</span><small>" + esc(p.Club) + "</small></button>";
+        }).join("");
+        list.hidden = false;
+    });
+    list.addEventListener("click", function (e) {
+        var b = e.target.closest ? e.target.closest("[data-name]") : null;
+        if (b) { box.value = b.getAttribute("data-name"); list.hidden = true; applyFilters(); box.focus(); }
+    });
+    box.addEventListener("keydown", function (e) { if (e.key === "Escape") { list.hidden = true; } });
+    box.addEventListener("blur", function () { setTimeout(function () { list.hidden = true; }, 150); });
+}
 function renderSpotlight() {
     var el = document.getElementById("spotlight");
     if (!el || !playersByScore.length) return;
@@ -402,6 +550,11 @@ function renderMovers() {
             + '<span class="mover-delta ' + deltaCls + '">' + badge + (deltaTxt ? " " + deltaTxt : "") + "</span></div>";
     }
     var html = "";
+    try {
+        var deadline = new Date(2027, 0, 31, 23, 59, 59);
+        var days = Math.ceil((deadline - Date.now()) / 86400000);
+        if (days > 0) html += '<div class="ticker" style="margin-bottom:10px">Winter window shuts in ' + days + ' days — new faces land here after each sync.</div>';
+    } catch (e) {}
     if (scoreMovers.fresh && scoreMovers.fresh.length) {
         html += '<div class="mover-group"><h3>Summer arrivals</h3>' + scoreMovers.fresh.map(function (m) {
             return row(m, "NEW", m.now, "new");
@@ -476,6 +629,8 @@ function applyFilters() {
     visibleCount = 48;
     renderCards(filtered);
     renderTable(filtered);
+    drawChart(filtered);
+    syncFilterUrl();
     var rc = document.getElementById("resultCount");
     if (rc) {
         rc.textContent = "Showing " + filtered.length + " of " + players.length + " players";
@@ -578,7 +733,7 @@ function openModal(key) {
     var html = '<div class="modal-id">' + avatarHtml(p.Name, p.Club);
     html += '<div><div class="modal-kicker">' + esc(p.Position) + ' &middot; Age ' + p.Age + ' &middot; ' + esc(p.Nationality) + '</div>';
     html += '<h3 id="modalName">' + esc(p.Name) + '</h3>';
-    html += '<div class="modal-club">' + flag + ' ' + esc(p.Club) + ' &middot; ' + esc(p.League) + '</div></div></div>';
+    html += '<div class="modal-club">' + flag + ' <span data-club="' + esc(p.Club) + '" style="cursor:pointer;text-decoration:underline dotted">' + esc(p.Club) + '</span> &middot; ' + esc(p.League) + '</div></div></div>';
     html += '<div class="modal-score"><span>' + p.FutureStarScore + '</span><small>Future Star Score</small></div>';
     html += '<div class="bd">';
     for (var j = 0; j < bd.parts.length; j++) {
@@ -608,6 +763,7 @@ function openModal(key) {
         });
     });
     var modal = document.getElementById("playerModal");
+    modal.setAttribute("data-cur", key);
     modal.hidden = false;
     if (document.body && document.body.style) document.body.style.overflow = "hidden";
     var close = modal.querySelector ? modal.querySelector(".modal-close") : null;
@@ -636,11 +792,47 @@ function sharePlayer(name) {
 
 if (typeof document !== "undefined" && document.addEventListener) {
     document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape") { closeModal(); closeNav(); }
+        if (e.key === "Escape") { closeModal(); closeNav(); return; }
+        var modal = document.getElementById("playerModal");
+        var open = modal && !modal.hidden;
+        if (!open) return;
+        // arrow-key browsing through last filtered list
+        if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+            var cur = modal.getAttribute("data-cur") || "";
+            var list = (lastFiltered && lastFiltered.length ? lastFiltered : playersByScore);
+            var idx = -1;
+            for (var i = 0; i < list.length; i++) {
+                if (list[i].Name + "|" + list[i].Club === cur) { idx = i; break; }
+            }
+            if (idx !== -1) {
+                var n = e.key === "ArrowRight" ? (idx + 1) % list.length : (idx - 1 + list.length) % list.length;
+                openModal(list[n].Name + "|" + list[n].Club);
+            }
+        }
+        // focus trap
+        if (e.key === "Tab") {
+            var f = modal.querySelectorAll("button, [href], input, select, [tabindex]");
+            f = Array.prototype.filter.call(f, function (el) { return !el.disabled && el.offsetParent !== null; });
+            if (!f.length) return;
+            var first = f[0], last = f[f.length - 1];
+            if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+            else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        }
     });
+    // club click anywhere -> squad view
     document.addEventListener("click", function (e) {
         var nav = document.querySelector(".nav");
         if (nav && nav.classList.contains("open") && !nav.contains(e.target)) closeNav();
+        var t = e.target.closest ? e.target.closest("[data-club]") : null;
+        if (!t) return;
+        var club = t.getAttribute("data-club");
+        var box = document.getElementById("searchBox");
+        if (box && club) {
+            box.value = club;
+            applyFilters();
+            var sec = document.getElementById("players");
+            if (sec && sec.scrollIntoView) sec.scrollIntoView();
+        }
     });
 }
 
@@ -793,7 +985,7 @@ function renderCards(list) {
         html += '<button type="button" class="icon-btn vsbtn' + vsOn + '" data-vs="' + esc(key) + '" aria-pressed="' + (compareSel.indexOf(key) !== -1 ? "true" : "false") + '" aria-label="Select ' + esc(p.Name) + ' to compare" title="Compare"><span style="font-family:var(--font-display);font-weight:700;font-size:0.7rem;letter-spacing:1px">VS</span></button></span></div>';
         html += '<div class="card-id">' + avatarHtml(p.Name, p.Club);
         html += '<div><div class="card-name">' + esc(p.Name) + '</div>';
-        html += '<div class="card-meta">' + flag + ' ' + esc(p.Club) + ' &middot; Age ' + p.Age + '<br>' + esc(p.League) + '</div></div></div>';
+        html += '<div class="card-meta">' + flag + ' <span data-club="' + esc(p.Club) + '" style="cursor:pointer;text-decoration:underline dotted">' + esc(p.Club) + '</span> &middot; Age ' + p.Age + '<br>' + esc(p.League) + '</div></div></div>';
         html += '<div class="card-score-row"><span class="card-score-label">Star Score</span>';
         html += '<span class="card-score-num">' + p.FutureStarScore + '</span></div>';
         html += '<div class="card-stats">';
@@ -876,6 +1068,9 @@ function doSort(col) {
 }
 
 window.onload = function () {
+    if ("serviceWorker" in navigator && /^https?:$/.test(location.protocol)) {
+        try { navigator.serviceWorker.register("sw.js").catch(function () {}); } catch (e) {}
+    }
     parseData();
     fillLeagues();
     initNav();
@@ -888,6 +1083,13 @@ window.onload = function () {
     renderSpotlight();
     renderMovers();
     updateTray();
+    initAutocomplete();
+    drawChart(players);
+    try {
+        if (typeof location !== "undefined" && location.search) {
+            applyDeepLinks();
+        }
+    } catch (e) { /* ignore bad deep links */ }
     var cards = document.getElementById("cardsArea");
     if (cards && cards.addEventListener) {
         cards.addEventListener("click", function (e) {
@@ -920,15 +1122,4 @@ window.onload = function () {
         var startY = new Date().getMonth() >= 7 ? nowY : nowY - 1;
         yr.textContent = startY + "-" + String(startY + 1).slice(2) + " Season";
     }
-    try {
-        if (typeof location !== "undefined" && location.search) {
-            var m = /[?&]player=([^&]+)/.exec(location.search);
-            if (m) {
-                document.getElementById("searchBox").value = decodeURIComponent(m[1].replace(/\+/g, " "));
-                applyFilters();
-                var sec = document.getElementById("players");
-                if (sec && sec.scrollIntoView) sec.scrollIntoView();
-            }
-        }
-    } catch (e) { /* ignore bad deep links */ }
 };

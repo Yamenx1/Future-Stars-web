@@ -20,6 +20,7 @@
     </script>
     <title>Future Stars - Soccer Player Analysis</title>
     <link rel="icon" href="logo.svg" type="image/svg+xml">
+    <link rel="manifest" href="manifest.json">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -101,6 +102,7 @@
                 <div class="filter-field filter-search">
                     <label for="searchBox">Search</label>
                     <input type="search" id="searchBox" placeholder="Search player, club, or league..." oninput="applyFilters()" autocomplete="off">
+                    <div class="ac-list" id="acList" hidden></div>
                 </div>
                 <div class="filter-actions">
                     <button type="button" class="btn btn-ghost btn-sm" id="watchBtn" aria-pressed="false" onclick="toggleWatch()">Watchlist</button>
@@ -189,6 +191,9 @@
             <div class="section-head">
                 <h2>Data table</h2>
                 <p>Tip: click a column header (or press Enter on it) to sort.</p>
+            </div>
+            <div class="panel" style="margin-bottom:14px">
+                <canvas id="scoreChart" height="220" aria-label="Top 20 players by Future Star Score" role="img"></canvas>
             </div>
             <div class="panel table-panel">
                 <div class="table-container">

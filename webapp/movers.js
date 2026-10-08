@@ -1,10 +1,10 @@
-// Auto-generated: 2026-27 rollover (new arrivals + score revisions).
+// Auto-generated: arrivals since last data sync.
 var scoreMovers = {
  "fresh": [
   {
-   "key": "Alejandro Garnacho|Chelsea",
+   "key": "Alejandro Garnacho|Aston Villa",
    "name": "Alejandro Garnacho",
-   "club": "Chelsea",
+   "club": "Aston Villa",
    "league": "Premier League",
    "pos": "LW",
    "age": "22",
@@ -29,6 +29,15 @@ var scoreMovers = {
    "now": 11.72
   },
   {
+   "key": "Konstantinos Karetsas|Dortmund",
+   "name": "Konstantinos Karetsas",
+   "club": "Dortmund",
+   "league": "Bundesliga",
+   "pos": "AM",
+   "age": "18",
+   "now": 11.57
+  },
+  {
    "key": "Tyler Dibling|Everton",
    "name": "Tyler Dibling",
    "club": "Everton",
@@ -36,6 +45,15 @@ var scoreMovers = {
    "pos": "RW",
    "age": "19",
    "now": 10.9
+  },
+  {
+   "key": "Ethan Nwaneri|Dortmund",
+   "name": "Ethan Nwaneri",
+   "club": "Dortmund",
+   "league": "Bundesliga",
+   "pos": "AM",
+   "age": "19",
+   "now": 10.77
   },
   {
    "key": "Mathys Tel|Tottenham",
@@ -54,24 +72,6 @@ var scoreMovers = {
    "pos": "LW",
    "age": "20",
    "now": 10.18
-  },
-  {
-   "key": "Jamie Bynoe-Gittens|Chelsea",
-   "name": "Jamie Bynoe-Gittens",
-   "club": "Chelsea",
-   "league": "Premier League",
-   "pos": "LW",
-   "age": "22",
-   "now": 10.1
-  },
-  {
-   "key": "Facundo Buonanotte|Chelsea",
-   "name": "Facundo Buonanotte",
-   "club": "Chelsea",
-   "league": "Premier League",
-   "pos": "AM",
-   "age": "21",
-   "now": 9.7
   }
  ],
  "climbers": []

@@ -1,0 +1,12 @@
+{
+  "name": "Future Stars - U22 Soccer Scouting",
+  "short_name": "Future Stars",
+  "description": "U22 prospects across 19 leagues, ranked by Future Star Score.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0a130d",
+  "theme_color": "#0a130d",
+  "icons": [
+    { "src": "logo.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
