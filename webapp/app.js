@@ -915,7 +915,11 @@ window.onload = function () {
     var rc = document.getElementById("resultCount");
     if (rc) rc.textContent = "Showing " + players.length + " of " + players.length + " players";
     var yr = document.getElementById("year");
-    if (yr) yr.textContent = new Date().getFullYear() + " Season";
+    if (yr) {
+        var nowY = new Date().getFullYear();
+        var startY = new Date().getMonth() >= 7 ? nowY : nowY - 1;
+        yr.textContent = startY + "-" + String(startY + 1).slice(2) + " Season";
+    }
     try {
         if (typeof location !== "undefined" && location.search) {
             var m = /[?&]player=([^&]+)/.exec(location.search);
