@@ -1,104 +1,78 @@
-// Auto-generated from git history (c0473af -> working tree).
+// Auto-generated: 2026-27 rollover (new arrivals + score revisions).
 var scoreMovers = {
- "climbers": [
-  {
-   "key": "Pablo Barrios|Atletico Madrid",
-   "name": "Pablo Barrios",
-   "club": "Atletico Madrid",
-   "league": "La Liga",
-   "pos": "CM",
-   "age": "22",
-   "prev": 4.97,
-   "now": 7.27,
-   "delta": 2.3,
-   "rankFrom": 205,
-   "rankTo": 142,
-   "rankDelta": 63,
-   "goals": "1",
-   "assists": "4"
-  },
-  {
-   "key": "Marc Casado|Barcelona",
-   "name": "Marc Casado",
-   "club": "Barcelona",
-   "league": "La Liga",
-   "pos": "CM",
-   "age": "22",
-   "prev": 3.5,
-   "now": 5.35,
-   "delta": 1.85,
-   "rankFrom": 207,
-   "rankTo": 203,
-   "rankDelta": 4,
-   "goals": "1",
-   "assists": "3"
-  }
- ],
- "fallers": [],
  "fresh": [
   {
-   "name": "Xavi Simons",
-   "club": "Tottenham",
-   "league": "Premier League",
-   "pos": "AM",
-   "age": "22",
-   "now": 12.39
-  },
-  {
-   "name": "Johan Bakayoko",
-   "club": "RB Leipzig",
-   "league": "Bundesliga",
-   "pos": "RW",
-   "age": "22",
-   "now": 12.23
-  },
-  {
+   "key": "Alejandro Garnacho|Chelsea",
    "name": "Alejandro Garnacho",
    "club": "Chelsea",
    "league": "Premier League",
    "pos": "LW",
-   "age": "21",
+   "age": "22",
    "now": 12.11
   },
   {
+   "key": "Eliesse Ben Seghir|Leverkusen",
    "name": "Eliesse Ben Seghir",
    "club": "Leverkusen",
    "league": "Bundesliga",
    "pos": "LW",
-   "age": "20",
+   "age": "21",
    "now": 11.82
   },
   {
+   "key": "Oscar Gloukh|Ajax",
    "name": "Oscar Gloukh",
    "club": "Ajax",
    "league": "Eredivisie",
    "pos": "AM",
-   "age": "21",
+   "age": "22",
    "now": 11.72
   },
   {
+   "key": "Tyler Dibling|Everton",
    "name": "Tyler Dibling",
    "club": "Everton",
    "league": "Premier League",
    "pos": "RW",
-   "age": "18",
+   "age": "19",
    "now": 10.9
   },
   {
+   "key": "Mathys Tel|Tottenham",
    "name": "Mathys Tel",
    "club": "Tottenham",
    "league": "Premier League",
    "pos": "CF",
-   "age": "19",
+   "age": "20",
    "now": 10.75
   },
   {
+   "key": "Tommy Watson|Brighton",
    "name": "Tommy Watson",
    "club": "Brighton",
    "league": "Premier League",
    "pos": "LW",
-   "age": "19",
+   "age": "20",
    "now": 10.18
+  },
+  {
+   "key": "Jamie Bynoe-Gittens|Chelsea",
+   "name": "Jamie Bynoe-Gittens",
+   "club": "Chelsea",
+   "league": "Premier League",
+   "pos": "LW",
+   "age": "22",
+   "now": 10.1
+  },
+  {
+   "key": "Facundo Buonanotte|Chelsea",
+   "name": "Facundo Buonanotte",
+   "club": "Chelsea",
+   "league": "Premier League",
+   "pos": "AM",
+   "age": "21",
+   "now": 9.7
   }
- ]
+ ],
+ "climbers": []
 };

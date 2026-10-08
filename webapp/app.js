@@ -1,8 +1,8 @@
 /*
  * Future Stars - app.js
  * loads player data and renders cards + table
- * data is from the 2025-26 season, processed by our Java program
- * U22 prospects across 17 leagues, ranked by Future Star Score
+ * data is from the 2026-27 season, processed by our Java program
+ * U22 prospects across 19 leagues, ranked by Future Star Score
  */
 
 var players = [];
@@ -11,215 +11,198 @@ var playerPhotos = {"Lamine Yamal|Barcelona":"https://media.api-sports.io/footba
 var sortCol = "FutureStarScore";
 var sortDir = "desc";
 
-// player data (output from FutureStarPreprocessor.java - 150 players, all under 22)
+// player data (output from FutureStarPreprocessor.java - 188 players, all under 22)
 var csvData = `
 Name,Age,Nationality,Club,League,Position,MinutesPlayed,Goals,Assists,ShotsOnTarget,DribblesCompleted,PassAccuracy,Tackles,Interceptions,GoalsPer90,AssistsPer90,FutureStarScore
-Lamine Yamal,18,Spain,Barcelona,La Liga,RW,2771,9,13,47,144,84,42,16,0.29,0.42,22.32
-Jude Bellingham,22,England,Real Madrid,La Liga,AM,2800,18,9,66,50,86,32,18,0.58,0.29,11.61
-Florian Wirtz,22,Germany,Liverpool,Premier League,AM,2600,14,12,54,58,88,26,16,0.48,0.42,12.48
-Jamal Musiala,22,Germany,Bayern Munich,Bundesliga,AM,2700,16,11,56,80,88,28,18,0.53,0.37,14.73
-Warren Zaire-Emery,20,France,PSG,Ligue 1,CM,2500,7,9,26,28,89,52,36,0.25,0.32,9.65
-Xavi Simons,22,Netherlands,Tottenham,Premier League,AM,2600,13,15,50,58,84,30,22,0.45,0.52,12.39
-Kobbie Mainoo,20,England,Man United,Premier League,CM,2400,5,6,18,22,86,48,32,0.19,0.23,8.51
-Pau Cubarsi,18,Spain,Barcelona,La Liga,CB,2620,2,3,8,5,69,33,17,0.07,0.1,6.36
-Gavi,21,Spain,Barcelona,La Liga,CM,1014,1,1,1,6,88,30,10,0.09,0.09,5.94
-Joao Neves,20,Portugal,PSG,Ligue 1,CM,2600,6,10,22,24,91,58,42,0.21,0.35,9.27
-Mathys Tel,19,France,Tottenham,Premier League,CF,1800,9,5,32,34,80,16,10,0.45,0.25,10.75
-Alejandro Garnacho,21,Argentina,Chelsea,Premier League,LW,2400,11,7,42,60,77,20,14,0.41,0.26,12.11
-Savinho,21,Brazil,Man City,Premier League,RW,2000,6,8,24,54,82,16,10,0.27,0.36,11.53
-Benjamin Sesko,22,Slovenia,Arsenal,Premier League,CF,2600,22,6,68,28,80,20,14,0.76,0.21,9.5
-Arda Guler,20,Turkey,Real Madrid,La Liga,AM,1800,10,6,32,28,87,14,10,0.5,0.3,10.25
-Evan Ferguson,21,Ireland,Roma,Serie A,CF,1800,7,4,28,16,78,14,10,0.35,0.2,7.45
-Johan Bakayoko,22,Belgium,RB Leipzig,Bundesliga,RW,2500,14,10,48,58,84,22,16,0.5,0.36,12.23
-Antonio Nusa,20,Norway,RB Leipzig,Bundesliga,RW,1800,6,7,22,44,81,14,10,0.3,0.35,11.05
-Desire Doue,20,France,PSG,Ligue 1,AM,2000,8,8,28,48,82,20,14,0.36,0.36,11.7
-Kenan Yildiz,20,Turkey,Juventus,Serie A,LW,2300,9,6,30,42,83,18,12,0.35,0.23,10.88
-Jorrel Hato,19,Netherlands,Chelsea,Premier League,LB,2400,5,7,16,28,86,46,34,0.19,0.26,9.69
-Oscar Gloukh,21,Israel,Ajax,Eredivisie,AM,2200,12,11,40,46,85,24,18,0.49,0.45,11.72
-Castello Lukeba,22,France,RB Leipzig,Bundesliga,CB,2400,2,2,8,10,89,58,44,0.08,0.08,5.83
-Leny Yoro,19,France,Man United,Premier League,CB,1800,1,1,6,8,88,44,34,0.05,0.05,6.95
-Kacper Urbanski,20,Poland,Bologna,Serie A,CM,1800,4,6,14,22,85,32,24,0.2,0.3,8.65
-Jamie Bynoe-Gittens,21,England,Chelsea,Premier League,LW,1800,7,6,22,40,79,12,10,0.35,0.3,10.1
-Harvey Elliott,22,England,Aston Villa,Premier League,AM,1800,5,7,18,26,86,22,16,0.25,0.35,8.35
-Ansu Fati,22,Spain,Monaco,Ligue 1,LW,1200,4,3,16,20,81,12,8,0.3,0.23,7.4
-Youssoufa Moukoko,20,Germany,FC Copenhagen,Danish SL,CF,1400,5,3,20,20,76,10,6,0.32,0.19,8.15
-Adam Wharton,21,England,Crystal Palace,Premier League,CM,2200,4,5,12,16,90,50,34,0.16,0.2,7.5
-Estevao Willian,18,Brazil,Chelsea,Premier League,RW,1600,7,8,26,48,81,10,6,0.39,0.45,12.93
-Nico Paz,21,Argentina,Como,Serie A,AM,2200,9,10,32,36,85,18,14,0.37,0.41,10.27
-Roony Bardghji,18,Sweden,Barcelona,La Liga,RW,1200,4,3,16,22,80,8,6,0.3,0.23,9.55
-Archie Gray,19,England,Tottenham,Premier League,CM,2000,3,4,10,14,87,46,32,0.14,0.18,8.02
-Ousmane Diomande,21,Ivory Coast,Sporting CP,Liga Portugal,CB,2400,4,2,10,12,88,60,42,0.15,0.08,6.7
-Milos Kerkez,21,Hungary,Liverpool,Premier League,LB,2400,2,6,10,20,84,42,30,0.08,0.23,7.38
-Rico Lewis,20,England,Man City,Premier League,RB,2000,3,5,10,18,89,38,28,0.14,0.23,8.11
-Malo Gusto,22,France,Chelsea,Premier League,RB,2300,3,6,12,22,87,40,30,0.12,0.23,7.37
-Tyler Dibling,18,England,Everton,Premier League,RW,1800,5,4,20,38,79,14,10,0.25,0.2,10.9
-Dario Osorio,21,Chile,Midtjylland,Danish SL,RW,2200,10,8,34,48,81,16,12,0.41,0.33,11.23
-El Chadaille Bitshiabu,19,France,RB Leipzig,Bundesliga,CB,1600,1,1,6,8,87,40,30,0.06,0.06,6.93
-Abdoullah Ba,21,France,Sunderland,Championship,AM,2000,6,7,22,36,82,18,14,0.27,0.32,9.64
-Omari Kellyman,19,England,Chelsea,Premier League,AM,1000,2,3,8,16,80,10,6,0.18,0.27,8.18
-Kendry Paez,17,Ecuador,Strasbourg,Ligue 1,AM,800,3,3,10,14,81,8,6,0.34,0.34,9.64
-Claudio Echeverri,18,Argentina,Leverkusen,Bundesliga,AM,1000,3,4,12,20,83,10,6,0.27,0.36,9.68
-Morgan Rogers,22,England,Aston Villa,Premier League,AM,2200,8,8,30,40,82,22,14,0.33,0.33,9.74
-Luka Sucic,22,Croatia,Real Sociedad,La Liga,CM,2000,5,6,20,18,85,34,24,0.23,0.27,7.27
-Yeremy Pino,22,Spain,Villarreal,La Liga,RW,1949,4,7,9,25,82,60,8,0.18,0.32,7.8
-Geovany Quenda,17,Portugal,Sporting CP,Liga Portugal,RW,1400,3,5,14,30,80,12,8,0.19,0.32,10.72
-Yankuba Minteh,20,Gambia,Brighton,Premier League,RW,1600,5,4,18,36,78,10,8,0.28,0.23,9.79
-Francisco Conceicao,22,Portugal,Juventus,Serie A,RW,1900,6,8,24,46,81,12,10,0.28,0.38,10.26
-Caden Clark,22,USA,NY Red Bulls,MLS,CM,1600,4,6,14,18,83,28,20,0.23,0.34,7.3
-Facundo Buonanotte,20,Argentina,Chelsea,Premier League,AM,1800,6,5,22,32,82,14,10,0.3,0.25,9.7
-Gianluca Busio,22,USA,Venezia,Serie B,CM,2000,3,5,12,14,84,34,24,0.14,0.23,6.46
-Andrey Santos,21,Brazil,Chelsea,Premier League,CM,2857,10,3,16,18,83,110,32,0.32,0.09,7.58
-Julio Enciso,20,Paraguay,Brighton,Premier League,AM,1400,5,4,18,26,79,10,6,0.32,0.26,9.03
-Cher Ndour,20,Italy,Besiktas,Super Lig,CM,1800,3,4,12,14,84,36,24,0.15,0.2,7.45
-Ben Doak,19,Scotland,Middlesbrough,Championship,RW,1600,5,6,18,34,79,10,8,0.28,0.34,10.37
-Waheeb,22,Saudi Arabia,Al-Hilal,Saudi Pro League,RW,2100,8,6,30,28,83,20,14,0.34,0.26,8.49
-Ethan Nwaneri,18,England,Arsenal,Premier League,AM,1400,6,4,22,30,82,10,6,0.39,0.26,10.77
-Myles Lewis-Skelly,19,England,Arsenal,Premier League,LB,1900,2,4,8,26,87,40,28,0.09,0.19,9.11
-Vitor Reis,19,Brazil,Girona,La Liga,CB,1200,1,0,4,6,89,30,24,0.08,0.0,6.78
-Jack Hinshelwood,20,England,Brighton,Premier League,CM,1800,3,3,12,16,86,38,26,0.15,0.15,7.65
-Harry Amass,18,England,Man United,Premier League,LB,1100,0,2,2,14,84,28,20,0.0,0.16,7.93
-Lewis Hall,21,England,Newcastle,Premier League,LB,2200,2,5,8,24,83,44,30,0.08,0.2,7.7
-Nico OReilly,20,England,Man City,Premier League,CM,1300,2,3,10,16,85,28,20,0.14,0.21,7.68
-Franco Mastantuono,18,Argentina,Real Madrid,La Liga,AM,1500,5,4,20,32,81,10,6,0.3,0.24,10.63
-Marc Casado,22,Spain,Barcelona,La Liga,CM,1623,1,3,1,4,89,46,24,0.06,0.17,5.35
-Raul Asencio,22,Spain,Real Madrid,La Liga,CB,1671,0,1,1,6,90,22,16,0.0,0.05,5.21
-Pablo Barrios,22,Spain,Atletico Madrid,La Liga,CM,2336,1,4,8,25,87,46,34,0.04,0.15,7.27
-Jesus Rodriguez,19,Spain,Real Betis,La Liga,LW,1128,2,0,8,30,78,17,6,0.16,0.0,8.88
-Tom Bischof,20,Germany,Bayern Munich,Bundesliga,CM,1700,4,5,16,22,86,30,22,0.21,0.26,8.66
-Assan Ouedraogo,19,Germany,RB Leipzig,Bundesliga,CM,1200,3,2,10,18,82,24,16,0.23,0.15,8.38
-Can Uzun,19,Turkey,Frankfurt,Bundesliga,CF,1600,8,3,30,22,77,10,6,0.45,0.17,9.24
-Bence Dardai,19,Hungary,Wolfsburg,Bundesliga,AM,1300,4,4,14,24,80,12,8,0.28,0.28,9.28
-Nathaniel Brown,22,Germany,Frankfurt,Bundesliga,LB,2100,3,5,10,30,82,40,28,0.13,0.21,7.91
-Valentin Carboni,20,Argentina,Genoa,Serie A,AM,1500,4,5,18,30,81,12,8,0.24,0.3,9.37
-Aaron Anselmino,20,Argentina,Dortmund,Bundesliga,CB,1400,1,0,4,8,87,36,28,0.06,0.0,6.34
-Santiago Castro,21,Argentina,Bologna,Serie A,CF,2000,9,3,36,18,78,12,8,0.41,0.14,7.69
-Niccolo Pisilli,20,Italy,Roma,Serie A,CM,1600,3,2,12,16,86,34,24,0.17,0.11,7.63
-Eliesse Ben Seghir,20,Morocco,Leverkusen,Bundesliga,LW,2000,8,6,30,52,80,14,10,0.36,0.27,11.82
-Lamine Camara,21,Senegal,Monaco,Ligue 1,CM,1900,3,4,12,20,85,42,30,0.14,0.19,7.56
-Ayyoub Bouaddi,18,France,Lille,Ligue 1,CM,1500,1,3,6,16,88,36,26,0.06,0.18,8.54
-Guillaume Restes,20,France,Toulouse,Ligue 1,GK,2700,0,1,0,2,76,1,2,0.0,0.03,5.07
-Jorthy Mokio,17,Belgium,Ajax,Eredivisie,CB,1300,2,1,6,14,87,34,26,0.14,0.07,8.8
-Mika Godts,20,Belgium,Ajax,Eredivisie,LW,1500,5,6,20,38,79,10,8,0.3,0.36,10.37
-Rodrigo Mora,18,Portugal,Porto,Liga Portugal,AM,1600,6,5,22,36,82,12,8,0.34,0.28,11.27
-Martim Fernandes,19,Portugal,Porto,Liga Portugal,RB,1700,1,5,6,20,84,38,26,0.05,0.26,8.39
-Chris Rigg,18,England,Sunderland,Premier League,CM,2000,4,4,16,24,83,36,26,0.18,0.18,9.45
-Tommy Watson,19,England,Brighton,Premier League,LW,1700,6,4,22,34,78,12,8,0.32,0.21,10.18
-Semih Kilicsoy,20,Turkey,Besiktas,Super Lig,CF,1700,8,3,30,26,76,10,6,0.42,0.16,8.99
-Yusuf Akcicek,19,Turkey,Fenerbahce,Super Lig,CB,1500,1,1,4,8,86,38,30,0.06,0.06,6.9
-Talal Haji,18,Saudi Arabia,Al-Riyadh,Saudi Pro League,CF,1200,5,2,18,16,74,8,6,0.38,0.15,8.73
-Abbas Al-Hassan,21,Saudi Arabia,Al-Nassr,Saudi Pro League,CM,1400,2,3,8,12,84,32,24,0.13,0.19,6.67
-Julian Hall,17,USA,NY Red Bulls,MLS,CF,900,4,2,14,18,75,6,4,0.4,0.2,9.65
-Peyton Miller,17,USA,New England,MLS,LB,1300,1,4,6,22,81,30,22,0.07,0.28,9.51
-Noah Allen,21,USA,Inter Miami,MLS,LB,1800,1,3,6,18,82,34,24,0.05,0.15,6.85
-Mads Hansen,19,Denmark,Nordsjaelland,Danish SL,RW,1800,7,6,26,40,79,12,8,0.35,0.3,11.1
-Lucas Hey,22,Denmark,Anderlecht,Belgian Pro League,CB,2000,2,1,8,10,87,44,34,0.09,0.05,5.71
-Konstantinos Karetsas,17,Greece,Genk,Belgian Pro League,AM,1500,5,6,20,34,81,10,8,0.3,0.36,11.57
-Joel Ordonez,21,Ecuador,Club Brugge,Belgian Pro League,CB,2200,2,1,8,10,88,48,36,0.08,0.04,6.23
-Chemsdine Talbi,20,Morocco,Club Brugge,Belgian Pro League,RW,1900,8,5,30,44,79,12,8,0.38,0.24,10.96
-Lennon Miller,19,Scotland,Celtic,Scottish Premiership,CM,2100,4,6,18,22,84,40,28,0.17,0.26,8.93
-James Wilson,18,Scotland,Hearts,Scottish Premiership,CF,1400,7,2,24,14,75,8,6,0.45,0.13,8.76
-Karim Konate,21,Ivory Coast,Salzburg,Austrian Bundesliga,CF,1800,11,3,38,20,77,10,6,0.55,0.15,8.3
-Samson Baidoo,21,Austria,Salzburg,Austrian Bundesliga,CB,1900,2,1,8,10,86,42,32,0.09,0.05,6.18
-Ethan Wheatley,19,England,Man United,Premier League,CF,700,2,1,8,10,74,6,4,0.26,0.13,7.23
-Godwill Kukonki,17,England,Man United,Premier League,CB,600,0,0,2,4,85,18,14,0.0,0.0,7.15
-Trey Nyoni,18,England,Liverpool,Premier League,CM,700,0,1,2,8,86,18,14,0.0,0.13,7.36
-Amara Nallo,18,England,Liverpool,Premier League,CB,600,0,0,2,4,87,20,16,0.0,0.0,6.75
-Stephen Mfuni,17,England,Man City,Premier League,LB,500,0,1,2,8,82,16,12,0.0,0.18,7.76
-Jan Virgili,19,Spain,Barcelona,La Liga,LW,600,1,1,4,12,78,6,4,0.15,0.15,7.35
-Quim Junyent,18,Spain,Barcelona,La Liga,CM,500,0,1,2,8,85,14,10,0.0,0.18,7.41
-Joan Martinez,18,Spain,Real Madrid,La Liga,CB,500,0,0,2,4,86,16,12,0.0,0.0,6.7
-Chema Andres,20,Spain,Real Madrid,La Liga,CM,600,0,1,2,10,87,20,14,0.0,0.15,6.65
-Hugo Alba,18,Spain,Real Betis,La Liga,AM,500,1,1,4,10,79,6,4,0.18,0.18,7.85
-Wisdom Mike,17,Germany,Bayern Munich,Bundesliga,RW,500,1,1,4,12,77,4,2,0.18,0.18,8.45
-Cassiano Kiala,17,Germany,Leverkusen,Bundesliga,CB,500,0,0,2,4,85,16,12,0.0,0.0,7.15
-Montrell Culbreath,18,Germany,Leverkusen,Bundesliga,LW,500,1,0,4,10,76,4,2,0.18,0.0,7.34
-Diego Sia,18,Italy,AC Milan,Serie A,RW,500,1,0,4,10,76,4,2,0.18,0.0,7.34
-Emanuele Sala,18,Italy,AC Milan,Serie A,CM,500,0,1,2,8,84,14,10,0.0,0.18,7.36
-Lorenzo Venturino,19,Italy,Genoa,Serie A,RW,600,1,1,4,12,77,6,4,0.15,0.15,7.3
-Lucas Michal,20,France,Monaco,Ligue 1,CF,700,2,1,8,12,75,6,4,0.26,0.13,6.98
-Bradel Kiwa,18,France,Monaco,Ligue 1,CB,500,0,0,2,4,85,18,14,0.0,0.0,6.65
-Ayman Aiki,20,France,Lille,Ligue 1,RW,600,1,1,4,14,78,6,4,0.15,0.15,7.05
-Kayden Wolff,18,Netherlands,Ajax,Eredivisie,RW,600,1,1,4,14,78,6,4,0.15,0.15,8.05
-Dies Janse,19,Netherlands,Ajax,Eredivisie,CB,600,0,0,2,6,86,20,16,0.0,0.0,6.4
-Rafael Luis,20,Portugal,Benfica,Liga Portugal,CM,600,0,1,2,8,84,18,14,0.0,0.15,6.3
-Goncalo Oliveira,19,Portugal,Porto,Liga Portugal,CF,600,2,0,8,10,74,6,4,0.3,0.0,7.1
-Oliver Arblaster,21,England,Sheffield United,Championship,CM,1400,2,2,8,14,83,32,24,0.13,0.13,6.69
-Daniel Jebbison,22,England,Sheffield United,Championship,CF,900,3,1,12,12,75,8,6,0.3,0.1,6.05
-Efe Akman,19,Turkey,Galatasaray,Super Lig,CM,700,1,1,4,10,83,20,14,0.13,0.13,7.29
-Musab Al-Juwayr,22,Saudi Arabia,Al-Hilal,Saudi Pro League,CM,1200,2,4,10,14,84,28,20,0.15,0.3,6.65
-Kristian Fletcher,20,USA,DC United,MLS,RW,1100,3,2,12,20,77,8,6,0.25,0.16,7.91
-Villads Nielsen,20,Denmark,Nordsjaelland,Danish SL,CB,1200,1,0,4,8,86,30,22,0.08,0.0,6.33
-Kaye Furo,18,Belgium,Club Brugge,Belgian Pro League,CF,600,2,0,8,10,74,6,4,0.3,0.0,7.6
-Daniel Cummings,20,Scotland,Celtic,Scottish Premiership,CF,700,2,1,8,8,74,6,4,0.26,0.13,6.53
-Oghenetejiri Adejenughure,18,Austria,Salzburg,Austrian Bundesliga,CF,600,2,0,8,10,73,6,4,0.3,0.0,7.55
-Josh Acheampong,19,England,Chelsea,Premier League,RB,800,0,1,2,10,84,22,16,0.0,0.11,6.93
-Chido Obi,17,Denmark,Man United,Premier League,CF,500,1,0,4,8,73,4,2,0.18,0.0,7.49
-Bendito Mantato,18,England,Man United,Premier League,RW,500,1,0,4,10,77,4,2,0.18,0.0,7.39
-Toni Fernandez,18,Spain,Barcelona,La Liga,RW,500,1,1,4,12,78,4,2,0.18,0.18,8.0
-Andres Cuenca,18,Spain,Barcelona,La Liga,CB,500,0,0,2,4,86,16,12,0.0,0.0,6.7
-David Jimenez,20,Spain,Real Madrid,La Liga,RB,500,0,1,2,8,83,16,10,0.0,0.18,6.31
-Diego Aguado,18,Spain,Real Madrid,La Liga,CB,500,0,0,2,4,86,14,10,0.0,0.0,6.7
-Said El Mala,19,Germany,Koln,Bundesliga,LW,900,3,2,12,20,76,8,6,0.3,0.2,8.6
-Jaka Cuber Potocnik,20,Slovenia,Koln,Bundesliga,CF,600,1,0,6,8,73,4,2,0.15,0.0,5.9
-Noel Aseko,20,Germany,Bayern Munich,Bundesliga,CM,500,0,1,2,8,85,14,10,0.0,0.18,6.41
-Mattia Liberali,18,Italy,AC Milan,Serie A,AM,500,0,1,2,10,81,6,4,0.0,0.18,7.41
-Andrea Natali,17,Italy,AC Milan,Serie A,CB,500,0,0,2,4,85,14,10,0.0,0.0,7.15
-Giacomo De Pieri,19,Italy,Inter,Serie A,RW,500,1,0,4,10,76,4,2,0.18,0.0,6.84
-Matteo Cocchi,18,Italy,Inter,Serie A,LB,500,0,1,2,8,82,14,10,0.0,0.18,7.26
-George Ilenikhena,19,Nigeria,Monaco,Ligue 1,CF,800,2,1,10,12,74,6,4,0.23,0.11,7.3
-Axel Tape,18,France,PSG,Ligue 1,CB,500,0,0,2,4,86,14,10,0.0,0.0,6.7
-Quentin Ndjantou,18,France,PSG,Ligue 1,RW,500,1,0,4,10,77,4,2,0.18,0.0,7.39
-Givairo Read,19,Netherlands,Feyenoord,Eredivisie,RB,900,1,2,4,14,82,22,14,0.1,0.2,7.7
-Aymen Sliti,19,Tunisia,Feyenoord,Eredivisie,LW,600,1,1,4,14,77,6,4,0.15,0.15,7.5
-Joao Rego,20,Portugal,Benfica,Liga Portugal,AM,600,1,1,4,12,80,6,4,0.15,0.15,6.95
-Eduardo Fernandes,18,Portugal,Sporting CP,Liga Portugal,RW,500,1,0,4,10,77,4,2,0.18,0.0,7.39
-Kellen Fisher,21,England,Norwich,Championship,RB,1200,1,3,6,16,82,30,20,0.08,0.23,6.88
-Elliot Myles,18,Wales,Norwich,Championship,LW,600,1,1,4,12,77,6,4,0.15,0.15,7.8
-Mustafa Hekimoglu,18,Turkey,Besiktas,Super Lig,CF,600,2,0,8,10,73,6,4,0.3,0.0,7.55
-Ali Al-Masoud,19,Saudi Arabia,Al-Nassr,Saudi Pro League,LW,600,1,1,4,12,77,6,4,0.15,0.15,7.3
-Cavan Sullivan,16,USA,Philadelphia,MLS,AM,500,1,1,4,12,78,4,2,0.18,0.18,9.0
-Matthew Corcoran,19,USA,Nashville,MLS,CM,900,1,1,4,10,82,22,16,0.1,0.1,7.1
-Clement Bischoff,19,Denmark,Salzburg,Austrian Bundesliga,LW,900,2,2,10,16,78,8,6,0.2,0.2,8.0
-Jorne Spileers,20,Belgium,Club Brugge,Belgian Pro League,CB,800,0,0,2,6,87,24,18,0.0,0.0,5.95
-Bailey Dall,19,Scotland,Hearts,Scottish Premiership,CM,600,0,1,2,8,82,16,12,0.0,0.15,6.7
-Valentin Sulzbacher,20,Austria,Salzburg,Austrian Bundesliga,CM,700,1,1,4,10,83,20,14,0.13,0.13,6.79
-Dennis Seimen,19,Germany,Stuttgart,Bundesliga,GK,1800,0,0,0,1,82,2,1,0.0,0.0,5.7
-Aron Yaakobishvili,19,Hungary,Barcelona,La Liga,GK,500,0,0,0,0,80,0,0,0.0,0.0,5.5
-Tommy Simkin,20,England,Stoke,Championship,GK,1200,0,0,0,0,75,1,1,0.0,0.0,4.75
-Lewis Miley,19,England,Newcastle,Premier League,CM,1500,2,3,8,14,86,32,24,0.12,0.18,7.92
-Mikey Moore,18,England,Tottenham,Premier League,LW,900,2,2,8,20,79,6,4,0.2,0.2,8.95
-Shea Lacey,18,England,Man United,Premier League,RW,700,1,2,6,18,80,6,4,0.13,0.26,8.7
-Jahmai Simpson-Pusey,19,England,Man City,Premier League,CB,800,0,0,2,4,88,22,18,0.0,0.0,6.3
-Harrison Armstrong,18,England,Everton,Premier League,CM,900,1,1,4,10,84,24,18,0.1,0.1,7.7
-Jayden Meghoma,18,England,Chelsea,Premier League,LB,700,0,1,2,12,82,20,14,0.0,0.13,7.56
-Samuel Rak-Sakyi,19,England,Chelsea,Premier League,CM,600,1,1,4,10,83,16,12,0.15,0.15,7.4
-Jesus Fortea,18,Spain,Real Madrid,La Liga,RB,700,0,2,2,12,84,22,16,0.0,0.26,7.91
-Thiago Pitarch,18,Spain,Valencia,La Liga,CM,900,1,2,4,12,83,24,18,0.1,0.2,8.05
-Iker Bravo,20,Spain,Osasuna,La Liga,CF,1100,3,1,12,12,76,8,6,0.25,0.08,6.9
-Felipe Chavez,18,Germany,Bayern Munich,Bundesliga,AM,700,2,2,8,16,81,8,6,0.26,0.26,8.94
-Bazoumana Toure,20,Ivory Coast,Hoffenheim,Bundesliga,LW,1200,3,3,12,28,78,10,8,0.23,0.23,8.82
-Dzenan Pejcinovic,20,Germany,Wolfsburg,Bundesliga,CF,800,2,1,8,10,75,6,4,0.23,0.11,6.65
-Arijon Ibrahimovic,19,Germany,Bayern Munich,Bundesliga,LW,700,1,2,6,16,79,8,6,0.13,0.26,7.95
-Francesco Camarda,17,Italy,AC Milan,Serie A,CF,700,2,0,8,10,74,6,4,0.26,0.0,7.97
-Jonas Rouhi,20,Sweden,Juventus,Serie A,LB,900,0,1,2,12,82,24,18,0.0,0.1,6.5
-Christian Comotto,18,Italy,AC Milan,Serie A,CM,600,0,1,2,8,84,18,14,0.0,0.15,7.3
-Simone Pafundi,19,Italy,Udinese,Serie A,AM,800,1,2,6,16,80,8,6,0.11,0.23,7.89
-Senny Mayulu,19,France,PSG,Ligue 1,CM,1100,2,2,8,18,87,26,20,0.16,0.16,8.47
-Ibrahim Mbaye,17,France,PSG,Ligue 1,RW,700,1,2,6,20,79,6,4,0.13,0.26,9.35
-Djylian Nguessan,17,France,Saint-Etienne,Ligue 2,CF,600,2,0,6,10,75,6,4,0.3,0.0,8.15
-Valentin Atangana,20,France,Reims,Ligue 1,CM,1300,1,2,6,14,85,34,26,0.07,0.14,7.13
-Kees Smit,19,Netherlands,AZ,Eredivisie,CM,1500,3,3,12,20,84,30,22,0.18,0.18,8.6
-Ro-Zangelo Daal,17,Netherlands,AZ,Eredivisie,RW,700,2,2,8,18,78,6,4,0.26,0.26,9.49
-Tiago Parente,18,Portugal,Benfica,Liga Portugal,LB,700,0,1,2,10,83,20,14,0.0,0.13,7.41
-Law McCabe,19,England,Middlesbrough,Championship,CM,800,1,1,4,10,83,22,16,0.11,0.11,7.21
-Arda Unyay,18,Turkey,Galatasaray,Super Lig,CB,800,0,0,2,6,86,26,20,0.0,0.0,6.9
-Ziyad Al-Johani,21,Saudi Arabia,Al-Ahli,Saudi Pro League,CM,900,1,1,4,10,82,24,18,0.1,0.1,6.1
-Benjamin Cremaschi,20,USA,Inter Miami,MLS,CM,1500,3,2,12,16,82,28,20,0.18,0.12,7.48
-Obed Vargas,20,Mexico,Seattle,MLS,CM,1700,2,3,8,18,83,34,26,0.11,0.16,7.59
-Noah Nartey,20,Denmark,Brondby,Danish SL,AM,1200,3,3,12,22,80,12,8,0.23,0.23,8.32
-Mahamadou Doumbia,21,Mali,Antwerp,Belgian Pro League,CM,1300,2,2,8,14,83,30,22,0.14,0.14,6.74
-Francis Turley,19,Northern Ireland,Celtic,Scottish Premiership,CM,700,0,1,2,8,84,18,14,0.0,0.13,6.76
-Adam Daghim,19,Denmark,Salzburg,Austrian Bundesliga,RW,1300,4,3,16,24,78,10,8,0.28,0.21,9.05`;
+Lamine Yamal,19,Spain,Barcelona,La Liga,RW,2771,9,13,47,144,84,42,16,0.29,0.42,22.32
+Warren Zaire-Emery,21,France,PSG,Ligue 1,CM,2500,7,9,26,28,89,52,36,0.25,0.32,9.65
+Kobbie Mainoo,21,England,Man United,Premier League,CM,2400,5,6,18,22,86,48,32,0.19,0.23,8.51
+Pau Cubarsi,19,Spain,Barcelona,La Liga,CB,2620,2,3,8,5,69,33,17,0.07,0.1,6.36
+Gavi,22,Spain,Barcelona,La Liga,CM,1014,1,1,1,6,88,30,10,0.09,0.09,5.94
+Joao Neves,21,Portugal,PSG,Ligue 1,CM,2600,6,10,22,24,91,58,42,0.21,0.35,9.27
+Mathys Tel,20,France,Tottenham,Premier League,CF,1800,9,5,32,34,80,16,10,0.45,0.25,10.75
+Alejandro Garnacho,22,Argentina,Chelsea,Premier League,LW,2400,11,7,42,60,77,20,14,0.41,0.26,12.11
+Savinho,22,Brazil,Man City,Premier League,RW,2000,6,8,24,54,82,16,10,0.27,0.36,11.53
+Arda Guler,21,Turkey,Real Madrid,La Liga,AM,1800,10,6,32,28,87,14,10,0.5,0.3,10.25
+Evan Ferguson,22,Ireland,Roma,Serie A,CF,1800,7,4,28,16,78,14,10,0.35,0.2,7.45
+Antonio Nusa,21,Norway,RB Leipzig,Bundesliga,RW,1800,6,7,22,44,81,14,10,0.3,0.35,11.05
+Desire Doue,21,France,PSG,Ligue 1,AM,2000,8,8,28,48,82,20,14,0.36,0.36,11.7
+Kenan Yildiz,21,Turkey,Juventus,Serie A,LW,2300,9,6,30,42,83,18,12,0.35,0.23,10.88
+Jorrel Hato,20,Netherlands,Chelsea,Premier League,LB,2400,5,7,16,28,86,46,34,0.19,0.26,9.69
+Oscar Gloukh,22,Israel,Ajax,Eredivisie,AM,2200,12,11,40,46,85,24,18,0.49,0.45,11.72
+Leny Yoro,20,France,Man United,Premier League,CB,1800,1,1,6,8,88,44,34,0.05,0.05,6.95
+Kacper Urbanski,21,Poland,Bologna,Serie A,CM,1800,4,6,14,22,85,32,24,0.2,0.3,8.65
+Jamie Bynoe-Gittens,22,England,Chelsea,Premier League,LW,1800,7,6,22,40,79,12,10,0.35,0.3,10.1
+Youssoufa Moukoko,21,Germany,FC Copenhagen,Danish SL,CF,1400,5,3,20,20,76,10,6,0.32,0.19,8.15
+Adam Wharton,22,England,Crystal Palace,Premier League,CM,2200,4,5,12,16,90,50,34,0.16,0.2,7.5
+Estevao Willian,19,Brazil,Chelsea,Premier League,RW,1600,7,8,26,48,81,10,6,0.39,0.45,12.93
+Nico Paz,22,Argentina,Como,Serie A,AM,2200,9,10,32,36,85,18,14,0.37,0.41,10.27
+Roony Bardghji,19,Sweden,Barcelona,La Liga,RW,1200,4,3,16,22,80,8,6,0.3,0.23,9.55
+Archie Gray,20,England,Tottenham,Premier League,CM,2000,3,4,10,14,87,46,32,0.14,0.18,8.02
+Ousmane Diomande,22,Ivory Coast,Sporting CP,Liga Portugal,CB,2400,4,2,10,12,88,60,42,0.15,0.08,6.7
+Milos Kerkez,22,Hungary,Liverpool,Premier League,LB,2400,2,6,10,20,84,42,30,0.08,0.23,7.38
+Rico Lewis,21,England,Man City,Premier League,RB,2000,3,5,10,18,89,38,28,0.14,0.23,8.11
+Tyler Dibling,19,England,Everton,Premier League,RW,1800,5,4,20,38,79,14,10,0.25,0.2,10.9
+Dario Osorio,22,Chile,Midtjylland,Danish SL,RW,2200,10,8,34,48,81,16,12,0.41,0.33,11.23
+El Chadaille Bitshiabu,20,France,RB Leipzig,Bundesliga,CB,1600,1,1,6,8,87,40,30,0.06,0.06,6.93
+Abdoullah Ba,22,France,Sunderland,Championship,AM,2000,6,7,22,36,82,18,14,0.27,0.32,9.64
+Omari Kellyman,20,England,Chelsea,Premier League,AM,1000,2,3,8,16,80,10,6,0.18,0.27,8.18
+Kendry Paez,18,Ecuador,Strasbourg,Ligue 1,AM,800,3,3,10,14,81,8,6,0.34,0.34,9.64
+Claudio Echeverri,19,Argentina,Leverkusen,Bundesliga,AM,1000,3,4,12,20,83,10,6,0.27,0.36,9.68
+Geovany Quenda,18,Portugal,Sporting CP,Liga Portugal,RW,1400,3,5,14,30,80,12,8,0.19,0.32,10.72
+Yankuba Minteh,21,Gambia,Brighton,Premier League,RW,1600,5,4,18,36,78,10,8,0.28,0.23,9.79
+Facundo Buonanotte,21,Argentina,Chelsea,Premier League,AM,1800,6,5,22,32,82,14,10,0.3,0.25,9.7
+Andrey Santos,22,Brazil,Chelsea,Premier League,CM,2857,10,3,16,18,83,110,32,0.32,0.09,7.58
+Julio Enciso,21,Paraguay,Brighton,Premier League,AM,1400,5,4,18,26,79,10,6,0.32,0.26,9.03
+Cher Ndour,21,Italy,Besiktas,Super Lig,CM,1800,3,4,12,14,84,36,24,0.15,0.2,7.45
+Ben Doak,20,Scotland,Middlesbrough,Championship,RW,1600,5,6,18,34,79,10,8,0.28,0.34,10.37
+Ethan Nwaneri,19,England,Arsenal,Premier League,AM,1400,6,4,22,30,82,10,6,0.39,0.26,10.77
+Myles Lewis-Skelly,20,England,Arsenal,Premier League,LB,1900,2,4,8,26,87,40,28,0.09,0.19,9.11
+Vitor Reis,20,Brazil,Girona,La Liga,CB,1200,1,0,4,6,89,30,24,0.08,0.0,6.78
+Jack Hinshelwood,21,England,Brighton,Premier League,CM,1800,3,3,12,16,86,38,26,0.15,0.15,7.65
+Harry Amass,19,England,Man United,Premier League,LB,1100,0,2,2,14,84,28,20,0.0,0.16,7.93
+Lewis Hall,22,England,Newcastle,Premier League,LB,2200,2,5,8,24,83,44,30,0.08,0.2,7.7
+Nico OReilly,21,England,Man City,Premier League,CM,1300,2,3,10,16,85,28,20,0.14,0.21,7.68
+Franco Mastantuono,19,Argentina,Real Madrid,La Liga,AM,1500,5,4,20,32,81,10,6,0.3,0.24,10.63
+Jesus Rodriguez,20,Spain,Real Betis,La Liga,LW,1128,2,0,8,30,78,17,6,0.16,0.0,8.88
+Tom Bischof,21,Germany,Bayern Munich,Bundesliga,CM,1700,4,5,16,22,86,30,22,0.21,0.26,8.66
+Assan Ouedraogo,20,Germany,RB Leipzig,Bundesliga,CM,1200,3,2,10,18,82,24,16,0.23,0.15,8.38
+Can Uzun,20,Turkey,Frankfurt,Bundesliga,CF,1600,8,3,30,22,77,10,6,0.45,0.17,9.24
+Bence Dardai,20,Hungary,Wolfsburg,Bundesliga,AM,1300,4,4,14,24,80,12,8,0.28,0.28,9.28
+Valentin Carboni,21,Argentina,Genoa,Serie A,AM,1500,4,5,18,30,81,12,8,0.24,0.3,9.37
+Aaron Anselmino,21,Argentina,Dortmund,Bundesliga,CB,1400,1,0,4,8,87,36,28,0.06,0.0,6.34
+Santiago Castro,22,Argentina,Bologna,Serie A,CF,2000,9,3,36,18,78,12,8,0.41,0.14,7.69
+Niccolo Pisilli,21,Italy,Roma,Serie A,CM,1600,3,2,12,16,86,34,24,0.17,0.11,7.63
+Eliesse Ben Seghir,21,Morocco,Leverkusen,Bundesliga,LW,2000,8,6,30,52,80,14,10,0.36,0.27,11.82
+Lamine Camara,22,Senegal,Monaco,Ligue 1,CM,1900,3,4,12,20,85,42,30,0.14,0.19,7.56
+Ayyoub Bouaddi,19,France,Lille,Ligue 1,CM,1500,1,3,6,16,88,36,26,0.06,0.18,8.54
+Guillaume Restes,21,France,Toulouse,Ligue 1,GK,2700,0,1,0,2,76,1,2,0.0,0.03,5.07
+Jorthy Mokio,18,Belgium,Ajax,Eredivisie,CB,1300,2,1,6,14,87,34,26,0.14,0.07,8.8
+Mika Godts,21,Belgium,Ajax,Eredivisie,LW,1500,5,6,20,38,79,10,8,0.3,0.36,10.37
+Rodrigo Mora,19,Portugal,Porto,Liga Portugal,AM,1600,6,5,22,36,82,12,8,0.34,0.28,11.27
+Martim Fernandes,20,Portugal,Porto,Liga Portugal,RB,1700,1,5,6,20,84,38,26,0.05,0.26,8.39
+Chris Rigg,19,England,Sunderland,Premier League,CM,2000,4,4,16,24,83,36,26,0.18,0.18,9.45
+Tommy Watson,20,England,Brighton,Premier League,LW,1700,6,4,22,34,78,12,8,0.32,0.21,10.18
+Semih Kilicsoy,21,Turkey,Besiktas,Super Lig,CF,1700,8,3,30,26,76,10,6,0.42,0.16,8.99
+Yusuf Akcicek,20,Turkey,Fenerbahce,Super Lig,CB,1500,1,1,4,8,86,38,30,0.06,0.06,6.9
+Talal Haji,19,Saudi Arabia,Al-Riyadh,Saudi Pro League,CF,1200,5,2,18,16,74,8,6,0.38,0.15,8.73
+Abbas Al-Hassan,22,Saudi Arabia,Al-Nassr,Saudi Pro League,CM,1400,2,3,8,12,84,32,24,0.13,0.19,6.67
+Julian Hall,18,USA,NY Red Bulls,MLS,CF,900,4,2,14,18,75,6,4,0.4,0.2,9.65
+Peyton Miller,18,USA,New England,MLS,LB,1300,1,4,6,22,81,30,22,0.07,0.28,9.51
+Noah Allen,22,USA,Inter Miami,MLS,LB,1800,1,3,6,18,82,34,24,0.05,0.15,6.85
+Mads Hansen,20,Denmark,Nordsjaelland,Danish SL,RW,1800,7,6,26,40,79,12,8,0.35,0.3,11.1
+Konstantinos Karetsas,18,Greece,Genk,Belgian Pro League,AM,1500,5,6,20,34,81,10,8,0.3,0.36,11.57
+Joel Ordonez,22,Ecuador,Club Brugge,Belgian Pro League,CB,2200,2,1,8,10,88,48,36,0.08,0.04,6.23
+Chemsdine Talbi,21,Morocco,Club Brugge,Belgian Pro League,RW,1900,8,5,30,44,79,12,8,0.38,0.24,10.96
+Lennon Miller,20,Scotland,Celtic,Scottish Premiership,CM,2100,4,6,18,22,84,40,28,0.17,0.26,8.93
+James Wilson,19,Scotland,Hearts,Scottish Premiership,CF,1400,7,2,24,14,75,8,6,0.45,0.13,8.76
+Karim Konate,22,Ivory Coast,Salzburg,Austrian Bundesliga,CF,1800,11,3,38,20,77,10,6,0.55,0.15,8.3
+Samson Baidoo,22,Austria,Salzburg,Austrian Bundesliga,CB,1900,2,1,8,10,86,42,32,0.09,0.05,6.18
+Ethan Wheatley,20,England,Man United,Premier League,CF,700,2,1,8,10,74,6,4,0.26,0.13,7.23
+Godwill Kukonki,18,England,Man United,Premier League,CB,600,0,0,2,4,85,18,14,0.0,0.0,7.15
+Trey Nyoni,19,England,Liverpool,Premier League,CM,700,0,1,2,8,86,18,14,0.0,0.13,7.36
+Amara Nallo,19,England,Liverpool,Premier League,CB,600,0,0,2,4,87,20,16,0.0,0.0,6.75
+Stephen Mfuni,18,England,Man City,Premier League,LB,500,0,1,2,8,82,16,12,0.0,0.18,7.76
+Jan Virgili,20,Spain,Barcelona,La Liga,LW,600,1,1,4,12,78,6,4,0.15,0.15,7.35
+Quim Junyent,19,Spain,Barcelona,La Liga,CM,500,0,1,2,8,85,14,10,0.0,0.18,7.41
+Joan Martinez,19,Spain,Real Madrid,La Liga,CB,500,0,0,2,4,86,16,12,0.0,0.0,6.7
+Chema Andres,21,Spain,Real Madrid,La Liga,CM,600,0,1,2,10,87,20,14,0.0,0.15,6.65
+Hugo Alba,19,Spain,Real Betis,La Liga,AM,500,1,1,4,10,79,6,4,0.18,0.18,7.85
+Wisdom Mike,18,Germany,Bayern Munich,Bundesliga,RW,500,1,1,4,12,77,4,2,0.18,0.18,8.45
+Cassiano Kiala,18,Germany,Leverkusen,Bundesliga,CB,500,0,0,2,4,85,16,12,0.0,0.0,7.15
+Montrell Culbreath,19,Germany,Leverkusen,Bundesliga,LW,500,1,0,4,10,76,4,2,0.18,0.0,7.34
+Diego Sia,19,Italy,AC Milan,Serie A,RW,500,1,0,4,10,76,4,2,0.18,0.0,7.34
+Emanuele Sala,19,Italy,AC Milan,Serie A,CM,500,0,1,2,8,84,14,10,0.0,0.18,7.36
+Lorenzo Venturino,20,Italy,Genoa,Serie A,RW,600,1,1,4,12,77,6,4,0.15,0.15,7.3
+Lucas Michal,21,France,Monaco,Ligue 1,CF,700,2,1,8,12,75,6,4,0.26,0.13,6.98
+Bradel Kiwa,19,France,Monaco,Ligue 1,CB,500,0,0,2,4,85,18,14,0.0,0.0,6.65
+Ayman Aiki,21,France,Lille,Ligue 1,RW,600,1,1,4,14,78,6,4,0.15,0.15,7.05
+Kayden Wolff,19,Netherlands,Ajax,Eredivisie,RW,600,1,1,4,14,78,6,4,0.15,0.15,8.05
+Dies Janse,20,Netherlands,Ajax,Eredivisie,CB,600,0,0,2,6,86,20,16,0.0,0.0,6.4
+Rafael Luis,21,Portugal,Benfica,Liga Portugal,CM,600,0,1,2,8,84,18,14,0.0,0.15,6.3
+Goncalo Oliveira,20,Portugal,Porto,Liga Portugal,CF,600,2,0,8,10,74,6,4,0.3,0.0,7.1
+Oliver Arblaster,22,England,Sheffield United,Championship,CM,1400,2,2,8,14,83,32,24,0.13,0.13,6.69
+Efe Akman,20,Turkey,Galatasaray,Super Lig,CM,700,1,1,4,10,83,20,14,0.13,0.13,7.29
+Kristian Fletcher,21,USA,DC United,MLS,RW,1100,3,2,12,20,77,8,6,0.25,0.16,7.91
+Villads Nielsen,21,Denmark,Nordsjaelland,Danish SL,CB,1200,1,0,4,8,86,30,22,0.08,0.0,6.33
+Kaye Furo,19,Belgium,Club Brugge,Belgian Pro League,CF,600,2,0,8,10,74,6,4,0.3,0.0,7.6
+Daniel Cummings,21,Scotland,Celtic,Scottish Premiership,CF,700,2,1,8,8,74,6,4,0.26,0.13,6.53
+Oghenetejiri Adejenughure,19,Austria,Salzburg,Austrian Bundesliga,CF,600,2,0,8,10,73,6,4,0.3,0.0,7.55
+Josh Acheampong,20,England,Chelsea,Premier League,RB,800,0,1,2,10,84,22,16,0.0,0.11,6.93
+Chido Obi,18,Denmark,Man United,Premier League,CF,500,1,0,4,8,73,4,2,0.18,0.0,7.49
+Bendito Mantato,19,England,Man United,Premier League,RW,500,1,0,4,10,77,4,2,0.18,0.0,7.39
+Toni Fernandez,19,Spain,Barcelona,La Liga,RW,500,1,1,4,12,78,4,2,0.18,0.18,8.0
+Andres Cuenca,19,Spain,Barcelona,La Liga,CB,500,0,0,2,4,86,16,12,0.0,0.0,6.7
+David Jimenez,21,Spain,Real Madrid,La Liga,RB,500,0,1,2,8,83,16,10,0.0,0.18,6.31
+Diego Aguado,19,Spain,Real Madrid,La Liga,CB,500,0,0,2,4,86,14,10,0.0,0.0,6.7
+Said El Mala,20,Germany,Koln,Bundesliga,LW,900,3,2,12,20,76,8,6,0.3,0.2,8.6
+Jaka Cuber Potocnik,21,Slovenia,Koln,Bundesliga,CF,600,1,0,6,8,73,4,2,0.15,0.0,5.9
+Noel Aseko,21,Germany,Bayern Munich,Bundesliga,CM,500,0,1,2,8,85,14,10,0.0,0.18,6.41
+Mattia Liberali,19,Italy,AC Milan,Serie A,AM,500,0,1,2,10,81,6,4,0.0,0.18,7.41
+Andrea Natali,18,Italy,AC Milan,Serie A,CB,500,0,0,2,4,85,14,10,0.0,0.0,7.15
+Giacomo De Pieri,20,Italy,Inter,Serie A,RW,500,1,0,4,10,76,4,2,0.18,0.0,6.84
+Matteo Cocchi,19,Italy,Inter,Serie A,LB,500,0,1,2,8,82,14,10,0.0,0.18,7.26
+George Ilenikhena,20,Nigeria,Monaco,Ligue 1,CF,800,2,1,10,12,74,6,4,0.23,0.11,7.3
+Axel Tape,19,France,PSG,Ligue 1,CB,500,0,0,2,4,86,14,10,0.0,0.0,6.7
+Quentin Ndjantou,19,France,PSG,Ligue 1,RW,500,1,0,4,10,77,4,2,0.18,0.0,7.39
+Givairo Read,20,Netherlands,Feyenoord,Eredivisie,RB,900,1,2,4,14,82,22,14,0.1,0.2,7.7
+Aymen Sliti,20,Tunisia,Feyenoord,Eredivisie,LW,600,1,1,4,14,77,6,4,0.15,0.15,7.5
+Joao Rego,21,Portugal,Benfica,Liga Portugal,AM,600,1,1,4,12,80,6,4,0.15,0.15,6.95
+Eduardo Fernandes,19,Portugal,Sporting CP,Liga Portugal,RW,500,1,0,4,10,77,4,2,0.18,0.0,7.39
+Kellen Fisher,22,England,Norwich,Championship,RB,1200,1,3,6,16,82,30,20,0.08,0.23,6.88
+Elliot Myles,19,Wales,Norwich,Championship,LW,600,1,1,4,12,77,6,4,0.15,0.15,7.8
+Mustafa Hekimoglu,19,Turkey,Besiktas,Super Lig,CF,600,2,0,8,10,73,6,4,0.3,0.0,7.55
+Ali Al-Masoud,20,Saudi Arabia,Al-Nassr,Saudi Pro League,LW,600,1,1,4,12,77,6,4,0.15,0.15,7.3
+Cavan Sullivan,17,USA,Philadelphia,MLS,AM,500,1,1,4,12,78,4,2,0.18,0.18,9.0
+Matthew Corcoran,20,USA,Nashville,MLS,CM,900,1,1,4,10,82,22,16,0.1,0.1,7.1
+Clement Bischoff,20,Denmark,Salzburg,Austrian Bundesliga,LW,900,2,2,10,16,78,8,6,0.2,0.2,8.0
+Jorne Spileers,21,Belgium,Club Brugge,Belgian Pro League,CB,800,0,0,2,6,87,24,18,0.0,0.0,5.95
+Bailey Dall,20,Scotland,Hearts,Scottish Premiership,CM,600,0,1,2,8,82,16,12,0.0,0.15,6.7
+Valentin Sulzbacher,21,Austria,Salzburg,Austrian Bundesliga,CM,700,1,1,4,10,83,20,14,0.13,0.13,6.79
+Dennis Seimen,20,Germany,Stuttgart,Bundesliga,GK,1800,0,0,0,1,82,2,1,0.0,0.0,5.7
+Aron Yaakobishvili,20,Hungary,Barcelona,La Liga,GK,500,0,0,0,0,80,0,0,0.0,0.0,5.5
+Tommy Simkin,21,England,Stoke,Championship,GK,1200,0,0,0,0,75,1,1,0.0,0.0,4.75
+Lewis Miley,20,England,Newcastle,Premier League,CM,1500,2,3,8,14,86,32,24,0.12,0.18,7.92
+Mikey Moore,19,England,Tottenham,Premier League,LW,900,2,2,8,20,79,6,4,0.2,0.2,8.95
+Shea Lacey,19,England,Man United,Premier League,RW,700,1,2,6,18,80,6,4,0.13,0.26,8.7
+Jahmai Simpson-Pusey,20,England,Man City,Premier League,CB,800,0,0,2,4,88,22,18,0.0,0.0,6.3
+Harrison Armstrong,19,England,Everton,Premier League,CM,900,1,1,4,10,84,24,18,0.1,0.1,7.7
+Jayden Meghoma,19,England,Chelsea,Premier League,LB,700,0,1,2,12,82,20,14,0.0,0.13,7.56
+Samuel Rak-Sakyi,20,England,Chelsea,Premier League,CM,600,1,1,4,10,83,16,12,0.15,0.15,7.4
+Jesus Fortea,19,Spain,Real Madrid,La Liga,RB,700,0,2,2,12,84,22,16,0.0,0.26,7.91
+Thiago Pitarch,19,Spain,Valencia,La Liga,CM,900,1,2,4,12,83,24,18,0.1,0.2,8.05
+Iker Bravo,21,Spain,Osasuna,La Liga,CF,1100,3,1,12,12,76,8,6,0.25,0.08,6.9
+Felipe Chavez,19,Germany,Bayern Munich,Bundesliga,AM,700,2,2,8,16,81,8,6,0.26,0.26,8.94
+Bazoumana Toure,21,Ivory Coast,Hoffenheim,Bundesliga,LW,1200,3,3,12,28,78,10,8,0.23,0.23,8.82
+Dzenan Pejcinovic,21,Germany,Wolfsburg,Bundesliga,CF,800,2,1,8,10,75,6,4,0.23,0.11,6.65
+Arijon Ibrahimovic,20,Germany,Bayern Munich,Bundesliga,LW,700,1,2,6,16,79,8,6,0.13,0.26,7.95
+Francesco Camarda,18,Italy,AC Milan,Serie A,CF,700,2,0,8,10,74,6,4,0.26,0.0,7.97
+Jonas Rouhi,21,Sweden,Juventus,Serie A,LB,900,0,1,2,12,82,24,18,0.0,0.1,6.5
+Christian Comotto,19,Italy,AC Milan,Serie A,CM,600,0,1,2,8,84,18,14,0.0,0.15,7.3
+Simone Pafundi,20,Italy,Udinese,Serie A,AM,800,1,2,6,16,80,8,6,0.11,0.23,7.89
+Senny Mayulu,20,France,PSG,Ligue 1,CM,1100,2,2,8,18,87,26,20,0.16,0.16,8.47
+Ibrahim Mbaye,18,France,PSG,Ligue 1,RW,700,1,2,6,20,79,6,4,0.13,0.26,9.35
+Djylian Nguessan,18,France,Saint-Etienne,Ligue 2,CF,600,2,0,6,10,75,6,4,0.3,0.0,8.15
+Valentin Atangana,21,France,Reims,Ligue 1,CM,1300,1,2,6,14,85,34,26,0.07,0.14,7.13
+Kees Smit,20,Netherlands,AZ,Eredivisie,CM,1500,3,3,12,20,84,30,22,0.18,0.18,8.6
+Ro-Zangelo Daal,18,Netherlands,AZ,Eredivisie,RW,700,2,2,8,18,78,6,4,0.26,0.26,9.49
+Tiago Parente,19,Portugal,Benfica,Liga Portugal,LB,700,0,1,2,10,83,20,14,0.0,0.13,7.41
+Law McCabe,20,England,Middlesbrough,Championship,CM,800,1,1,4,10,83,22,16,0.11,0.11,7.21
+Arda Unyay,19,Turkey,Galatasaray,Super Lig,CB,800,0,0,2,6,86,26,20,0.0,0.0,6.9
+Ziyad Al-Johani,22,Saudi Arabia,Al-Ahli,Saudi Pro League,CM,900,1,1,4,10,82,24,18,0.1,0.1,6.1
+Benjamin Cremaschi,21,USA,Inter Miami,MLS,CM,1500,3,2,12,16,82,28,20,0.18,0.12,7.48
+Obed Vargas,21,Mexico,Seattle,MLS,CM,1700,2,3,8,18,83,34,26,0.11,0.16,7.59
+Noah Nartey,21,Denmark,Brondby,Danish SL,AM,1200,3,3,12,22,80,12,8,0.23,0.23,8.32
+Mahamadou Doumbia,22,Mali,Antwerp,Belgian Pro League,CM,1300,2,2,8,14,83,30,22,0.14,0.14,6.74
+Francis Turley,20,Northern Ireland,Celtic,Scottish Premiership,CM,700,0,1,2,8,84,18,14,0.0,0.13,6.76
+Adam Daghim,20,Denmark,Salzburg,Austrian Bundesliga,RW,1300,4,3,16,24,78,10,8,0.28,0.21,9.05
+Rio Ngumoha,17,England,Liverpool,Premier League,LW,560,2,1,6,6,78,2,3,0.32,0.16,8.28
+Sverre Nypan,19,Norway,Lommel,Belgian Pro League,AM,624,0,0,1,9,82,10,3,0.0,0.0,6.5
+Jeremy Jacquet,21,France,Liverpool,Premier League,CB,1671,0,0,2,5,86,72,66,0.0,0.0,5.3
+Oscar Perea,20,Colombia,America,Liga MX,AM,1254,2,0,11,19,82,6,15,0.14,0.0,7.42
+Gilberto Mora,17,Mexico,Tijuana,Liga MX,AM,1131,4,1,11,17,82,7,5,0.32,0.08,9.42
+Allen Obando,20,Ecuador,Nacional,Primeira Liga,CF,157,1,0,1,1,75,1,0,0.57,0.0,6.56
+`;
 
 // parse csv
 function parseData() {
@@ -274,6 +257,8 @@ function getLeagueCode(league) {
         "Saudi Pro League": "KSA",
         "Belgian Pro League": "BEL",
         "Scottish Premiership": "SCO",
+        "Liga MX": "MX",
+        "Primeira Liga": "POR",
         "Austrian Bundesliga": "AUT",
         "Ligue 2": "FRA2",
         "Serie B": "ITA2"
