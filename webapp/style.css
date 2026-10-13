@@ -414,6 +414,7 @@ table th:nth-child(-n+2), table td:nth-child(-n+2) {
     position: sticky; z-index: 1;
     background: #0d1811;
 }
+table th:first-child, table td:first-child { left: 0; }
 table th:nth-child(2), table td:nth-child(2) { left: 46px; }
 table td:nth-child(2) { background: #0c1610; }
 thead th:nth-child(-n+2) { z-index: 3; }
