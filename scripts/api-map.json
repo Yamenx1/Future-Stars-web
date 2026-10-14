@@ -163,6 +163,62 @@
     "Frankfurt": {
       "id": 169,
       "name": "Eintracht Frankfurt"
+    },
+    "Philadelphia": {
+      "id": 1599,
+      "name": "Philadelphia Union"
+    },
+    "Nashville": {
+      "id": 4002,
+      "name": "Nashville"
+    },
+    "Stuttgart": {
+      "id": 172,
+      "name": "VfB Stuttgart"
+    },
+    "Stoke": {
+      "id": 75,
+      "name": "Stoke City"
+    },
+    "Valencia": {
+      "id": 532,
+      "name": "Valencia"
+    },
+    "Osasuna": {
+      "id": 727,
+      "name": "Osasuna"
+    },
+    "Hoffenheim": {
+      "id": 167,
+      "name": "1899 Hoffenheim"
+    },
+    "Udinese": {
+      "id": 494,
+      "name": "Udinese"
+    },
+    "Reims": {
+      "id": 93,
+      "name": "Reims"
+    },
+    "Seattle": {
+      "id": 1595,
+      "name": "Seattle Sounders"
+    },
+    "Brondby": {
+      "id": 407,
+      "name": "Brondby"
+    },
+    "Antwerp": {
+      "id": 740,
+      "name": "Antwerp"
+    },
+    "Monaco": {
+      "id": 91,
+      "name": "Monaco"
+    },
+    "FC Copenhagen": {
+      "id": 400,
+      "name": "FC Copenhagen"
     }
   },
   "players": {
@@ -183,6 +239,15 @@
     "Pablo Barrios|Atletico Madrid": 336594,
     "Jesus Rodriguez|Real Betis": 443162,
     "Pablo Garcia|Real Betis": 443163,
-    "Andrey Santos|Chelsea": 305834
+    "Andrey Santos|Chelsea": 305834,
+    "Cavan Sullivan|Philadelphia": 462853,
+    "Tommy Simkin|Stoke": 311093,
+    "Quim Junyent|Barcelona": 449128,
+    "Toni Fernandez|Barcelona": 445973,
+    "Andres Cuenca|Barcelona": 441244,
+    "Joan Martinez|Real Madrid": 443596,
+    "David Jimenez|Real Madrid": 330436,
+    "Diego Aguado|Real Madrid": 451355,
+    "Kayden Wolff|Ajax": 412868
   }
 }
