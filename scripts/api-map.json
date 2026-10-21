@@ -219,6 +219,18 @@
     "FC Copenhagen": {
       "id": 400,
       "name": "FC Copenhagen"
+    },
+    "Everton": {
+      "id": 45,
+      "name": "Everton"
+    },
+    "Leverkusen": {
+      "id": 168,
+      "name": "Bayer Leverkusen"
+    },
+    "Girona": {
+      "id": 547,
+      "name": "Girona"
     }
   },
   "players": {
